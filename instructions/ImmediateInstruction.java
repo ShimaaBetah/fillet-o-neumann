@@ -1,3 +1,7 @@
+package instructions;
+import memory.MainMemory;
+import memory.Registers;
+
 public  class ImmediateInstruction extends Instruction{
     int destinationRegister;
     int firstOperand;

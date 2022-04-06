@@ -1,3 +1,7 @@
+package instructions;
+import memory.MainMemory;
+import memory.Registers;
+
 public abstract class Instruction {
     int binaryRepresentation;
     int opcode;
@@ -10,8 +14,8 @@ public abstract class Instruction {
     }
 
     public abstract void decode(); 
-    public abstract void execute();
-    public abstract void memoryAccess();
-    public abstract void writeBack();
+    public abstract void execute(Registers registers);
+    public abstract void memoryAccess(MainMemory memory);
+    public abstract void writeBack(MainMemory memory);
     
 }
