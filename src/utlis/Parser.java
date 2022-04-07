@@ -1,6 +1,11 @@
 package utlis;
 
+import java.io.BufferedReader;
+import java.io.File;
+import java.io.FileReader;
+import java.io.IOException;
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.HashMap;
 import java.util.List;
 
@@ -18,6 +23,58 @@ public class Parser {
     private static final int REGISTER_SIZE = 5;
     private static final int IMMEDIATE_SIZE = 18;
     private static final int ADDRESS_SIZE = 28;
+
+    public Parser(String programPath) {
+        var instructionsFile = new File(programPath);
+        try (FileReader fr = new FileReader(instructionsFile)) {
+            try (var br = new BufferedReader(fr)) {
+                String line;
+                int lineNum = 0;
+                while ((line = br.readLine()) != null) {
+                    line = line.trim();
+                    line = line.toUpperCase();
+
+                    String[] splittedLine = line.replaceAll("\\s(\\s)+", "").split(" ");
+                    Arrays.asList(splittedLine).forEach(String::trim);
+
+                    getLabels(line, lineNum, splittedLine);
+                    lineNum++;
+                }
+            }
+        } catch (IOException e) {
+            // TODO Auto-generated catch block
+            e.printStackTrace();
+        }
+        convertStringToBinary();
+    }
+
+    private void getLabels(String line, int lineNum, String[] splittedLine) {
+        String label;
+        if (splittedLine.length > 2 && (label = hasLabel(splittedLine[0], splittedLine[1])) != null) {
+            labels.put(label, lineNum);
+            String[] splittedInstruction = line.split(":");
+            if (splittedInstruction.length > 1) {
+                String[] splittedFinal = splittedInstruction[1].trim().split(" ");
+                this.instructions.add(splittedFinal);
+            }
+        } else {
+            this.instructions.add(splittedLine);
+        }
+    }
+
+    private String hasLabel(String word1, String word2) {
+        // this can get the line we have label in
+        String res = "";
+        for (int i = 0; i < word1.length(); i++) {
+            if (word1.charAt(i) == ':') {
+                res = word1.substring(0, i);
+                return res;
+            }
+        }
+        if (word2.equals(":"))
+            return word1;
+        return null;
+    }
 
     private void convertStringToBinary() throws IllegalArgumentException {
         for (String[] instruction : this.instructions) {
