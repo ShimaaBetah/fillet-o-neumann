@@ -2,12 +2,14 @@ package tests;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
 
+
 import org.junit.Test;
 
 import utlis.*;
 
 public class ParserTest {
-    Parser parser = new Parser("/home/aboueleyes/dev/fillet-o-neumann/src/programs/spicy-program.txt");
+    String path = Path.PATH;
+    Parser parser = new Parser(path+"fillet-o-neumann/src/programs/spicy-program.txt");
 
     public String getBinary(int sID) {
         /**
