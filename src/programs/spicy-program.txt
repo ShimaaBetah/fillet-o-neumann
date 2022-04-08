@@ -1,0 +1,5 @@
+add $R1 $R0 $R0
+add $R1 $R1 $R0
+add $R0 $R0 $R1
+add $R0 $R0 $R0
+And $R3 $R2 $R4 102

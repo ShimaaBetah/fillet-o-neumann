@@ -175,4 +175,8 @@ public class Parser {
             return -1;
     }
 
+    public List<Integer> getBinaryInstructions() {
+        return this.binaryInstructions;
+    }
+
 }
