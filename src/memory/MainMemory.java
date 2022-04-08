@@ -1,3 +1,5 @@
+package memory;
+
 public class MainMemory {
     int[] memory;
     int instructionRange;

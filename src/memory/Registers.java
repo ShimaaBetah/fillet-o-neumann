@@ -1,7 +1,9 @@
-public class Registers {
-    int [] registers;
+package memory;
 
-    public Registers( int size) {
+public class Registers {
+    int[] registers;
+
+    public Registers(int size) {
         registers = new int[0];
     }
 

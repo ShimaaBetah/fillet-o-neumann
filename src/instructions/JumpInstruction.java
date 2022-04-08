@@ -1,9 +1,9 @@
+package instructions;
 
-public class RegisterInstruction extends Instruction {
-    int destinationRegister;
-    int firstOperand;
-    int secondOperand;
-    int shiftAmount;
+import memory.*;
+
+public class JumpInstruction extends Instruction {
+    int address;
 
     @Override
     public void decode() {
