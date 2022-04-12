@@ -2,56 +2,70 @@ package tests;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
 
-
 import org.junit.Test;
 
 import utlis.*;
 
 public class ParserTest {
     String path = Path.PATH;
-    Parser parser = new Parser(path+"fillet-o-neumann/src/programs/spicy-program.txt");
-
-    public String getBinary(int sID) {
-        /**
-         * java's toBinaryString() method doesn't return the whole binary
-         * so this a workaround to get the binary string
-         */
-        return Long.toBinaryString(sID & 0xffffffffL | 0x100000000L).substring(1);
-    }
+    Parser parserR = new Parser(path + "fillet-o-neumann/src/programs/spicy-rprogram.txt");
+    Parser parserI = new Parser(path + "fillet-o-neumann/src/programs/spicy-iprogram.txt");
+    Parser parserJ = new Parser(path + "fillet-o-neumann/src/programs/spicy-jprogram.txt");
 
     @Test
-    public void testSpicy1() {
+    public void testSpicyR1() {
         assertEquals(
                 "00000000100000000000000000000000",
-                getBinary(parser.getBinaryInstructions().get(0)));
+                parserR.getBinaryInstructions().get(0));
     }
 
     @Test
-    public void testSpicy2() {
+    public void testSpicyR2() {
         assertEquals(
                 "00000000100001000000000000000000",
-                getBinary(parser.getBinaryInstructions().get(1)));
+                parserR.getBinaryInstructions().get(1));
     }
 
     @Test
-    public void testSpicy3() {
+    public void testSpicyR3() {
         assertEquals(
                 "00000000000000000010000000000000",
-                getBinary(parser.getBinaryInstructions().get(2)));
+                parserR.getBinaryInstructions().get(2));
     }
 
     @Test
-    public void testSpicy4() {
+    public void testSpicyR4() {
         assertEquals(
                 "00000000000000000000000000000000",
-                getBinary(parser.getBinaryInstructions().get(3)));
+                parserR.getBinaryInstructions().get(3));
     }
 
     @Test
-    public void testSpicy5() {
+    public void testSpicyR5() {
         assertEquals(
                 "01010001100010001000000001100110",
-                getBinary(parser.getBinaryInstructions().get(4)));
+                parserR.getBinaryInstructions().get(4));
+    }
+
+    @Test
+    public void testSpicyI1() {
+        assertEquals(
+                "00110000100000000000000000000001",
+                parserI.getBinaryInstructions().get(0));
+    }
+
+    @Test
+    public void testSpicyI2() {
+        assertEquals(
+                "10100000100010000000000001111000",
+                parserI.getBinaryInstructions().get(1));
+    }
+
+    @Test
+    public void testSpicyJ1() {
+        assertEquals(
+                "011110010101010101010101010101000100",
+                parserJ.getBinaryInstructions().get(0));
     }
 
 }

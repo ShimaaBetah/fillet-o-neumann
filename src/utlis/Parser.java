@@ -4,6 +4,7 @@ import java.io.BufferedReader;
 import java.io.File;
 import java.io.FileReader;
 import java.io.IOException;
+import java.math.BigInteger;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.HashMap;
@@ -13,7 +14,7 @@ import instructions.InstructionType;
 
 public class Parser {
     List<String[]> instructions = new ArrayList<>();
-    List<Integer> binaryInstructions = new ArrayList<>();
+    List<String> binaryInstructions = new ArrayList<>();
     HashMap<String, Integer> labels = new HashMap<>();
 
     private static final String INVALID_INSTRUCTION = "Invalid instruction: ";
@@ -42,7 +43,6 @@ public class Parser {
                 }
             }
         } catch (IOException e) {
-            // TODO Auto-generated catch block
             e.printStackTrace();
         }
         convertStringToBinary();
@@ -87,17 +87,48 @@ public class Parser {
 
             if (type == InstructionType.R) {
                 this.binaryInstructions.add(getRType(instruction));
-                // } else if (type == InstructionType.I) {
-                // binaryInstructions.add(getIType(instruction));
-                // } else if (type == InstructionType.J) {
-                // binaryInstructions.add(getJType(instruction));
+            } else if (type == InstructionType.I) {
+                binaryInstructions.add(getIType(instruction));
+            } else if (type == InstructionType.J) {
+                binaryInstructions.add(getJType(instruction));
             } else {
                 throw new IllegalArgumentException(INVALID_INSTRUCTION + instruction[0]);
             }
         }
     }
 
-    private int getRType(String[] instruction) {
+    private String getJType(String[] instruction) {
+        StringBuilder binary = new StringBuilder();
+        binary.append(getOpcodeString(getOpcode(instruction[0])));
+        binary.append(instruction[1]);
+        return binary.toString();
+    }
+
+    private String getOpcodeString(int opcode) {
+        String binary = Integer.toBinaryString(opcode);
+        while (binary.length() < OPCODE_SIZE) {
+            binary = "0" + binary;
+        }
+        return binary;
+    }
+
+    private String getIType(String[] instruction) {
+        int opcode = getOpcode(getFirstOperator(instruction));
+        int rs = getRegister(instruction[1]);
+        int rt = getRegister(instruction[2]);
+        int immediate = getImmediate(instruction[3]);
+        int binary = (opcode << INSTRUCTION_SIZE - OPCODE_SIZE);
+        binary |= (rs << INSTRUCTION_SIZE - OPCODE_SIZE - REGISTER_SIZE);
+        binary |= (rt << INSTRUCTION_SIZE - OPCODE_SIZE - 2 * REGISTER_SIZE);
+        binary |= immediate;
+        return getBinary(binary);
+    }
+
+    private int getImmediate(String string) {
+        return Integer.parseInt(string);
+    }
+
+    private String getRType(String[] instruction) {
         var opcode = getOpcode(instruction[0].toUpperCase());
         int rs = getRegister(instruction[1]);
         int rt = getRegister(instruction[2]);
@@ -114,7 +145,7 @@ public class Parser {
         binary |= rt << INSTRUCTION_SIZE - OPCODE_SIZE - 2 * REGISTER_SIZE;
         binary |= rd << INSTRUCTION_SIZE - OPCODE_SIZE - 3 * REGISTER_SIZE;
         binary |= shamt;
-        return binary;
+        return getBinary(binary);
     }
 
     private int getShamt(String string) {
@@ -135,8 +166,12 @@ public class Parser {
                 return InstructionType.I;
             case 6:
                 return InstructionType.I;
-            case 8:
+            case 7:
                 return InstructionType.J;
+            case 9:
+                return InstructionType.I;
+            case 10:
+                return InstructionType.I;
             default:
                 return InstructionType.R;
         }
@@ -175,8 +210,15 @@ public class Parser {
             return -1;
     }
 
-    public List<Integer> getBinaryInstructions() {
+    public List<String> getBinaryInstructions() {
         return this.binaryInstructions;
     }
 
+    public String getBinary(int sID) {
+        /**
+         * java's toBinaryString() method doesn't return the whole binary
+         * so this a workaround to get the binary string
+         */
+        return Long.toBinaryString(sID & 0xffffffffL | 0x100000000L).substring(1);
+    }
 }
