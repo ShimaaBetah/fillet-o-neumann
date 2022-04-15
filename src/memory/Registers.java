@@ -1,10 +1,10 @@
 package memory;
 
 public class Registers {
-    int[] registers;
+    public int[] registers;
 
     public Registers(int size) {
-        registers = new int[0];
+        registers = new int[size];
     }
 
     public void setRegister(int index, int value) {

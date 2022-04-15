@@ -24,7 +24,7 @@ public class JumpInstruction extends Instruction {
     }
 
     @Override
-    public void writeBack(MainMemory memory) {
+    public void writeBack(Registers registers) {
         // TODO Auto-generated method stub
 
     }
