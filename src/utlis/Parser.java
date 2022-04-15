@@ -4,7 +4,6 @@ import java.io.BufferedReader;
 import java.io.File;
 import java.io.FileReader;
 import java.io.IOException;
-import java.math.BigInteger;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.HashMap;
@@ -22,15 +21,12 @@ public class Parser {
     private static final int INSTRUCTION_SIZE = 32;
     private static final int OPCODE_SIZE = 4;
     private static final int REGISTER_SIZE = 5;
-    private static final int IMMEDIATE_SIZE = 18;
-    private static final int ADDRESS_SIZE = 28;
 
     public Parser(String programPath) {
         var instructionsFile = new File(programPath);
         try (FileReader fr = new FileReader(instructionsFile)) {
             try (var br = new BufferedReader(fr)) {
                 String line;
-                int lineNum = 0;
                 while ((line = br.readLine()) != null) {
                     line = line.trim();
                     line = line.toUpperCase();
@@ -38,42 +34,13 @@ public class Parser {
                     String[] splittedLine = line.replaceAll("\\s(\\s)+", "").split(" ");
                     Arrays.asList(splittedLine).forEach(String::trim);
 
-                    getLabels(line, lineNum, splittedLine);
-                    lineNum++;
+                    this.instructions.add(splittedLine);
                 }
             }
         } catch (IOException e) {
             e.printStackTrace();
         }
         convertStringToBinary();
-    }
-
-    private void getLabels(String line, int lineNum, String[] splittedLine) {
-        String label;
-        if (splittedLine.length > 2 && (label = hasLabel(splittedLine[0], splittedLine[1])) != null) {
-            labels.put(label, lineNum);
-            String[] splittedInstruction = line.split(":");
-            if (splittedInstruction.length > 1) {
-                String[] splittedFinal = splittedInstruction[1].trim().split(" ");
-                this.instructions.add(splittedFinal);
-            }
-        } else {
-            this.instructions.add(splittedLine);
-        }
-    }
-
-    private String hasLabel(String word1, String word2) {
-        // this can get the line we have label in
-        String res = "";
-        for (int i = 0; i < word1.length(); i++) {
-            if (word1.charAt(i) == ':') {
-                res = word1.substring(0, i);
-                return res;
-            }
-        }
-        if (word2.equals(":"))
-            return word1;
-        return null;
     }
 
     private void convertStringToBinary() throws IllegalArgumentException {
@@ -105,18 +72,31 @@ public class Parser {
     }
 
     private String getOpcodeString(int opcode) {
-        String binary = Integer.toBinaryString(opcode);
+        StringBuilder binary = new StringBuilder();
+        binary.append(Integer.toBinaryString(opcode));
         while (binary.length() < OPCODE_SIZE) {
-            binary = "0" + binary;
+            binary.insert(0, "0");
         }
-        return binary;
+        return binary.toString();
     }
 
     private String getIType(String[] instruction) {
+        /**
+         * map the instruction to binary of type I
+         * format:
+         * opcode rs rt immediate
+         */
         int opcode = getOpcode(getFirstOperator(instruction));
         int rs = getRegister(instruction[1]);
-        int rt = getRegister(instruction[2]);
-        int immediate = getImmediate(instruction[3]);
+        int rt;
+        int immediate;
+        if (opcode == 3) { // If opcode is 3, then the instruction is `MOVI` which has no rt, always 0
+            rt = 0;
+            immediate = getImmediate(instruction[2]);
+        } else {
+            rt = getRegister(instruction[2]);
+            immediate = getImmediate(instruction[3]);
+        }
         int binary = (opcode << INSTRUCTION_SIZE - OPCODE_SIZE);
         binary |= (rs << INSTRUCTION_SIZE - OPCODE_SIZE - REGISTER_SIZE);
         binary |= (rt << INSTRUCTION_SIZE - OPCODE_SIZE - 2 * REGISTER_SIZE);
@@ -129,17 +109,30 @@ public class Parser {
     }
 
     private String getRType(String[] instruction) {
+        /**
+         * parse the instruction of type R
+         * opcode rs rt rd shamt
+         */
         var opcode = getOpcode(instruction[0].toUpperCase());
         int rs = getRegister(instruction[1]);
         int rt = getRegister(instruction[2]);
-        int rd = getRegister(instruction[3]);
+        int rd;
         int shamt;
-        try {
-            shamt = getShamt(instruction[4]);
-        } catch (Exception e) {
-            shamt = 0;
+        if (opcode == 7 || opcode == 8) { // If opcode is 7, 8, then the instruction is `shifting` which has no rd,
+            rd = 0; // always 0
+            try {
+                shamt = getShamt(instruction[3]);
+            } catch (ArrayIndexOutOfBoundsException e) {
+                shamt = 0;
+            }
+        } else {
+            rd = getRegister(instruction[3]);
+            try {
+                shamt = getShamt(instruction[4]);
+            } catch (ArrayIndexOutOfBoundsException e) {
+                shamt = 0;
+            }
         }
-        // opcode R1 R2 R3 SHAMT
         int binary = (opcode << INSTRUCTION_SIZE - OPCODE_SIZE);
         binary |= rs << INSTRUCTION_SIZE - OPCODE_SIZE - REGISTER_SIZE;
         binary |= rt << INSTRUCTION_SIZE - OPCODE_SIZE - 2 * REGISTER_SIZE;
@@ -159,6 +152,9 @@ public class Parser {
     }
 
     private InstructionType getInstructionType(int opcode) {
+        /**
+         * map opcode to instruction type
+         */
         switch (opcode) {
             case 3:
                 return InstructionType.I;
