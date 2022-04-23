@@ -11,9 +11,9 @@ public class RegistersTest {
     private static final int TEST_REGISTER_VALUE = 0x1234;
     private static final int VALID_TEST_REGISTER_NUMBER = 1;
     private static final int INVALID_TEST_REGISTER_NUMBER = -1;
-    private static final int VALID_TEST_PC_VALUE = 1;
-    private static final int INVALID_TEST_PC_VALUE = MainMemory.getInstance().getDataRangeStart();
+    private static final int VALID_TEST_PC_VALUE = MainMemory.getInstance().getInstructionRangeStart();
     private static final int MAX_VALID_TEST_PC_VALUE = MainMemory.getInstance().getInstructionRangeEnd();
+    private static final int INVALID_TEST_PC_VALUE = MainMemory.getInstance().getDataRangeStart();
 
     @Test
     public void testSetRegister1() throws InvalidRegisterNumberException {
