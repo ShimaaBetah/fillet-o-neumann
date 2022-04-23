@@ -61,11 +61,11 @@ public class MainMemory {
         }
     }
 
-    private boolean inInstructionRange(int address) {
+    public boolean inInstructionRange(int address) {
         return instructionRangeStart <= address && address <= instructionRangeEnd;
     }
 
-    private boolean inDataRange(int address) {
+    public boolean inDataRange(int address) {
         return dataRangeStart <= address && address <= dataRangeEnd;
     }
 
