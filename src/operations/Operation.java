@@ -1,5 +1,11 @@
 package operations;
 
+import exceptions.InvalidRegisterNumberException;
+
 public interface Operation {
-    public int execute(int operand1, int operand2, int shiftAmount);
+    void execute() throws InvalidRegisterNumberException;
+
+    void memoryAccess();
+
+    void writeBack() throws InvalidRegisterNumberException;
 }

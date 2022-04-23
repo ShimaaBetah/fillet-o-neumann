@@ -1,40 +1,56 @@
 package instructions;
 
 import exceptions.InvalidRegisterNumberException;
+import operations.Operation;
+import operations.registeroperations.*;
+
+import java.util.HashMap;
 
 public abstract class Instruction {
-    private int bitMask;
-    private int opcode;
+    private int binaryInstruction;
+    private Operation operation;
 
-    public Instruction() {
+    private static final HashMap<Integer, Class> operationsMap = new HashMap<>(){{
+        put(0, Add.class);
+        put(1, Sub.class);
+        put(2, Multiply.class);
+        put(5, And.class);
+        put(8, ShiftLeft.class);
+        put(9, ShiftRight.class);
+    }};
+
+    public Instruction(int binaryInstruction) {
+        this.binaryInstruction = binaryInstruction;
     }
 
-    public int getBitMask() {
-        return bitMask;
+    public abstract void decode() throws Exception;
+
+    public void execute() throws InvalidRegisterNumberException {
+        operation.execute();
     }
 
-    public void setBitMask(int bitMask) {
-        this.bitMask = bitMask;
+    public void memoryAccess() {
+        operation.memoryAccess();
     }
 
-    public int getOpcode() {
-        return opcode;
+    public void writeBack() throws InvalidRegisterNumberException {
+        operation.writeBack();
     }
 
-    public void setOpcode(int opcode) {
-        this.opcode = opcode;
+    public int getBinaryInstruction() {
+        return binaryInstruction;
     }
 
-    public Instruction(int bitMask) {
-        this.setBitMask(bitMask);
+    public HashMap<Integer, Class> getOperationsMap() {
+        return operationsMap;
     }
 
-    public abstract void decode();
+    public void setOperation(Operation operation) {
+        this.operation = operation;
+    }
 
-    public abstract void execute() throws InvalidRegisterNumberException;
-
-    public abstract void memoryAccess();
-
-    public abstract void writeBack() throws InvalidRegisterNumberException;
+    public Operation getOperation() {
+        return operation;
+    }
 
 }
