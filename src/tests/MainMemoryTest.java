@@ -16,7 +16,7 @@ public class MainMemoryTest {
     }
 
     @Test
-    public void testStoreInstruction2() throws AddressOutOfRange{
+    public void testStoreInstruction2() {
         MainMemory memory = MainMemory.getInstance();
         int address = memory.getInstructionRangeEnd() + 1;
         int instruction = 0x1234;
@@ -33,7 +33,7 @@ public class MainMemoryTest {
     }
 
     @Test
-    public void testLoadInstruction2() throws AddressOutOfRange {
+    public void testLoadInstruction2() {
         MainMemory memory = MainMemory.getInstance();
         int address = memory.getInstructionRangeEnd() + 1;
         Assert.assertThrows(AddressOutOfRange.class, () -> memory.loadInstruction(address));
@@ -49,7 +49,7 @@ public class MainMemoryTest {
     }
 
     @Test
-    public void testStoreData2() throws AddressOutOfRange {
+    public void testStoreData2() {
         MainMemory memory = MainMemory.getInstance();
         int address = memory.getDataRangeEnd() + 1;
         int data = 0x1234;
@@ -66,7 +66,7 @@ public class MainMemoryTest {
     }
 
     @Test
-    public void testLoadData2() throws AddressOutOfRange {
+    public void testLoadData2() {
         MainMemory memory = MainMemory.getInstance();
         int address = memory.getDataRangeEnd() + 1;
         Assert.assertThrows(AddressOutOfRange.class, () -> memory.loadData(address));

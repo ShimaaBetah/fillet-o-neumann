@@ -30,35 +30,31 @@ public class MainMemory {
     }
 
     public void storeInstruction(int address, int instruction) throws AddressOutOfRange {
-        if (inInstructionRange(address)) {
-            memory[address] = instruction;
-        } else {
+        if (!inInstructionRange(address)) {
             throw new AddressOutOfRange();
         }
+        memory[address] = instruction;
     }
 
     public int loadInstruction(int address) throws AddressOutOfRange {
-        if (inInstructionRange(address)) {
-            return memory[address];
-        } else {
+        if (!inInstructionRange(address)) {
             throw new AddressOutOfRange();
         }
+        return memory[address];
     }
 
     public void storeData(int address, int data) throws AddressOutOfRange {
-        if (inDataRange(address)) {
-            memory[address] = data;
-        } else {
+        if (!inDataRange(address)) {
             throw new AddressOutOfRange();
         }
+        memory[address] = data;
     }
 
     public int loadData(int address) throws AddressOutOfRange {
-        if (inDataRange(address)) {
-            return memory[address];
-        } else {
+        if (!inDataRange(address)) {
             throw new AddressOutOfRange();
         }
+        return memory[address];
     }
 
     public boolean inInstructionRange(int address) {
