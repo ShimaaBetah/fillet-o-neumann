@@ -1,11 +1,11 @@
 package exceptions;
 
-public class InvalidRegisterNumber extends Exception {
-    public InvalidRegisterNumber(int registerNumber) {
+public class InvalidRegisterNumberException extends Exception {
+    public InvalidRegisterNumberException(int registerNumber) {
         super(registerNumber + " is an invalid register number.");
     }
 
-    public InvalidRegisterNumber(String message) {
+    public InvalidRegisterNumberException(String message) {
         super(message);
     }
 }

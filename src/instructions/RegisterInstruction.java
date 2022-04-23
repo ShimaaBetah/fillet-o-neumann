@@ -1,8 +1,7 @@
 package instructions;
 import java.util.HashMap;
 
-import exceptions.InvalidRegisterNumber;
-import memory.MainMemory;
+import exceptions.InvalidRegisterNumberException;
 import memory.Registers;
 import operations.Add;
 import operations.And;
@@ -47,7 +46,7 @@ public class RegisterInstruction extends Instruction {
     }
 
     @Override
-    public void execute() throws InvalidRegisterNumber {
+    public void execute() throws InvalidRegisterNumberException {
         // TODO Auto-generated method stub
         Registers registers = Registers.getInstance();
         int firstOperand = registers.getRegister(firstRegister);
@@ -63,7 +62,7 @@ public class RegisterInstruction extends Instruction {
     }
 
     @Override
-    public void writeBack() throws InvalidRegisterNumber {
+    public void writeBack() throws InvalidRegisterNumberException {
         // TODO Auto-generated method stub
         Registers registers = Registers.getInstance();
         registers.setRegister(destinationRegister, result);

@@ -1,7 +1,7 @@
 package memory;
 
-import exceptions.AddressOutOfRange;
-import exceptions.InvalidRegisterNumber;
+import exceptions.AddressOutOfRangeException;
+import exceptions.InvalidRegisterNumberException;
 
 public class Registers {
     private int[] registers;
@@ -22,16 +22,16 @@ public class Registers {
         return instance;
     }
 
-    public void setRegister(int registerNum, int value) throws InvalidRegisterNumber {
+    public void setRegister(int registerNum, int value) throws InvalidRegisterNumberException {
         if (!isValidRegister(registerNum)) {
-            throw new InvalidRegisterNumber(registerNum);
+            throw new InvalidRegisterNumberException(registerNum);
         }
         registers[registerNum] = value;
     }
 
-    public int getRegister(int registerNum) throws InvalidRegisterNumber {
+    public int getRegister(int registerNum) throws InvalidRegisterNumberException {
         if (!isValidRegister(registerNum)) {
-            throw new InvalidRegisterNumber(registerNum);
+            throw new InvalidRegisterNumberException(registerNum);
         }
         return registers[registerNum];
     }
@@ -40,16 +40,16 @@ public class Registers {
         return 0 <= registerNum && registerNum < numOfRegisters;
     }
 
-    public void incrementPC() throws AddressOutOfRange {
+    public void incrementPC() throws AddressOutOfRangeException {
         if (!MainMemory.getInstance().inInstructionRange(pc + 1)) {
-            throw new AddressOutOfRange("Can't increment PC, value reached the end of the instructions range");
+            throw new AddressOutOfRangeException("Can't increment PC, value reached the end of the instructions range");
         }
         pc++;
     }
 
-    public void setPC(int address) throws AddressOutOfRange {
+    public void setPC(int address) throws AddressOutOfRangeException {
         if (!MainMemory.getInstance().inInstructionRange(address)) {
-            throw new AddressOutOfRange("Can't set PC, value is out of the instructions range");
+            throw new AddressOutOfRangeException("Can't set PC, value is out of the instructions range");
         }
         pc = address;
     }

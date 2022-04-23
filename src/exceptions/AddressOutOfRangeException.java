@@ -1,12 +1,12 @@
 package exceptions;
 
-public class AddressOutOfRange extends Exception {
+public class AddressOutOfRangeException extends Exception {
 
-    public AddressOutOfRange() {
+    public AddressOutOfRangeException() {
         super("Address out of range");
     }
 
-    public AddressOutOfRange(String message) {
+    public AddressOutOfRangeException(String message) {
         super(message);
     }
 }

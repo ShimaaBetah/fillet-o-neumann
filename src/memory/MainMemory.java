@@ -1,6 +1,6 @@
 package memory;
 
-import exceptions.AddressOutOfRange;
+import exceptions.AddressOutOfRangeException;
 
 public class MainMemory {
     private int[] memory;
@@ -29,30 +29,30 @@ public class MainMemory {
         return instance;
     }
 
-    public void storeInstruction(int address, int instruction) throws AddressOutOfRange {
+    public void storeInstruction(int address, int instruction) throws AddressOutOfRangeException {
         if (!inInstructionRange(address)) {
-            throw new AddressOutOfRange();
+            throw new AddressOutOfRangeException();
         }
         memory[address] = instruction;
     }
 
-    public int loadInstruction(int address) throws AddressOutOfRange {
+    public int loadInstruction(int address) throws AddressOutOfRangeException {
         if (!inInstructionRange(address)) {
-            throw new AddressOutOfRange();
+            throw new AddressOutOfRangeException();
         }
         return memory[address];
     }
 
-    public void storeData(int address, int data) throws AddressOutOfRange {
+    public void storeData(int address, int data) throws AddressOutOfRangeException {
         if (!inDataRange(address)) {
-            throw new AddressOutOfRange();
+            throw new AddressOutOfRangeException();
         }
         memory[address] = data;
     }
 
-    public int loadData(int address) throws AddressOutOfRange {
+    public int loadData(int address) throws AddressOutOfRangeException {
         if (!inDataRange(address)) {
-            throw new AddressOutOfRange();
+            throw new AddressOutOfRangeException();
         }
         return memory[address];
     }
