@@ -7,7 +7,7 @@ import org.junit.Test;
 
 import instructions.RegisterInstruction;
 import memory.Registers;
-import utlis.*;
+import utils.*;
 
 public class RInstructionTest {
     static String instruction = "00000000100010000110000000000000";
