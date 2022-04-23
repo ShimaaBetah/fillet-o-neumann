@@ -2,6 +2,7 @@ package tests;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
 
+import exceptions.InvalidRegisterNumber;
 import org.junit.Test;
 
 import instructions.RegisterInstruction;
@@ -48,15 +49,15 @@ public class RInstructionTest {
     }
 
     @Test
-    public void testAdd(){
+    public void testAdd() throws InvalidRegisterNumber {
         RegisterInstruction r = new RegisterInstruction(bitMask);
         r.decode();
-        Registers registers = new Registers(32);
+        Registers registers = Registers.getInstance();
         registers.setRegister(r.getFirstRegister(), 1);
         registers.setRegister(r.getSecondRegister(), 2);
-        r.execute(registers);
+        r.execute();
         assertEquals(3,r.getResult());
-        r.writeBack(registers);
+        r.writeBack();
         assertEquals(3, registers.getRegister(r.getDestinationRegister()));
     }
 }
