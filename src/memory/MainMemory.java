@@ -3,8 +3,6 @@ package memory;
 import exceptions.AddressOutOfRange;
 
 public class MainMemory {
-    private static MainMemory instance;
-
     private int[] memory;
     private int instructionRangeStart;
     private int instructionRangeEnd;
@@ -17,6 +15,8 @@ public class MainMemory {
     private static final int DATA_RANGE_START = 1024;
     private static final int DATA_RANGE_END = 2047;
 
+    private static MainMemory instance = new MainMemory(MEMORY_SIZE, INSTRUCTION_RANGE_START, INSTRUCTION_RANGE_END, DATA_RANGE_START, DATA_RANGE_END);
+
     private MainMemory(int size, int instructionRangeStart, int instructionRangeEnd, int dataRangeStart, int dataRangeEnd) {
         memory = new int[size];
         this.instructionRangeStart = instructionRangeStart;
@@ -26,14 +26,11 @@ public class MainMemory {
     }
 
     public static MainMemory getInstance() {
-        if (instance == null) {
-            instance = new MainMemory(MEMORY_SIZE, INSTRUCTION_RANGE_START, INSTRUCTION_RANGE_END, DATA_RANGE_START, DATA_RANGE_END);
-        }
         return instance;
     }
 
     public void storeInstruction(int address, int instruction) throws AddressOutOfRange {
-        if (isAddressInInstructionRange(address)) {
+        if (inInstructionRange(address)) {
             memory[address] = instruction;
         } else {
             throw new AddressOutOfRange();
@@ -41,7 +38,7 @@ public class MainMemory {
     }
 
     public int loadInstruction(int address) throws AddressOutOfRange {
-        if (isAddressInInstructionRange(address)) {
+        if (inInstructionRange(address)) {
             return memory[address];
         } else {
             throw new AddressOutOfRange();
@@ -49,7 +46,7 @@ public class MainMemory {
     }
 
     public void storeData(int address, int data) throws AddressOutOfRange {
-        if (isAddressInDataRange(address)) {
+        if (inDataRange(address)) {
             memory[address] = data;
         } else {
             throw new AddressOutOfRange();
@@ -57,18 +54,18 @@ public class MainMemory {
     }
 
     public int loadData(int address) throws AddressOutOfRange {
-        if (isAddressInDataRange(address)) {
+        if (inDataRange(address)) {
             return memory[address];
         } else {
             throw new AddressOutOfRange();
         }
     }
 
-    private boolean isAddressInInstructionRange(int address) {
+    private boolean inInstructionRange(int address) {
         return instructionRangeStart <= address && address <= instructionRangeEnd;
     }
 
-    private boolean isAddressInDataRange(int address) {
+    private boolean inDataRange(int address) {
         return dataRangeStart <= address && address <= dataRangeEnd;
     }
 
