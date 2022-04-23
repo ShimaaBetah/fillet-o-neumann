@@ -1,7 +1,6 @@
 package instructions;
 
-import memory.MainMemory;
-import memory.Registers;
+import exceptions.InvalidRegisterNumberException;
 
 public abstract class Instruction {
     private int bitMask;
@@ -32,10 +31,10 @@ public abstract class Instruction {
 
     public abstract void decode();
 
-    public abstract void execute(Registers registers);
+    public abstract void execute() throws InvalidRegisterNumberException;
 
-    public abstract void memoryAccess(MainMemory memory);
+    public abstract void memoryAccess();
 
-    public abstract void writeBack(Registers registers);
+    public abstract void writeBack() throws InvalidRegisterNumberException;
 
 }

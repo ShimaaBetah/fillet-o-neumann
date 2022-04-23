@@ -15,19 +15,19 @@ public class ImmediateInstruction extends Instruction {
     }
 
     @Override
-    public void execute(Registers registers) {
+    public void execute() {
         // TODO Auto-generated method stub
 
     }
 
     @Override
-    public void memoryAccess(MainMemory memory) {
+    public void memoryAccess() {
         // TODO Auto-generated method stub
 
     }
 
     @Override
-    public void writeBack(Registers registers) {
+    public void writeBack() {
         // TODO Auto-generated method stub
 
     }

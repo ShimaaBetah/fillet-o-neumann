@@ -1,6 +1,6 @@
 package memory;
 
-import exceptions.AddressOutOfRange;
+import exceptions.AddressOutOfRangeException;
 
 public class MainMemory {
     private int[] memory;
@@ -29,43 +29,39 @@ public class MainMemory {
         return instance;
     }
 
-    public void storeInstruction(int address, int instruction) throws AddressOutOfRange {
-        if (inInstructionRange(address)) {
-            memory[address] = instruction;
-        } else {
-            throw new AddressOutOfRange();
+    public void storeInstruction(int address, int instruction) throws AddressOutOfRangeException {
+        if (!inInstructionRange(address)) {
+            throw new AddressOutOfRangeException();
         }
+        memory[address] = instruction;
     }
 
-    public int loadInstruction(int address) throws AddressOutOfRange {
-        if (inInstructionRange(address)) {
-            return memory[address];
-        } else {
-            throw new AddressOutOfRange();
+    public int loadInstruction(int address) throws AddressOutOfRangeException {
+        if (!inInstructionRange(address)) {
+            throw new AddressOutOfRangeException();
         }
+        return memory[address];
     }
 
-    public void storeData(int address, int data) throws AddressOutOfRange {
-        if (inDataRange(address)) {
-            memory[address] = data;
-        } else {
-            throw new AddressOutOfRange();
+    public void storeData(int address, int data) throws AddressOutOfRangeException {
+        if (!inDataRange(address)) {
+            throw new AddressOutOfRangeException();
         }
+        memory[address] = data;
     }
 
-    public int loadData(int address) throws AddressOutOfRange {
-        if (inDataRange(address)) {
-            return memory[address];
-        } else {
-            throw new AddressOutOfRange();
+    public int loadData(int address) throws AddressOutOfRangeException {
+        if (!inDataRange(address)) {
+            throw new AddressOutOfRangeException();
         }
+        return memory[address];
     }
 
-    private boolean inInstructionRange(int address) {
+    public boolean inInstructionRange(int address) {
         return instructionRangeStart <= address && address <= instructionRangeEnd;
     }
 
-    private boolean inDataRange(int address) {
+    public boolean inDataRange(int address) {
         return dataRangeStart <= address && address <= dataRangeEnd;
     }
 
