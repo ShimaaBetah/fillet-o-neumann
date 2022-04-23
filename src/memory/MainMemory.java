@@ -1,42 +1,94 @@
 package memory;
 
+import exceptions.AddressOutOfRange;
+
 public class MainMemory {
-    int[] memory;
-    int instructionRange;
-    int dataRange;
+    private static MainMemory instance;
 
-    public MainMemory(int size, int instructionRange, int dataRange) {
+    private int[] memory;
+    private int instructionRangeStart;
+    private int instructionRangeEnd;
+    private int dataRangeStart;
+    private int dataRangeEnd;
+
+    private static final int MEMORY_SIZE = 2048;
+    private static final int INSTRUCTION_RANGE_START = 0;
+    private static final int INSTRUCTION_RANGE_END = 1023;
+    private static final int DATA_RANGE_START = 1024;
+    private static final int DATA_RANGE_END = 2047;
+
+    private MainMemory(int size, int instructionRangeStart, int instructionRangeEnd, int dataRangeStart, int dataRangeEnd) {
         memory = new int[size];
-        this.instructionRange = instructionRange;
-        this.dataRange = dataRange;
+        this.instructionRangeStart = instructionRangeStart;
+        this.instructionRangeEnd = instructionRangeEnd;
+        this.dataRangeStart = dataRangeStart;
+        this.dataRangeEnd = dataRangeEnd;
     }
 
-    public void storeInstruction(int index, int value) {
-        if (index <= instructionRange) {
-            memory[index] = value;
+    public static MainMemory getInstance() {
+        if (instance == null) {
+            instance = new MainMemory(MEMORY_SIZE, INSTRUCTION_RANGE_START, INSTRUCTION_RANGE_END, DATA_RANGE_START, DATA_RANGE_END);
         }
+        return instance;
     }
 
-    public int loadInstruction(int index) {
-        if (index <= instructionRange) {
-            return memory[index];
+    public void storeInstruction(int address, int instruction) throws AddressOutOfRange {
+        if (isAddressInInstructionRange(address)) {
+            memory[address] = instruction;
         } else {
-            return -1;
+            throw new AddressOutOfRange();
         }
     }
 
-    public void storeData(int index, int value) {
-        if (index <= dataRange) {
-            memory[index] = value;
-        }
-        memory[index] = value;
-    }
-
-    public int loadData(int index) {
-        if (index <= dataRange) {
-            return memory[index];
+    public int loadInstruction(int address) throws AddressOutOfRange {
+        if (isAddressInInstructionRange(address)) {
+            return memory[address];
         } else {
-            return -1;
+            throw new AddressOutOfRange();
         }
+    }
+
+    public void storeData(int address, int data) throws AddressOutOfRange {
+        if (isAddressInDataRange(address)) {
+            memory[address] = data;
+        } else {
+            throw new AddressOutOfRange();
+        }
+    }
+
+    public int loadData(int address) throws AddressOutOfRange {
+        if (isAddressInDataRange(address)) {
+            return memory[address];
+        } else {
+            throw new AddressOutOfRange();
+        }
+    }
+
+    private boolean isAddressInInstructionRange(int address) {
+        return instructionRangeStart <= address && address <= instructionRangeEnd;
+    }
+
+    private boolean isAddressInDataRange(int address) {
+        return dataRangeStart <= address && address <= dataRangeEnd;
+    }
+
+    public int[] getMemory() {
+        return memory;
+    }
+
+    public int getInstructionRangeStart() {
+        return instructionRangeStart;
+    }
+
+    public int getInstructionRangeEnd() {
+        return instructionRangeEnd;
+    }
+
+    public int getDataRangeStart() {
+        return dataRangeStart;
+    }
+
+    public int getDataRangeEnd() {
+        return dataRangeEnd;
     }
 }
