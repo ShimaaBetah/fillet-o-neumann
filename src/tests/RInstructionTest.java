@@ -2,7 +2,7 @@ package tests;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
 
-import exceptions.InvalidRegisterNumber;
+import exceptions.InvalidRegisterNumberException;
 import org.junit.Test;
 
 import instructions.RegisterInstruction;
@@ -49,7 +49,7 @@ public class RInstructionTest {
     }
 
     @Test
-    public void testAdd() throws InvalidRegisterNumber {
+    public void testAdd() throws InvalidRegisterNumberException {
         RegisterInstruction r = new RegisterInstruction(bitMask);
         r.decode();
         Registers registers = Registers.getInstance();

@@ -1,74 +1,86 @@
 package tests;
 
-import exceptions.AddressOutOfRange;
+import exceptions.AddressOutOfRangeException;
 import memory.MainMemory;
 import org.junit.*;
+import org.junit.jupiter.api.BeforeAll;
 
 public class MainMemoryTest {
+    private static final int TEST_INSTRUCTION = 0x1234;
+    private static final int TEST_DATA = 0x5678;
+    private static final int TEST_INSTRUCTION_ADDRESS = MainMemory.getInstance().getInstructionRangeStart();
+    private static final int TEST_DATA_ADDRESS = MainMemory.getInstance().getDataRangeStart();
 
     @Test
-    public void testStoreInstruction1() throws AddressOutOfRange {
+    public void testStoreInstruction1() throws AddressOutOfRangeException {
         MainMemory memory = MainMemory.getInstance();
-        int address = memory.getInstructionRangeStart();
-        int instruction = 0x1234;
-        memory.storeInstruction(address, instruction);
-        Assert.assertEquals(instruction, memory.getMemory()[address]);
+        memory.storeInstruction(TEST_INSTRUCTION_ADDRESS, TEST_INSTRUCTION);
+        Assert.assertEquals(TEST_INSTRUCTION, memory.getMemory()[TEST_INSTRUCTION_ADDRESS]);
     }
 
     @Test
     public void testStoreInstruction2() {
         MainMemory memory = MainMemory.getInstance();
-        int address = memory.getInstructionRangeEnd() + 1;
-        int instruction = 0x1234;
-        Assert.assertThrows(AddressOutOfRange.class, () -> memory.storeInstruction(address, instruction));
+        Assert.assertThrows(AddressOutOfRangeException.class, () -> memory.storeInstruction(TEST_DATA_ADDRESS, TEST_INSTRUCTION));
     }
 
     @Test
-    public void testLoadInstruction1() throws AddressOutOfRange {
+    public void testStoreInstruction3() {
         MainMemory memory = MainMemory.getInstance();
-        int address = memory.getInstructionRangeStart();
-        int instruction = 0x1234;
-        memory.getMemory()[address] = instruction;
-        Assert.assertEquals(instruction, memory.loadInstruction(address));
+        memory.getMemory()[TEST_DATA_ADDRESS] = TEST_DATA;
+        try {
+            memory.storeInstruction(TEST_DATA_ADDRESS, TEST_INSTRUCTION);
+        } catch (Exception e) {}
+        Assert.assertEquals(TEST_DATA, memory.getMemory()[TEST_DATA_ADDRESS]);
+    }
+
+        @Test
+    public void testLoadInstruction1() throws AddressOutOfRangeException {
+        MainMemory memory = MainMemory.getInstance();
+        memory.getMemory()[TEST_INSTRUCTION_ADDRESS] = TEST_INSTRUCTION;
+        Assert.assertEquals(TEST_INSTRUCTION, memory.loadInstruction(TEST_INSTRUCTION_ADDRESS));
     }
 
     @Test
     public void testLoadInstruction2() {
         MainMemory memory = MainMemory.getInstance();
-        int address = memory.getInstructionRangeEnd() + 1;
-        Assert.assertThrows(AddressOutOfRange.class, () -> memory.loadInstruction(address));
+        Assert.assertThrows(AddressOutOfRangeException.class, () -> memory.loadInstruction(TEST_DATA_ADDRESS));
     }
 
     @Test
-    public void testStoreData1() throws AddressOutOfRange {
+    public void testStoreData1() throws AddressOutOfRangeException {
         MainMemory memory = MainMemory.getInstance();
-        int address = memory.getDataRangeStart();
-        int data = 0x1234;
-        memory.storeData(address, data);
-        Assert.assertEquals(data, memory.getMemory()[address]);
+        memory.storeData(TEST_DATA_ADDRESS, TEST_DATA);
+        Assert.assertEquals(TEST_DATA, memory.getMemory()[TEST_DATA_ADDRESS]);
     }
+
 
     @Test
     public void testStoreData2() {
         MainMemory memory = MainMemory.getInstance();
-        int address = memory.getDataRangeEnd() + 1;
-        int data = 0x1234;
-        Assert.assertThrows(AddressOutOfRange.class, () -> memory.storeData(address, data));
+        Assert.assertThrows(AddressOutOfRangeException.class, () -> memory.storeData(TEST_INSTRUCTION_ADDRESS, TEST_DATA));
     }
 
     @Test
-    public void testLoadData1() throws AddressOutOfRange {
+    public void testStoreData3() {
         MainMemory memory = MainMemory.getInstance();
-        int address = memory.getDataRangeStart();
-        int data = 0x1234;
-        memory.getMemory()[address] = data;
-        Assert.assertEquals(data, memory.loadData(address));
+        memory.getMemory()[TEST_INSTRUCTION_ADDRESS] = TEST_INSTRUCTION;
+        try {
+            memory.storeData(TEST_INSTRUCTION_ADDRESS, TEST_DATA);
+        } catch (Exception e) {}
+        Assert.assertEquals(TEST_INSTRUCTION, memory.getMemory()[TEST_INSTRUCTION_ADDRESS]);
+    }
+
+    @Test
+    public void testLoadData1() throws AddressOutOfRangeException {
+        MainMemory memory = MainMemory.getInstance();
+        memory.getMemory()[TEST_DATA_ADDRESS] = TEST_DATA;
+        Assert.assertEquals(TEST_DATA, memory.loadData(TEST_DATA_ADDRESS));
     }
 
     @Test
     public void testLoadData2() {
         MainMemory memory = MainMemory.getInstance();
-        int address = memory.getDataRangeEnd() + 1;
-        Assert.assertThrows(AddressOutOfRange.class, () -> memory.loadData(address));
+        Assert.assertThrows(AddressOutOfRangeException.class, () -> memory.loadData(TEST_INSTRUCTION_ADDRESS));
     }
 }

@@ -1,75 +1,73 @@
 package tests;
 
-import exceptions.AddressOutOfRange;
-import exceptions.InvalidRegisterNumber;
+import exceptions.AddressOutOfRangeException;
+import exceptions.InvalidRegisterNumberException;
 import memory.MainMemory;
 import memory.Registers;
 import org.junit.Assert;
 import org.junit.Test;
 
 public class RegistersTest {
+    private static final int TEST_REGISTER_VALUE = 0x1234;
+    private static final int VALID_TEST_REGISTER_NUMBER = 1;
+    private static final int INVALID_TEST_REGISTER_NUMBER = -1;
+    private static final int VALID_TEST_PC_VALUE = 1;
+    private static final int INVALID_TEST_PC_VALUE = MainMemory.getInstance().getDataRangeStart();
+    private static final int MAX_VALID_TEST_PC_VALUE = MainMemory.getInstance().getInstructionRangeEnd();
+
     @Test
-    public void testSetRegister1() throws InvalidRegisterNumber {
+    public void testSetRegister1() throws InvalidRegisterNumberException {
         Registers registers = Registers.getInstance();
-        int registerNum = 1;
-        int value = 0x1234;
-        registers.setRegister(registerNum, value);
-        Assert.assertEquals(value, registers.getRegisters()[registerNum]);
+        registers.setRegister(VALID_TEST_REGISTER_NUMBER, TEST_REGISTER_VALUE);
+        Assert.assertEquals(TEST_REGISTER_VALUE, registers.getRegisters()[VALID_TEST_REGISTER_NUMBER]);
     }
 
     @Test
     public void testSetRegister2() {
         Registers registers = Registers.getInstance();
-        int registerNum = registers.getNumOfRegisters();
-        int value = 0x1234;
-        Assert.assertThrows(InvalidRegisterNumber.class, () -> registers.setRegister(registerNum, value));
+        Assert.assertThrows(InvalidRegisterNumberException.class, () -> registers.setRegister(INVALID_TEST_REGISTER_NUMBER, TEST_REGISTER_VALUE));
     }
 
     @Test
-    public void testGetRegister1() throws InvalidRegisterNumber {
+    public void testGetRegister1() throws InvalidRegisterNumberException {
         Registers registers = Registers.getInstance();
-        int registerNum = 1;
-        int value = 0x1234;
-        registers.getRegisters()[registerNum] = value;
-        Assert.assertEquals(value, registers.getRegister(registerNum));
+        registers.getRegisters()[VALID_TEST_REGISTER_NUMBER] = TEST_REGISTER_VALUE;
+        Assert.assertEquals(TEST_REGISTER_VALUE, registers.getRegister(VALID_TEST_REGISTER_NUMBER));
     }
 
     @Test
     public void testGetRegister2() {
         Registers registers = Registers.getInstance();
-        int registerNum = registers.getNumOfRegisters();
-        Assert.assertThrows(InvalidRegisterNumber.class, () -> registers.getRegister(registerNum));
+        Assert.assertThrows(InvalidRegisterNumberException.class, () -> registers.getRegister(INVALID_TEST_REGISTER_NUMBER));
     }
 
     @Test
-    public void testSetPC1() throws AddressOutOfRange {
+    public void testSetPC1() throws AddressOutOfRangeException {
         Registers registers = Registers.getInstance();
-        int address = 0;
-        registers.setPC(address);
-        Assert.assertEquals(address, registers.getPC());
+        registers.setPC(VALID_TEST_PC_VALUE);
+        Assert.assertEquals(VALID_TEST_PC_VALUE, registers.getPC());
     }
 
 
     @Test
     public void testSetPC2() {
         Registers registers = Registers.getInstance();
-        int address = MainMemory.getInstance().getInstructionRangeEnd() + 1;
-        Assert.assertThrows(AddressOutOfRange.class, () -> registers.setPC(address));
+        Assert.assertThrows(AddressOutOfRangeException.class, () -> registers.setPC(INVALID_TEST_PC_VALUE));
     }
 
     @Test
-    public void testIncrementPC1() throws AddressOutOfRange {
+    public void testIncrementPC1() throws AddressOutOfRangeException {
         Registers registers = Registers.getInstance();
-        int oldAddress = registers.getPC();
+        registers.setPC(VALID_TEST_PC_VALUE);
         registers.incrementPC();
-        Assert.assertEquals(oldAddress + 1, registers.getPC());
+        Assert.assertEquals(VALID_TEST_PC_VALUE + 1, registers.getPC());
     }
 
     @Test
-    public void testIncrementPC2() throws AddressOutOfRange {
+    public void testIncrementPC2() throws AddressOutOfRangeException {
         Registers registers = Registers.getInstance();
-        registers.setPC(MainMemory.getInstance().getInstructionRangeEnd());
-        Assert.assertThrows(AddressOutOfRange.class, () -> registers.incrementPC());
+        registers.setPC(MAX_VALID_TEST_PC_VALUE);
+        Assert.assertThrows(AddressOutOfRangeException.class, () -> registers.incrementPC());
     }
 
 }
