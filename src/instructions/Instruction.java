@@ -1,9 +1,9 @@
 package instructions;
 
+import exceptions.AddressOutOfRangeException;
+import exceptions.InvalidRegisterNumberException;
 import operations.Operation;
-import operations.immediateoperations.JumpIfEqual;
-import operations.immediateoperations.MoveImmediate;
-import operations.immediateoperations.XORImmediate;
+import operations.immediateoperations.*;
 import operations.registeroperations.*;
 
 import java.util.HashMap;
@@ -22,6 +22,7 @@ public abstract class Instruction {
         put(6, XORImmediate.class);
         put(8, ShiftLeft.class);
         put(9, ShiftRight.class);
+        put(10, MoveToRegister.class);
     }};
 
     public Instruction(int binaryInstruction) {
@@ -34,7 +35,7 @@ public abstract class Instruction {
         operation.execute();
     }
 
-    public void memoryAccess() {
+    public void memoryAccess() throws InvalidRegisterNumberException, AddressOutOfRangeException {
         operation.memoryAccess();
     }
 

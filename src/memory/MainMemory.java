@@ -57,12 +57,32 @@ public class MainMemory {
         return memory[address];
     }
 
+    //TODO: add test for storeWord method
+    public void storeWord(int address, int word) throws AddressOutOfRangeException {
+        if (!inMemoryRange(address)) {
+            throw new AddressOutOfRangeException();
+        }
+        memory[address] = word;
+    }
+
+    //TODO: add test for loadWord method
+    public int loadWord(int address) throws AddressOutOfRangeException {
+        if (!inMemoryRange(address)) {
+            throw new AddressOutOfRangeException();
+        }
+        return memory[address];
+    }
+
     public boolean inInstructionRange(int address) {
         return instructionRangeStart <= address && address <= instructionRangeEnd;
     }
 
     public boolean inDataRange(int address) {
         return dataRangeStart <= address && address <= dataRangeEnd;
+    }
+
+    public boolean inMemoryRange(int address) {
+        return 0 <= address && address < MEMORY_SIZE;
     }
 
     public int[] getMemory() {

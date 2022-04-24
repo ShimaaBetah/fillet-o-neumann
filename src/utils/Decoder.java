@@ -2,6 +2,9 @@ package utils;
 
 public class Decoder {
     public static int binaryToInt(String binaryString) {
+        if (binaryString.charAt(0) == '1') {
+            return (int) Long.parseLong(binaryString, 2);
+        }
         return Integer.parseInt(binaryString, 2);
     }
 
