@@ -5,7 +5,7 @@ import java.io.File;
 import java.io.FileWriter;
 
 public class CreateLogFileService {
-    private static final String LOG_FILE_PATH = "./src/logger/logs/log.txt";
+    private static final String LOG_FILE_PATH = "./src/logger/outputs/log.txt";
 
     public static BufferedWriter execute() {
         try {
