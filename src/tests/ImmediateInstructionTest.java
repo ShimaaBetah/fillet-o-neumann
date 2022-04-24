@@ -1,6 +1,7 @@
 package tests;
 
 import instructions.ImmediateInstruction;
+import memory.MainMemory;
 import memory.Registers;
 import operations.immediateoperations.*;
 import org.junit.Assert;
@@ -13,6 +14,7 @@ public class ImmediateInstructionTest {
     private static final String TEST_JUMP_IF_EQUAL_INSTRUCTION_CASE_EQUAL = "01000000100001000000000000000101";
     private static final String TEST_JUMP_IF_EQUAL_INSTRUCTION_CASE_NOT_EQUAL = "01000001100001000000000000000101";
     private static final String TEST_XOR_IMMEDIATE_INSTRUCTION = "01100010100001000000000000000101";
+    private static final String TEST_MOVE_TO_REGISTER_INSTRUCTION = "10100010100001000000000000000101";
 
     @Test
     public void testDecodeOpcode() throws Exception {
@@ -108,7 +110,7 @@ public class ImmediateInstructionTest {
     }
 
     @Test
-    public void testDecodeXORImmediate() throws Exception {
+    public void testDecodeXORImmediateInstruction() throws Exception {
         ImmediateInstruction instruction = new ImmediateInstruction(binaryToInt(TEST_XOR_IMMEDIATE_INSTRUCTION));
         instruction.decode();
         ImmediateOperation operation = (ImmediateOperation) instruction.getOperation();
@@ -137,5 +139,35 @@ public class ImmediateInstructionTest {
         instruction.writeBack();
 
         Assert.assertEquals(registers.getRegister(destinationRegister), xorResult);
+    }
+
+    @Test
+    public void testDecodeMoveToRegisterInstruction() throws Exception {
+        ImmediateInstruction instruction = new ImmediateInstruction(binaryToInt(TEST_MOVE_TO_REGISTER_INSTRUCTION));
+        instruction.decode();
+        ImmediateOperation operation = (ImmediateOperation) instruction.getOperation();
+        Assert.assertEquals(MoveToRegister.class, operation.getClass());
+    }
+
+    @Test
+    public void testMoveToRegisterInstruction() throws Exception{
+        ImmediateInstruction instruction = new ImmediateInstruction(binaryToInt(TEST_MOVE_TO_REGISTER_INSTRUCTION));
+        instruction.decode();
+        ImmediateOperation operation = (ImmediateOperation) instruction.getOperation();
+
+        Registers registers = Registers.getInstance();
+        MainMemory memory = MainMemory.getInstance();
+
+        int destinationRegister = operation.getDestinationRegister();
+        int sourceRegisterValue = registers.getRegister(operation.getSourceRegister());
+        int immediateValue = operation.getImmediateValue();
+        int address = sourceRegisterValue + immediateValue;
+
+        memory.storeWord(address, 5);
+        instruction.execute();
+        instruction.memoryAccess();
+        instruction.writeBack();
+
+        Assert.assertEquals(registers.getRegister(destinationRegister), 5);
     }
 }
