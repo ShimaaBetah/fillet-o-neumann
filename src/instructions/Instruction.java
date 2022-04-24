@@ -3,8 +3,9 @@ package instructions;
 import exceptions.AddressOutOfRangeException;
 import exceptions.InvalidRegisterNumberException;
 import operations.Operation;
-import operations.immediateoperations.*;
 import operations.registeroperations.*;
+import operations.immediateoperations.*;
+import operations.jumpoperations.Jump;
 
 import java.util.HashMap;
 
@@ -20,6 +21,7 @@ public abstract class Instruction {
         put(4, JumpIfEqual.class);
         put(5, And.class);
         put(6, XORImmediate.class);
+        put(7, Jump.class);
         put(8, ShiftLeft.class);
         put(9, ShiftRight.class);
         put(10, MoveToRegister.class);
