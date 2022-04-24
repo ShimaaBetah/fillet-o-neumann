@@ -23,6 +23,7 @@ public abstract class Instruction {
         put(8, ShiftLeft.class);
         put(9, ShiftRight.class);
         put(10, MoveToRegister.class);
+        put(11, MoveToMemory.class);
     }};
 
     public Instruction(int binaryInstruction) {
