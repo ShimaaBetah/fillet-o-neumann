@@ -15,6 +15,7 @@ public class ImmediateInstructionTest {
     private static final String TEST_JUMP_IF_EQUAL_INSTRUCTION_CASE_NOT_EQUAL = "01000001100001000000000000000101";
     private static final String TEST_XOR_IMMEDIATE_INSTRUCTION = "01100010100001000000000000000101";
     private static final String TEST_MOVE_TO_REGISTER_INSTRUCTION = "10100010100001000000000000000101";
+    private static final String TEST_MOVE_TO_MEMORY_INSTRUCTION = "10110010100001000000000000000101";
 
     @Test
     public void testDecodeOpcode() throws Exception {
@@ -169,5 +170,37 @@ public class ImmediateInstructionTest {
         instruction.writeBack();
 
         Assert.assertEquals(registers.getRegister(destinationRegister), 5);
+    }
+
+    @Test
+    public void testDecodeMoveToMemoryInstruction() throws Exception {
+        ImmediateInstruction instruction = new ImmediateInstruction(binaryToInt(TEST_MOVE_TO_MEMORY_INSTRUCTION));
+        instruction.decode();
+        ImmediateOperation operation = (ImmediateOperation) instruction.getOperation();
+        Assert.assertEquals(MoveToMemory.class, operation.getClass());
+    }
+
+    @Test
+    public void testMoveToMemoryInstruction() throws Exception{
+        ImmediateInstruction instruction = new ImmediateInstruction(binaryToInt(TEST_MOVE_TO_MEMORY_INSTRUCTION));
+        instruction.decode();
+        ImmediateOperation operation = (ImmediateOperation) instruction.getOperation();
+
+        Registers registers = Registers.getInstance();
+        MainMemory memory = MainMemory.getInstance();
+
+        int destinationRegister = operation.getDestinationRegister();
+        int sourceRegisterValue = registers.getRegister(operation.getSourceRegister());
+        int immediateValue = operation.getImmediateValue();
+        int address = sourceRegisterValue + immediateValue;
+
+        memory.storeWord(address, 0);
+        registers.setRegister(destinationRegister, 5);
+
+        instruction.execute();
+        instruction.memoryAccess();
+        instruction.writeBack();
+
+        Assert.assertEquals(memory.loadWord(address), 5);
     }
 }
