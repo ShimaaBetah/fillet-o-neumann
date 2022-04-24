@@ -26,6 +26,9 @@ public class Registers {
         if (!isValidRegister(registerNum)) {
             throw new InvalidRegisterNumberException(registerNum);
         }
+        if (registerNum == 0) {
+            return;
+        }
         registers[registerNum] = value;
     }
 
@@ -60,10 +63,6 @@ public class Registers {
 
     public int[] getRegisters() {
         return registers;
-    }
-
-    public int getNumOfRegisters() {
-        return numOfRegisters;
     }
 
 }
