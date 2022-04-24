@@ -5,6 +5,10 @@ import memory.*;
 public class JumpInstruction extends Instruction {
     int address;
 
+    public JumpInstruction(int binaryInstruction) {
+        super(binaryInstruction);
+    }
+
     @Override
     public void decode() {
         // TODO Auto-generated method stub

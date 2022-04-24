@@ -1,13 +1,10 @@
 package instructions;
 
-import exceptions.InvalidInstructionException;
 import operations.Operation;
 import operations.immediateoperations.ImmediateOperation;
-import operations.registeroperations.RegisterOperation;
 import utils.Decoder;
 
 import java.lang.reflect.Constructor;
-import java.lang.reflect.InvocationTargetException;
 
 public class ImmediateInstruction extends Instruction {
 
