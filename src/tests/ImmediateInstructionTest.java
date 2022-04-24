@@ -12,6 +12,7 @@ public class ImmediateInstructionTest {
     private static final String TEST_MOVE_IMMEDIATE_INSTRUCTION = "00110000100010000000000000000101";
     private static final String TEST_JUMP_IF_EQUAL_INSTRUCTION_CASE_EQUAL = "01000000100001000000000000000101";
     private static final String TEST_JUMP_IF_EQUAL_INSTRUCTION_CASE_NOT_EQUAL = "01000001100001000000000000000101";
+    private static final String TEST_XOR_IMMEDIATE_INSTRUCTION = "01100010100001000000000000000101";
 
     @Test
     public void testDecodeOpcode() throws Exception {
@@ -79,7 +80,7 @@ public class ImmediateInstructionTest {
     }
 
     @Test
-    public void setTestJumpIfEqualInstructionCaseEqual() throws Exception {
+    public void testJumpIfEqualInstructionCaseEqual() throws Exception {
         Registers registers = Registers.getInstance();
         registers.setPC(0);
 
@@ -93,7 +94,7 @@ public class ImmediateInstructionTest {
     }
 
     @Test
-    public void setTestJumpIfEqualInstructionCaseNotEqual() throws Exception {
+    public void testJumpIfEqualInstructionCaseNotEqual() throws Exception {
         Registers registers = Registers.getInstance();
         registers.setPC(0);
 
@@ -104,5 +105,37 @@ public class ImmediateInstructionTest {
         instruction.writeBack();
 
         Assert.assertEquals(registers.getPC(), 0);
+    }
+
+    @Test
+    public void testDecodeXORImmediate() throws Exception {
+        ImmediateInstruction instruction = new ImmediateInstruction(binaryToInt(TEST_XOR_IMMEDIATE_INSTRUCTION));
+        instruction.decode();
+        ImmediateOperation operation = (ImmediateOperation) instruction.getOperation();
+        Assert.assertEquals(XORImmediate.class, operation.getClass());
+    }
+
+    @Test
+    public void setTestXorImmediateInstruction() throws Exception {
+        ImmediateInstruction instruction = new ImmediateInstruction(binaryToInt(TEST_XOR_IMMEDIATE_INSTRUCTION));
+        instruction.decode();
+        ImmediateOperation operation = (ImmediateOperation) instruction.getOperation();
+
+        Registers registers = Registers.getInstance();
+
+        int destinationRegister = operation.getDestinationRegister();
+        int sourceRegister = operation.getSourceRegister();
+        int immediateValue = operation.getImmediateValue();
+
+        registers.setRegister(sourceRegister, 1);
+        registers.setRegister(destinationRegister, 0);
+
+        int xorResult = 1 ^ immediateValue;
+
+        instruction.execute();
+        instruction.memoryAccess(); // No memory access
+        instruction.writeBack();
+
+        Assert.assertEquals(registers.getRegister(destinationRegister), xorResult);
     }
 }
