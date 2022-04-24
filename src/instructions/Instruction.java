@@ -3,6 +3,7 @@ package instructions;
 import operations.Operation;
 import operations.immediateoperations.JumpIfEqual;
 import operations.immediateoperations.MoveImmediate;
+import operations.immediateoperations.XORImmediate;
 import operations.registeroperations.*;
 
 import java.util.HashMap;
@@ -18,6 +19,7 @@ public abstract class Instruction {
         put(3, MoveImmediate.class);
         put(4, JumpIfEqual.class);
         put(5, And.class);
+        put(6, XORImmediate.class);
         put(8, ShiftLeft.class);
         put(9, ShiftRight.class);
     }};
