@@ -19,7 +19,7 @@ public class JumpInstructionTest {
         JumpInstruction instruction = new JumpInstruction(binaryToInt(TEST_JUMP_INSTRUCTION));
         instruction.decode();
         JumpOperation operation = (JumpOperation) instruction.getOperation();
-        Assert.assertEquals(operation.getOpcode(), 7);
+        Assert.assertEquals(7, operation.getOpcode());
     }
 
     @Test
@@ -27,7 +27,7 @@ public class JumpInstructionTest {
         JumpInstruction instruction = new JumpInstruction(binaryToInt(TEST_JUMP_INSTRUCTION));
         instruction.decode();
         JumpOperation operation = (JumpOperation) instruction.getOperation();
-        Assert.assertEquals(operation.getAddress(), 5);
+        Assert.assertEquals(5, operation.getAddress());
     }
 
     @Test

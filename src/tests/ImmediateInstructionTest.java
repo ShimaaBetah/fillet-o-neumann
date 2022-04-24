@@ -22,7 +22,7 @@ public class ImmediateInstructionTest {
         ImmediateInstruction instruction = new ImmediateInstruction(binaryToInt(TEST_MOVE_IMMEDIATE_INSTRUCTION));
         instruction.decode();
         ImmediateOperation operation = (ImmediateOperation) instruction.getOperation();
-        Assert.assertEquals(operation.getOpcode(), 3);
+        Assert.assertEquals(3, operation.getOpcode());
     }
 
     @Test
@@ -30,7 +30,7 @@ public class ImmediateInstructionTest {
         ImmediateInstruction instruction = new ImmediateInstruction(binaryToInt(TEST_MOVE_IMMEDIATE_INSTRUCTION));
         instruction.decode();
         ImmediateOperation operation = (ImmediateOperation) instruction.getOperation();
-        Assert.assertEquals(operation.getDestinationRegister(), 1);
+        Assert.assertEquals(1, operation.getDestinationRegister());
     }
 
     @Test
@@ -38,7 +38,7 @@ public class ImmediateInstructionTest {
         ImmediateInstruction instruction = new ImmediateInstruction(binaryToInt(TEST_MOVE_IMMEDIATE_INSTRUCTION));
         instruction.decode();
         ImmediateOperation operation = (ImmediateOperation) instruction.getOperation();
-        Assert.assertEquals(operation.getSourceRegister(), 2);
+        Assert.assertEquals(2, operation.getSourceRegister());
     }
 
     @Test
@@ -46,7 +46,7 @@ public class ImmediateInstructionTest {
         ImmediateInstruction instruction = new ImmediateInstruction(binaryToInt(TEST_MOVE_IMMEDIATE_INSTRUCTION));
         instruction.decode();
         ImmediateOperation operation = (ImmediateOperation) instruction.getOperation();
-        Assert.assertEquals(operation.getImmediateValue(), 5);
+        Assert.assertEquals(5, operation.getImmediateValue());
     }
 
     @Test
@@ -71,7 +71,7 @@ public class ImmediateInstructionTest {
         instruction.memoryAccess(); // No memory access
         instruction.writeBack();
 
-        Assert.assertEquals(registers.getRegister(destinationRegister), 5);
+        Assert.assertEquals(5, registers.getRegister(destinationRegister));
     }
 
     @Test
@@ -93,7 +93,7 @@ public class ImmediateInstructionTest {
         instruction.memoryAccess();
         instruction.writeBack();
 
-        Assert.assertEquals(registers.getPC(), 5);
+        Assert.assertEquals(5, registers.getPC());
     }
 
     @Test
@@ -107,7 +107,7 @@ public class ImmediateInstructionTest {
         instruction.memoryAccess();
         instruction.writeBack();
 
-        Assert.assertEquals(registers.getPC(), 0);
+        Assert.assertEquals(0, registers.getPC());
     }
 
     @Test
@@ -139,7 +139,7 @@ public class ImmediateInstructionTest {
         instruction.memoryAccess(); // No memory access
         instruction.writeBack();
 
-        Assert.assertEquals(registers.getRegister(destinationRegister), xorResult);
+        Assert.assertEquals(xorResult, registers.getRegister(destinationRegister));
     }
 
     @Test
@@ -169,7 +169,7 @@ public class ImmediateInstructionTest {
         instruction.memoryAccess();
         instruction.writeBack();
 
-        Assert.assertEquals(registers.getRegister(destinationRegister), 5);
+        Assert.assertEquals(5, registers.getRegister(destinationRegister));
     }
 
     @Test
@@ -201,6 +201,6 @@ public class ImmediateInstructionTest {
         instruction.memoryAccess();
         instruction.writeBack();
 
-        Assert.assertEquals(memory.loadWord(address), 5);
+        Assert.assertEquals(5, memory.loadWord(address));
     }
 }
