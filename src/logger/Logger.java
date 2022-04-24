@@ -7,7 +7,7 @@ public class Logger {
     private static LogSubject logSubject;
 
     private Logger() {
-        logSubject = InitLoggerService.initLogger();
+        logSubject = InitLoggerService.execute();
     }
 
     public static Logger getInstance() {
