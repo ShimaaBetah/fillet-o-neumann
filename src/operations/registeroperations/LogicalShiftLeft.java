@@ -3,9 +3,9 @@ package operations.registeroperations;
 import exceptions.InvalidRegisterNumberException;
 import memory.Registers;
 
-public class ShiftRight extends RegisterOperation {
+public class LogicalShiftLeft extends RegisterOperation {
 
-    public ShiftRight(int opcode, int destinationRegister, int firstRegister, int secondRegister, int shiftAmount) {
+    public LogicalShiftLeft(int opcode, int destinationRegister, int firstRegister, int secondRegister, int shiftAmount) {
         super(opcode, destinationRegister, firstRegister, secondRegister, shiftAmount);
     }
 
@@ -14,7 +14,7 @@ public class ShiftRight extends RegisterOperation {
         Registers registers = Registers.getInstance();
         int firstOperand = registers.getRegister(getFirstRegister());
         int shiftAmount = getShiftAmount();
-        setResult(firstOperand >> shiftAmount);
+        setResult(firstOperand << shiftAmount);
     }
 }
     

@@ -10,7 +10,7 @@ import operations.jumpoperations.Jump;
 import java.util.HashMap;
 
 public abstract class Instruction {
-    private int binaryInstruction;
+    private final int binaryInstruction;
     private Operation operation;
 
     private static final HashMap<Integer, Class> operationsMap = new HashMap<>(){{
@@ -22,8 +22,8 @@ public abstract class Instruction {
         put(5, And.class);
         put(6, XORImmediate.class);
         put(7, Jump.class);
-        put(8, ShiftLeft.class);
-        put(9, ShiftRight.class);
+        put(8, LogicalShiftLeft.class);
+        put(9, LogicalShiftRight.class);
         put(10, MoveToRegister.class);
         put(11, MoveToMemory.class);
     }};
