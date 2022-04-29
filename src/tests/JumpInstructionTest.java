@@ -15,7 +15,7 @@ public class JumpInstructionTest {
     private static final String NEW_PC_VALUE = "00000000000000000000000000000101";
 
     @Test
-    public void testDecodeOpcode() throws Exception {
+    public void testDecodeOpcode() {
         JumpInstruction instruction = new JumpInstruction(binaryToInt(TEST_JUMP_INSTRUCTION));
         instruction.decode();
         JumpOperation operation = (JumpOperation) instruction.getOperation();
@@ -23,7 +23,7 @@ public class JumpInstructionTest {
     }
 
     @Test
-    public void testDecodeAddress() throws Exception {
+    public void testDecodeAddress() {
         JumpInstruction instruction = new JumpInstruction(binaryToInt(TEST_JUMP_INSTRUCTION));
         instruction.decode();
         JumpOperation operation = (JumpOperation) instruction.getOperation();
@@ -31,7 +31,7 @@ public class JumpInstructionTest {
     }
 
     @Test
-    public void testDecodeJumpInstruction() throws Exception {
+    public void testDecodeJumpInstruction() {
         JumpInstruction instruction = new JumpInstruction(binaryToInt(TEST_JUMP_INSTRUCTION));
         instruction.decode();
         JumpOperation operation = (JumpOperation) instruction.getOperation();

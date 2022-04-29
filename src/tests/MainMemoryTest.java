@@ -3,7 +3,6 @@ package tests;
 import exceptions.AddressOutOfRangeException;
 import memory.MainMemory;
 import org.junit.*;
-import org.junit.jupiter.api.BeforeAll;
 
 public class MainMemoryTest {
     private static final int TEST_INSTRUCTION = 0x1234;
@@ -30,7 +29,9 @@ public class MainMemoryTest {
         memory.getMemory()[TEST_DATA_ADDRESS] = TEST_DATA;
         try {
             memory.storeInstruction(TEST_DATA_ADDRESS, TEST_INSTRUCTION);
-        } catch (Exception e) {}
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
         Assert.assertEquals(TEST_DATA, memory.getMemory()[TEST_DATA_ADDRESS]);
     }
 
@@ -67,7 +68,9 @@ public class MainMemoryTest {
         memory.getMemory()[TEST_INSTRUCTION_ADDRESS] = TEST_INSTRUCTION;
         try {
             memory.storeData(TEST_INSTRUCTION_ADDRESS, TEST_DATA);
-        } catch (Exception e) {}
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
         Assert.assertEquals(TEST_INSTRUCTION, memory.getMemory()[TEST_INSTRUCTION_ADDRESS]);
     }
 

@@ -19,7 +19,7 @@ public class RInstructionTest {
     private static final String TEST_USING_THE_LARGEST_POSSIBLE_REGISTERS = "00001111111110111010000000000000";
 
     @Test
-    public void testDecodeOpCode() throws Exception {
+    public void testDecodeOpCode() {
         RegisterInstruction instruction = new RegisterInstruction(binaryToInt(TEST_ADD_INSTRUCTION));
         instruction.decode();
         RegisterOperation operation = (RegisterOperation) instruction.getOperation();
@@ -27,7 +27,7 @@ public class RInstructionTest {
     }
 
     @Test
-    public void testDecodeR1() throws Exception {
+    public void testDecodeR1() {
         RegisterInstruction instruction = new RegisterInstruction(binaryToInt(TEST_ADD_INSTRUCTION));
         instruction.decode();
         RegisterOperation operation = (RegisterOperation) instruction.getOperation();
@@ -35,7 +35,7 @@ public class RInstructionTest {
     }
 
     @Test
-    public void testDecodeR2() throws Exception {
+    public void testDecodeR2() {
         RegisterInstruction instruction = new RegisterInstruction(binaryToInt(TEST_ADD_INSTRUCTION));
         instruction.decode();
         RegisterOperation operation = (RegisterOperation) instruction.getOperation();
@@ -43,7 +43,7 @@ public class RInstructionTest {
     }
 
     @Test
-    public void testDecodeR3() throws Exception {
+    public void testDecodeR3() {
         RegisterInstruction instruction = new RegisterInstruction(binaryToInt(TEST_ADD_INSTRUCTION));
         instruction.decode();
         RegisterOperation operation = (RegisterOperation) instruction.getOperation();
@@ -51,7 +51,7 @@ public class RInstructionTest {
     }
 
     @Test
-    public void testDecodeShiftAmount() throws Exception {
+    public void testDecodeShiftAmount() {
         RegisterInstruction instruction = new RegisterInstruction(binaryToInt(TEST_ADD_INSTRUCTION));
         instruction.decode();
         RegisterOperation operation = (RegisterOperation) instruction.getOperation();
@@ -59,14 +59,14 @@ public class RInstructionTest {
     }
 
     @Test
-    public void testDecodeAddInstruction() throws Exception {
+    public void testDecodeAddInstruction() {
         RegisterInstruction instruction = new RegisterInstruction(binaryToInt(TEST_ADD_INSTRUCTION));
         instruction.decode();
         RegisterOperation operation = (RegisterOperation) instruction.getOperation();
         assertEquals(Add.class, operation.getClass());
     }
     @Test
-    public void testDecodeInstructionWithLargestPossibleRegisters() throws Exception {
+    public void testDecodeInstructionWithLargestPossibleRegisters() {
         RegisterInstruction instruction = new RegisterInstruction(binaryToInt(TEST_USING_THE_LARGEST_POSSIBLE_REGISTERS));
         instruction.decode();
         RegisterOperation operation = (RegisterOperation) instruction.getOperation();
@@ -103,7 +103,7 @@ public class RInstructionTest {
     }
 
     @Test
-    public void testDecodeSubInstruction() throws Exception {
+    public void testDecodeSubInstruction() {
         RegisterInstruction instruction = new RegisterInstruction(binaryToInt(TEST_SUBTRACT_INSTRUCTION));
         instruction.decode();
         RegisterOperation operation = (RegisterOperation) instruction.getOperation();
@@ -163,7 +163,7 @@ public class RInstructionTest {
     }
 
     @Test
-    public void testDecodeMultiplyInstruction() throws Exception {
+    public void testDecodeMultiplyInstruction() {
         RegisterInstruction instruction = new RegisterInstruction(binaryToInt(TEST_MULTIPLY_INSTRUCTION));
         instruction.decode();
         RegisterOperation operation = (RegisterOperation) instruction.getOperation();
@@ -210,7 +210,7 @@ public class RInstructionTest {
     }
 
     @Test
-    public void testDecodeAndInstruction() throws Exception {
+    public void testDecodeAndInstruction() {
         RegisterInstruction instruction = new RegisterInstruction(binaryToInt(TEST_AND_INSTRUCTION));
         instruction.decode();
         RegisterOperation operation = (RegisterOperation) instruction.getOperation();
@@ -257,7 +257,7 @@ public class RInstructionTest {
     }
 
     @Test
-    public void testDecodeLogicalShiftLeftInstruction() throws Exception {
+    public void testDecodeLogicalShiftLeftInstruction() {
         RegisterInstruction instruction = new RegisterInstruction(binaryToInt(TEST_LOGICAL_SHIFT_LEFT_INSTRUCTION));
         instruction.decode();
         RegisterOperation operation = (RegisterOperation) instruction.getOperation();
@@ -277,7 +277,7 @@ public class RInstructionTest {
     }
 
     @Test
-    public void testDecodeLogicalShiftRightInstruction() throws Exception {
+    public void testDecodeLogicalShiftRightInstruction() {
         RegisterInstruction instruction = new RegisterInstruction(binaryToInt(TEST_LOGICAL_SHIFT_RIGHT_INSTRUCTION));
         instruction.decode();
         RegisterOperation operation = (RegisterOperation) instruction.getOperation();

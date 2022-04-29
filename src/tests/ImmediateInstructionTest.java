@@ -11,7 +11,7 @@ import static utils.Decoder.binaryToInt;
 
 public class ImmediateInstructionTest {
     private static final String TEST_MOVE_IMMEDIATE_INSTRUCTION = "00110000100010000000000000000101";
-    private static final String TEST_MOVE_IMMEDIATE_INSTRUCTION_With_Negative_Value = "00110000100000111111111111111111";
+    private static final String TEST_MOVE_IMMEDIATE_INSTRUCTION_WITH_NEGATIVE_VALUE = "00110000100000111111111111111111";
     private static final String TEST_JUMP_IF_EQUAL_INSTRUCTION_CASE_EQUAL = "01000000100001000000000000000101";
     private static final String TEST_JUMP_IF_EQUAL_INSTRUCTION_CASE_NOT_EQUAL = "01000001100001000000000000000101";
     private static final String TEST_XOR_IMMEDIATE_INSTRUCTION = "01100010100001000000000000000101";
@@ -20,7 +20,7 @@ public class ImmediateInstructionTest {
     private static final String TEST_MOVE_IMMEDIATE_INSTRUCTION_WITH_EXTREME_NEGATIVE_VALUE = "00110000100000100000000000000000";
 
     @Test
-    public void testDecodeOpcode() throws Exception {
+    public void testDecodeOpcode() {
         ImmediateInstruction instruction = new ImmediateInstruction(binaryToInt(TEST_MOVE_IMMEDIATE_INSTRUCTION));
         instruction.decode();
         ImmediateOperation operation = (ImmediateOperation) instruction.getOperation();
@@ -28,7 +28,7 @@ public class ImmediateInstructionTest {
     }
 
     @Test
-    public void testDecodeDestinationRegister() throws Exception {
+    public void testDecodeDestinationRegister() {
         ImmediateInstruction instruction = new ImmediateInstruction(binaryToInt(TEST_MOVE_IMMEDIATE_INSTRUCTION));
         instruction.decode();
         ImmediateOperation operation = (ImmediateOperation) instruction.getOperation();
@@ -36,7 +36,7 @@ public class ImmediateInstructionTest {
     }
 
     @Test
-    public void testDecodeSourceRegister() throws Exception {
+    public void testDecodeSourceRegister() {
         ImmediateInstruction instruction = new ImmediateInstruction(binaryToInt(TEST_MOVE_IMMEDIATE_INSTRUCTION));
         instruction.decode();
         ImmediateOperation operation = (ImmediateOperation) instruction.getOperation();
@@ -44,7 +44,7 @@ public class ImmediateInstructionTest {
     }
 
     @Test
-    public void testDecodeImmediateValue() throws Exception {
+    public void testDecodeImmediateValue() {
         ImmediateInstruction instruction = new ImmediateInstruction(binaryToInt(TEST_MOVE_IMMEDIATE_INSTRUCTION));
         instruction.decode();
         ImmediateOperation operation = (ImmediateOperation) instruction.getOperation();
@@ -52,7 +52,7 @@ public class ImmediateInstructionTest {
     }
 
     @Test
-    public void testDecodeMoveImmediateInstruction() throws Exception {
+    public void testDecodeMoveImmediateInstruction() {
         ImmediateInstruction instruction = new ImmediateInstruction(binaryToInt(TEST_MOVE_IMMEDIATE_INSTRUCTION));
         instruction.decode();
         ImmediateOperation operation = (ImmediateOperation) instruction.getOperation();
@@ -77,8 +77,8 @@ public class ImmediateInstructionTest {
     }
 
     @Test 
-    public void testDecodeMoveImmediateInstructionWithNegativeValue() throws Exception {
-        ImmediateInstruction instruction = new ImmediateInstruction(binaryToInt(TEST_MOVE_IMMEDIATE_INSTRUCTION_With_Negative_Value));
+    public void testDecodeMoveImmediateInstructionWithNegativeValue() {
+        ImmediateInstruction instruction = new ImmediateInstruction(binaryToInt(TEST_MOVE_IMMEDIATE_INSTRUCTION_WITH_NEGATIVE_VALUE));
         instruction.decode();
         ImmediateOperation operation = (ImmediateOperation) instruction.getOperation();
         Assert.assertEquals(MoveImmediate.class, operation.getClass());
@@ -103,7 +103,7 @@ public class ImmediateInstructionTest {
     }
 
     @Test
-    public void testDecodeJumpIfEqualInstruction() throws Exception {
+    public void testDecodeJumpIfEqualInstruction() {
         ImmediateInstruction instruction = new ImmediateInstruction(binaryToInt(TEST_JUMP_IF_EQUAL_INSTRUCTION_CASE_EQUAL));
         instruction.decode();
         ImmediateOperation operation = (ImmediateOperation) instruction.getOperation();
@@ -139,7 +139,7 @@ public class ImmediateInstructionTest {
     }
 
     @Test
-    public void testDecodeXORImmediateInstruction() throws Exception {
+    public void testDecodeXORImmediateInstruction() {
         ImmediateInstruction instruction = new ImmediateInstruction(binaryToInt(TEST_XOR_IMMEDIATE_INSTRUCTION));
         instruction.decode();
         ImmediateOperation operation = (ImmediateOperation) instruction.getOperation();
@@ -171,7 +171,7 @@ public class ImmediateInstructionTest {
     }
 
     @Test
-    public void testDecodeMoveToRegisterInstruction() throws Exception {
+    public void testDecodeMoveToRegisterInstruction() {
         ImmediateInstruction instruction = new ImmediateInstruction(binaryToInt(TEST_MOVE_TO_REGISTER_INSTRUCTION));
         instruction.decode();
         ImmediateOperation operation = (ImmediateOperation) instruction.getOperation();
@@ -201,7 +201,7 @@ public class ImmediateInstructionTest {
     }
 
     @Test
-    public void testDecodeMoveToMemoryInstruction() throws Exception {
+    public void testDecodeMoveToMemoryInstruction() {
         ImmediateInstruction instruction = new ImmediateInstruction(binaryToInt(TEST_MOVE_TO_MEMORY_INSTRUCTION));
         instruction.decode();
         ImmediateOperation operation = (ImmediateOperation) instruction.getOperation();
