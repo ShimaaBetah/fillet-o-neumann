@@ -1,11 +1,7 @@
 package instructions;
+
 import java.lang.reflect.Constructor;
 import java.lang.reflect.InvocationTargetException;
-import java.util.HashMap;
-
-import exceptions.InvalidRegisterNumberException;
-import memory.Registers;
-import operations.registeroperations.*;
 import operations.Operation;
 import utils.Decoder;
 
@@ -16,7 +12,7 @@ public class RegisterInstruction extends Instruction {
     }
 
     @Override
-    public void decode() throws Exception {
+    public void decode() {
         int opcode = Decoder.getIntValueOfBinarySegment(getBinaryInstruction(), 0, 3);
         int destinationRegister = Decoder.getIntValueOfBinarySegment(getBinaryInstruction(), 4, 8);
         int firstRegister = Decoder.getIntValueOfBinarySegment(getBinaryInstruction(), 9, 13);
@@ -26,11 +22,16 @@ public class RegisterInstruction extends Instruction {
 
     }
 
-    private void setOperation(int opcode, int destinationRegister, int firstRegister, int secondRegister, int shiftAmount) throws Exception {
-        Class<RegisterOperation> operationClass = getOperationsMap().get(opcode);
-        Constructor<RegisterOperation> operationConstructor = operationClass.getConstructor(int.class, int.class, int.class, int.class, int.class);
-        Operation operation = operationConstructor.newInstance(opcode, destinationRegister, firstRegister, secondRegister, shiftAmount);
-        setOperation(operation);
+    private void setOperation(int opcode, int destinationRegister, int firstRegister, int secondRegister, int shiftAmount) {
+        Class<? extends Operation> operationClass = getOperationsMap().get(opcode);
+        Constructor<? extends Operation> operationConstructor;
+        try {
+            operationConstructor = operationClass.getConstructor(int.class, int.class, int.class, int.class, int.class);
+            Operation operation = operationConstructor.newInstance(opcode, destinationRegister, firstRegister, secondRegister, shiftAmount);
+            setOperation(operation);
+        } catch (NoSuchMethodException | InstantiationException | IllegalAccessException | InvocationTargetException e) {
+            e.printStackTrace();
+        }
     }
 
 }

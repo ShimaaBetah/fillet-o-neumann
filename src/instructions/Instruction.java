@@ -6,33 +6,35 @@ import operations.Operation;
 import operations.registeroperations.*;
 import operations.immediateoperations.*;
 import operations.jumpoperations.Jump;
-
 import java.util.HashMap;
+import java.util.Map;
 
 public abstract class Instruction {
     private final int binaryInstruction;
     private Operation operation;
 
-    private static final HashMap<Integer, Class> operationsMap = new HashMap<>(){{
-        put(0, Add.class);
-        put(1, Sub.class);
-        put(2, Multiply.class);
-        put(3, MoveImmediate.class);
-        put(4, JumpIfEqual.class);
-        put(5, And.class);
-        put(6, XORImmediate.class);
-        put(7, Jump.class);
-        put(8, LogicalShiftLeft.class);
-        put(9, LogicalShiftRight.class);
-        put(10, MoveToRegister.class);
-        put(11, MoveToMemory.class);
-    }};
+    private static final HashMap<Integer, Class<? extends Operation>> operationsMap = new HashMap<>();
 
-    public Instruction(int binaryInstruction) {
+    static {
+        operationsMap.put(0, Add.class);
+        operationsMap.put(1, Sub.class);
+        operationsMap.put(2, Multiply.class);
+        operationsMap.put(3, MoveImmediate.class);
+        operationsMap.put(4, JumpIfEqual.class);
+        operationsMap.put(5, And.class);
+        operationsMap.put(6, XORImmediate.class);
+        operationsMap.put(7, Jump.class);
+        operationsMap.put(8, LogicalShiftLeft.class);
+        operationsMap.put(9, LogicalShiftRight.class);
+        operationsMap.put(10, MoveToRegister.class);
+        operationsMap.put(11, MoveToMemory.class);
+    }
+
+    protected Instruction(int binaryInstruction) {
         this.binaryInstruction = binaryInstruction;
     }
 
-    public abstract void decode() throws Exception;
+    public abstract void decode();
 
     public void execute() throws Exception {
         operation.execute();
@@ -50,7 +52,7 @@ public abstract class Instruction {
         return binaryInstruction;
     }
 
-    public HashMap<Integer, Class> getOperationsMap() {
+    public Map<Integer, Class<? extends Operation>> getOperationsMap() {
         return operationsMap;
     }
 

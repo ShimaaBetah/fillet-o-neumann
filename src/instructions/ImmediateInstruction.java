@@ -1,10 +1,9 @@
 package instructions;
 
 import operations.Operation;
-import operations.immediateoperations.ImmediateOperation;
 import utils.Decoder;
-
 import java.lang.reflect.Constructor;
+import java.lang.reflect.InvocationTargetException;
 
 public class ImmediateInstruction extends Instruction {
 
@@ -22,7 +21,7 @@ public class ImmediateInstruction extends Instruction {
     }
 
     @Override
-    public void decode() throws Exception {
+    public void decode() {
         int opcode = Decoder.getIntValueOfBinarySegment(getBinaryInstruction(), OPCODE_RANGE_START, OPCODE_RANGE_END);
         int destinationRegister = Decoder.getIntValueOfBinarySegment(getBinaryInstruction(), DESTINATION_REGISTER_RANGE_START, DESTINATION_REGISTER_RANGE_END);
         int sourceRegister = Decoder.getIntValueOfBinarySegment(getBinaryInstruction(), FIRST_OPERAND_RANGE_START, FIRST_OPERAND_RANGE_END);
@@ -30,11 +29,16 @@ public class ImmediateInstruction extends Instruction {
         setOperation(opcode, destinationRegister, sourceRegister, immediateValue);
     }
 
-    private void setOperation(int opcode, int destinationRegister, int sourceRegister, int immediateValue) throws Exception {
-        Class<ImmediateOperation> operationClass = getOperationsMap().get(opcode);
-        Constructor<ImmediateOperation> operationConstructor = operationClass.getConstructor(int.class, int.class, int.class, int.class);
-        Operation operation = operationConstructor.newInstance(opcode, destinationRegister, sourceRegister, immediateValue);
-        setOperation(operation);
+    private void setOperation(int opcode, int destinationRegister, int sourceRegister, int immediateValue) {
+        Class<? extends Operation> operationClass = getOperationsMap().get(opcode);
+        Constructor<? extends Operation> operationConstructor;
+        try {
+            operationConstructor = operationClass.getConstructor(int.class, int.class, int.class, int.class);
+            Operation operation = operationConstructor.newInstance(opcode, destinationRegister, sourceRegister, immediateValue);
+            setOperation(operation);
+        } catch (NoSuchMethodException | InstantiationException | IllegalAccessException | InvocationTargetException e) {
+            e.printStackTrace();
+        }
     }
 
 }
