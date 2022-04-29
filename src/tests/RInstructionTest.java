@@ -15,7 +15,8 @@ public class RInstructionTest {
     private static final String TEST_MULTIPLY_INSTRUCTION = "00100000100010000110000000000010";
     private static final String TEST_AND_INSTRUCTION = "01010000100010000110000000000011";
     private static final String TEST_LOGICAL_SHIFT_LEFT_INSTRUCTION = "10000000100010000000000000000010";
-    private static final String TEST_LOGICAL_SHIFT_RIGHT_INSTRUCTION = "10010001000100000000000000000001";
+    private static final String TEST_LOGICAL_SHIFT_RIGHT_INSTRUCTION = "10010001000100000000000000000001"; 
+    private static final String TEST_USING_THE_LARGEST_POSSIBLE_REGISTERS = "00001111111110111010000000000000";
 
     @Test
     public void testDecodeOpCode() throws Exception {
@@ -63,6 +64,16 @@ public class RInstructionTest {
         instruction.decode();
         RegisterOperation operation = (RegisterOperation) instruction.getOperation();
         assertEquals(Add.class, operation.getClass());
+    }
+    @Test
+    public void testDecodeInstructionWithLargestPossibleRegisters() throws Exception {
+        RegisterInstruction instruction = new RegisterInstruction(binaryToInt(TEST_USING_THE_LARGEST_POSSIBLE_REGISTERS));
+        instruction.decode();
+        RegisterOperation operation = (RegisterOperation) instruction.getOperation();
+        assertEquals(Add.class, operation.getClass());
+        assertEquals(31, operation.getDestinationRegister());
+        assertEquals(30, operation.getFirstRegister());
+        assertEquals(29, operation.getSecondRegister());
     }
 
     @Test

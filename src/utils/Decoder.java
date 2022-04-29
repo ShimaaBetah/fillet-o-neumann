@@ -1,10 +1,32 @@
 package utils;
 
 public class Decoder {
-    public static int binaryToInt(String binaryString) {
+    public static String invertDigits(String binaryInt) {
+        String result = binaryInt;
+        result = result.replace("0", " ");
+        result = result.replace("1", "0");
+        result = result.replace(" ", "1");
+        return result;
+    }
+
+    public static int binaryToIntinTwosCompliment(String binaryString) {
         if (binaryString.charAt(0) == '1') {
-            return (int) Long.parseLong(binaryString, 2);
+            String invertedInt = invertDigits(binaryString);
+            int decimalValue = Integer.parseInt(invertedInt, 2);
+
+            decimalValue = (decimalValue + 1) * -1;
+
+            return decimalValue;
         }
+        return Integer.parseInt(binaryString, 2);
+    }
+
+    public static int binaryToInt(String binaryString) {
+        char sign = binaryString.charAt(0);
+        if (sign == '1') {
+              return (int) Long.parseLong(binaryString, 2);
+        }
+
         return Integer.parseInt(binaryString, 2);
     }
 
@@ -19,8 +41,13 @@ public class Decoder {
     }
 
     public static int getIntValueOfBinarySegment(int integerValue, int start, int end) {
+        return getIntValueOfBinarySegment(integerValue, start, end, false);
+    }
+
+    public static int getIntValueOfBinarySegment(int integerValue, int start, int end, boolean isTwosCompliment) {
         String binaryString = intToBinary(integerValue);
         String binaryStringSegment = binaryString.substring(start, end + 1);
-        return binaryToInt(binaryStringSegment);
+        return isTwosCompliment ? binaryToIntinTwosCompliment(binaryStringSegment) : binaryToInt(binaryStringSegment);
     }
+
 }

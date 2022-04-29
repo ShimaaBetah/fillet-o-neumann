@@ -25,7 +25,7 @@ public class ImmediateInstruction extends Instruction {
         int opcode = Decoder.getIntValueOfBinarySegment(getBinaryInstruction(), OPCODE_RANGE_START, OPCODE_RANGE_END);
         int destinationRegister = Decoder.getIntValueOfBinarySegment(getBinaryInstruction(), DESTINATION_REGISTER_RANGE_START, DESTINATION_REGISTER_RANGE_END);
         int sourceRegister = Decoder.getIntValueOfBinarySegment(getBinaryInstruction(), FIRST_OPERAND_RANGE_START, FIRST_OPERAND_RANGE_END);
-        int immediateValue = Decoder.getIntValueOfBinarySegment(getBinaryInstruction(), IMMEDIATE_VALUE_RANGE_START, IMMEDIATE_VALUE_RANGE_END);
+        int immediateValue = Decoder.getIntValueOfBinarySegment(getBinaryInstruction(), IMMEDIATE_VALUE_RANGE_START, IMMEDIATE_VALUE_RANGE_END, true);
         setOperation(opcode, destinationRegister, sourceRegister, immediateValue);
     }
 
