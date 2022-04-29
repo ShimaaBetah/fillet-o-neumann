@@ -12,7 +12,7 @@ public abstract class RegisterOperation implements Operation {
     private final int shiftAmount;
     private int result;
 
-    public RegisterOperation(int opcode, int destinationRegister, int firstRegister, int secondRegister, int shiftAmount) {
+    protected RegisterOperation(int opcode, int destinationRegister, int firstRegister, int secondRegister, int shiftAmount) {
         this.opcode = opcode;
         this.destinationRegister = destinationRegister;
         this.firstRegister = firstRegister;

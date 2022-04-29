@@ -20,7 +20,7 @@ public class RegistersTest {
     public void testSetRegister1() throws InvalidRegisterNumberException {
         Registers registers = Registers.getInstance();
         registers.setRegister(VALID_TEST_REGISTER_NUMBER, TEST_REGISTER_VALUE);
-        Assert.assertEquals(TEST_REGISTER_VALUE, registers.getRegisters()[VALID_TEST_REGISTER_NUMBER]);
+        Assert.assertEquals(TEST_REGISTER_VALUE, registers.getRegistersArray()[VALID_TEST_REGISTER_NUMBER]);
     }
 
     @Test
@@ -33,13 +33,13 @@ public class RegistersTest {
     public void testSetRegister3() throws InvalidRegisterNumberException {
         Registers registers = Registers.getInstance();
         registers.setRegister(VALID_TEST_ZERO_REGISTER, TEST_REGISTER_VALUE);
-        Assert.assertEquals(0, registers.getRegisters()[VALID_TEST_ZERO_REGISTER]);
+        Assert.assertEquals(0, registers.getRegistersArray()[VALID_TEST_ZERO_REGISTER]);
     }
 
     @Test
     public void testGetRegister1() throws InvalidRegisterNumberException {
         Registers registers = Registers.getInstance();
-        registers.getRegisters()[VALID_TEST_REGISTER_NUMBER] = TEST_REGISTER_VALUE;
+        registers.getRegistersArray()[VALID_TEST_REGISTER_NUMBER] = TEST_REGISTER_VALUE;
         Assert.assertEquals(TEST_REGISTER_VALUE, registers.getRegister(VALID_TEST_REGISTER_NUMBER));
     }
 

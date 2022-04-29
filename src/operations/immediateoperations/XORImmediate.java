@@ -3,7 +3,7 @@ package operations.immediateoperations;
 import memory.Registers;
 
 public class XORImmediate extends ImmediateOperation {
-    private static int result;
+    private int result;
 
     public XORImmediate(int opcode, int destinationRegister, int sourceRegister, int immediateValue) {
         super(opcode, destinationRegister, sourceRegister, immediateValue);

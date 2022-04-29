@@ -20,11 +20,11 @@ public class Jump extends JumpOperation {
 
     @Override
     public void memoryAccess() throws InvalidRegisterNumberException, AddressOutOfRangeException {
-
+        // No memory access
     }
 
     @Override
     public void writeBack() throws Exception {
-
+        // No write back
     }
 }

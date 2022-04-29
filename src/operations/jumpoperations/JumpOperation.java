@@ -6,7 +6,7 @@ public abstract class JumpOperation implements Operation {
     private final int opcode;
     private final int address;
 
-    public JumpOperation(int opcode, int address) {
+    protected JumpOperation(int opcode, int address) {
         this.opcode = opcode;
         this.address = address;
     }

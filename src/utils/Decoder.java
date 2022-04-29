@@ -1,6 +1,11 @@
 package utils;
 
 public class Decoder {
+
+    private Decoder() {
+        throw new IllegalStateException("Utility class");
+    }
+
     public static String invertDigits(String binaryInt) {
         String result = binaryInt;
         result = result.replace("0", " ");

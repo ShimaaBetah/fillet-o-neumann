@@ -9,7 +9,7 @@ public abstract class ImmediateOperation implements Operation {
     private final int immediateValue;
 
 
-    public ImmediateOperation(int opcode, int destinationRegister, int sourceRegister, int immediateValue) {
+    protected ImmediateOperation(int opcode, int destinationRegister, int sourceRegister, int immediateValue) {
         this.opcode = opcode;
         this.destinationRegister = destinationRegister;
         this.sourceRegister = sourceRegister;

@@ -30,6 +30,6 @@ public class MoveToMemory extends ImmediateOperation {
 
     @Override
     public void writeBack() throws Exception {
-
+        // No write back
     }
 }

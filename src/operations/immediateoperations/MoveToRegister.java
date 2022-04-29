@@ -6,7 +6,7 @@ import memory.MainMemory;
 import memory.Registers;
 
 public class MoveToRegister extends ImmediateOperation {
-    private static int result;
+    private int result;
 
     public MoveToRegister(int opcode, int destinationRegister, int sourceRegister, int immediateValue) {
         super(opcode, destinationRegister, sourceRegister, immediateValue);

@@ -57,7 +57,6 @@ public class MainMemory {
         return memory[address];
     }
 
-    //TODO: add test for storeWord method
     public void storeWord(int address, int word) throws AddressOutOfRangeException {
         if (!inMemoryRange(address)) {
             throw new AddressOutOfRangeException();
@@ -65,7 +64,6 @@ public class MainMemory {
         memory[address] = word;
     }
 
-    //TODO: add test for loadWord method
     public int loadWord(int address) throws AddressOutOfRangeException {
         if (!inMemoryRange(address)) {
             throw new AddressOutOfRangeException();
