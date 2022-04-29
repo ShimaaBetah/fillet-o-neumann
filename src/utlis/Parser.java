@@ -6,15 +6,15 @@ import java.io.FileReader;
 import java.io.IOException;
 import java.util.ArrayList;
 import java.util.Arrays;
-import java.util.HashMap;
 import java.util.List;
 
+import exceptions.InvalidInstructionException;
+import exceptions.InvalidRegisterException;
 import instructions.InstructionType;
 
 public class Parser {
-    List<String[]> instructions = new ArrayList<>();
-    List<String> binaryInstructions = new ArrayList<>();
-    HashMap<String, Integer> labels = new HashMap<>();
+    private List<String[]> instructions = new ArrayList<>();
+    private List<String> binaryInstructions = new ArrayList<>();
 
     private static final String INVALID_INSTRUCTION = "Invalid instruction: ";
 
@@ -24,47 +24,68 @@ public class Parser {
 
     public Parser(String programPath) {
         var instructionsFile = new File(programPath);
-        try (FileReader fr = new FileReader(instructionsFile)) {
+        try (var fr = new FileReader(instructionsFile)) {
             try (var br = new BufferedReader(fr)) {
                 String line;
                 while ((line = br.readLine()) != null) {
-                    line = line.trim();
-                    line = line.toUpperCase();
-
-                    String[] splittedLine = line.replaceAll("\\s(\\s)+", "").split(" ");
-                    Arrays.asList(splittedLine).forEach(String::trim);
-
+                    String[] splittedLine = trimLines(line);
                     this.instructions.add(splittedLine);
                 }
             }
         } catch (IOException e) {
             e.printStackTrace();
         }
-        convertStringToBinary();
+        try {
+            convertStringToBinary();
+        } catch (InvalidInstructionException | InvalidRegisterException e) {
+            System.err.println(e.getMessage()); // use logger instead
+            System.exit(1);
+        }
     }
 
-    private void convertStringToBinary() throws IllegalArgumentException {
-        for (String[] instruction : this.instructions) {
-            if (instruction.length < 2)
-                throw new IllegalArgumentException(INVALID_INSTRUCTION + instruction[0]);
-            int opcode = getOpcode(getFirstOperator(instruction));
-            if (opcode == -1)
-                throw new IllegalArgumentException(INVALID_INSTRUCTION + instruction[0]);
-            InstructionType type = getInstructionType(opcode);
+    private String[] trimLines(String line) {
+        line = line.trim();
+        line = line.toUpperCase();
+        String[] splittedLine = line.replaceAll("\\s(\\s)+", " ").split(" ");
+        Arrays.asList(splittedLine).forEach(String::trim);
+        return splittedLine;
+    }
 
-            if (type == InstructionType.R) {
-                this.binaryInstructions.add(getRType(instruction));
-            } else if (type == InstructionType.I) {
-                binaryInstructions.add(getIType(instruction));
-            } else if (type == InstructionType.J) {
-                binaryInstructions.add(getJType(instruction));
-            } else {
-                throw new IllegalArgumentException(INVALID_INSTRUCTION + instruction[0]);
+    private void convertStringToBinary() throws InvalidInstructionException, InvalidRegisterException {
+        for (String[] instruction : this.instructions) {
+            if (instruction.length < 2) {
+                throw new InvalidInstructionException(INVALID_INSTRUCTION + instruction[0]);
+            }
+
+            int opcode = getOpcode(instruction[0].toUpperCase());
+            if (opcode == -1) {
+                throw new InvalidInstructionException(INVALID_INSTRUCTION + instruction[0]);
+            }
+
+            InstructionType instructionType = getInstructionType(opcode);
+            switch (instructionType) {
+                case R:
+                    this.binaryInstructions.add(getRType(instruction));
+                    break;
+                case I:
+                    this.binaryInstructions.add(getIType(instruction));
+                    break;
+                case J:
+                    this.binaryInstructions.add(getJType(instruction));
+                    break;
+                default:
+                    throw new InvalidInstructionException(INVALID_INSTRUCTION + instruction[0]);
             }
         }
     }
 
     private String getJType(String[] instruction) {
+        /**
+         * map the opcode to the type J
+         * format:
+         * opcode address should be fixed
+         * TODO
+         */
         StringBuilder binary = new StringBuilder();
         binary.append(getOpcodeString(getOpcode(instruction[0])));
         binary.append(instruction[1]);
@@ -80,13 +101,13 @@ public class Parser {
         return binary.toString();
     }
 
-    private String getIType(String[] instruction) {
+    private String getIType(String[] instruction) throws InvalidRegisterException {
         /**
          * map the instruction to binary of type I
          * format:
          * opcode rs rt immediate
          */
-        int opcode = getOpcode(getFirstOperator(instruction));
+        int opcode = getOpcode(instruction[0]);
         int rs = getRegister(instruction[1]);
         int rt;
         int immediate;
@@ -108,12 +129,13 @@ public class Parser {
         return Integer.parseInt(string);
     }
 
-    private String getRType(String[] instruction) {
+    private String getRType(String[] instruction) throws InvalidRegisterException {
         /**
-         * parse the instruction of type R
+         * map the instruction to binary of type R
+         * format:
          * opcode rs rt rd shamt
          */
-        var opcode = getOpcode(instruction[0].toUpperCase());
+        var opcode = getOpcode(instruction[0]);
         int rs = getRegister(instruction[1]);
         int rt = getRegister(instruction[2]);
         int rd;
@@ -145,15 +167,22 @@ public class Parser {
         return Integer.parseInt(string);
     }
 
-    private int getRegister(String string) {
-        // slice the string to get the register number
-        // $R2 -> 2
-        return Integer.parseInt(string.substring(2));
+    private int getRegister(String string) throws InvalidRegisterException {
+        /**
+         * slice the string to get the register number
+         * format:
+         * $R[0-31]
+         */
+        int registerNumber = Integer.parseInt(string.substring(2));
+        if (registerNumber < 0 || registerNumber > 31) {
+            throw new InvalidRegisterException(INVALID_INSTRUCTION + string);
+        }
+        return registerNumber;
     }
 
-    private InstructionType getInstructionType(int opcode) {
+    private InstructionType getInstructionType(int opcode) throws InvalidInstructionException {
         /**
-         * map opcode to instruction type
+         * map opcode to instruction type (R, I, J)
          */
         switch (opcode) {
             case 3:
@@ -171,10 +200,6 @@ public class Parser {
             default:
                 return InstructionType.R;
         }
-    }
-
-    private String getFirstOperator(String[] instruction) {
-        return instruction[0].toUpperCase();
     }
 
     private int getOpcode(String instruction) {
