@@ -3,6 +3,7 @@ package logger.services;
 import java.io.BufferedWriter;
 import java.io.File;
 import java.io.FileWriter;
+import java.io.IOException;
 
 public class CreateLogFileService {
     private static final String LOG_FILE_PATH = "./src/logger/outputs/log.txt";
@@ -19,7 +20,7 @@ public class CreateLogFileService {
             }
 
             return new BufferedWriter(new FileWriter(logFile, true));
-        } catch (Exception e) {
+        } catch (IOException e) {
             e.printStackTrace();
             return null;
         }

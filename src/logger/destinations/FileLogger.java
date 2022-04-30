@@ -1,6 +1,7 @@
 package logger.destinations;
 
 import java.io.BufferedWriter;
+import java.io.IOException;
 
 public class FileLogger implements LogObserver {
 
@@ -16,7 +17,7 @@ public class FileLogger implements LogObserver {
             bufferedWriter.write(message);
             bufferedWriter.newLine();
             bufferedWriter.flush();
-        } catch (Exception e) {
+        } catch (IOException e) {
             e.printStackTrace();
         }
     }
