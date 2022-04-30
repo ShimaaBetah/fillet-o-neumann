@@ -5,6 +5,11 @@ import logger.destinations.ConsoleLogger;
 import logger.destinations.FileLogger;
 
 public class InitLoggerService {
+
+    private InitLoggerService() {
+        throw new IllegalStateException("Utility class");
+    }
+
     public static LogSubject execute() {
         LogSubject logSubject = new LogSubject();
 

@@ -7,6 +7,10 @@ import java.io.FileWriter;
 public class CreateLogFileService {
     private static final String LOG_FILE_PATH = "./src/logger/outputs/log.txt";
 
+    private CreateLogFileService() {
+        throw new IllegalStateException("Utility class");
+    }
+
     public static BufferedWriter execute() {
         try {
             File logFile = new File(LOG_FILE_PATH);
@@ -17,8 +21,7 @@ public class CreateLogFileService {
             return new BufferedWriter(new FileWriter(logFile, true));
         } catch (Exception e) {
             e.printStackTrace();
+            return null;
         }
-
-        return null;
     }
 }
