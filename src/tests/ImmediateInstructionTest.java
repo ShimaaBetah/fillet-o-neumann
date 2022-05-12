@@ -187,6 +187,8 @@ public class ImmediateInstructionTest {
         Registers registers = Registers.getInstance();
         MainMemory memory = MainMemory.getInstance();
 
+        registers.setRegister(operation.getSourceRegister(), 0);
+
         int destinationRegister = operation.getDestinationRegister();
         int sourceRegisterValue = registers.getRegister(operation.getSourceRegister());
         int immediateValue = operation.getImmediateValue();
@@ -217,10 +219,13 @@ public class ImmediateInstructionTest {
         Registers registers = Registers.getInstance();
         MainMemory memory = MainMemory.getInstance();
 
+
         int destinationRegister = operation.getDestinationRegister();
         int sourceRegisterValue = registers.getRegister(operation.getSourceRegister());
         int immediateValue = operation.getImmediateValue();
         int address = sourceRegisterValue + immediateValue;
+
+
 
         memory.storeWord(address, 0);
         registers.setRegister(destinationRegister, 5);
