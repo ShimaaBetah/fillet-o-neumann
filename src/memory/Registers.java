@@ -4,7 +4,7 @@ import exceptions.AddressOutOfRangeException;
 import exceptions.InvalidRegisterNumberException;
 
 public class Registers {
-    private int[] registers;
+    private int[] registersArray;
     private int numOfRegisters;
     private int pc;
 
@@ -14,7 +14,7 @@ public class Registers {
 
     private Registers(int numOfRegisters) {
         this.numOfRegisters = numOfRegisters;
-        registers = new int[numOfRegisters];
+        registersArray = new int[numOfRegisters];
         this.pc = 0;
     }
 
@@ -26,14 +26,17 @@ public class Registers {
         if (!isValidRegister(registerNum)) {
             throw new InvalidRegisterNumberException(registerNum);
         }
-        registers[registerNum] = value;
+        if (registerNum == 0) {
+            return;
+        }
+        registersArray[registerNum] = value;
     }
 
     public int getRegister(int registerNum) throws InvalidRegisterNumberException {
         if (!isValidRegister(registerNum)) {
             throw new InvalidRegisterNumberException(registerNum);
         }
-        return registers[registerNum];
+        return registersArray[registerNum];
     }
 
     private boolean isValidRegister(int registerNum) {
@@ -58,12 +61,8 @@ public class Registers {
         return pc;
     }
 
-    public int[] getRegisters() {
-        return registers;
-    }
-
-    public int getNumOfRegisters() {
-        return numOfRegisters;
+    public int[] getRegistersArray() {
+        return registersArray;
     }
 
 }

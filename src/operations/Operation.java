@@ -1,5 +1,12 @@
 package operations;
 
+import exceptions.AddressOutOfRangeException;
+import exceptions.InvalidRegisterNumberException;
+
 public interface Operation {
-    public int execute(int operand1, int operand2, int shiftAmount);
+    void execute() throws Exception;
+
+    void memoryAccess() throws InvalidRegisterNumberException, AddressOutOfRangeException;
+
+    void writeBack() throws Exception;
 }

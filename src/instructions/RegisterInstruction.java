@@ -1,94 +1,37 @@
 package instructions;
-import java.util.HashMap;
 
-import exceptions.InvalidRegisterNumberException;
-import memory.Registers;
-import operations.Add;
-import operations.And;
-import operations.Multiply;
+import java.lang.reflect.Constructor;
+import java.lang.reflect.InvocationTargetException;
 import operations.Operation;
-import operations.ShiftLeft;
-import operations.ShiftRight;
-import operations.Sub;
-import utlis.Decoder;
+import utils.Decoder;
 
 public class RegisterInstruction extends Instruction {
-    private int destinationRegister;
-    private int firstRegister;
-    private int secondRegister;
-    private int shiftAmount;
-    private int result;
-    
-    
-    static HashMap<Integer, Operation> operations = new HashMap<Integer, Operation>();
 
-    static {
-        operations.put(0, new Add());
-        operations.put(1, new Sub());
-        operations.put(2, new Multiply());
-        operations.put(5, new And());
-        operations.put(8, new ShiftLeft());
-        operations.put(9, new ShiftRight());
-
-    }
     public RegisterInstruction(int bitMask) {
         super(bitMask);
     }
 
     @Override
     public void decode() {
-        // TODO Auto-generated method stub
-        setOpcode(Decoder.getBits(getBitMask(), 0, 3));
-        destinationRegister = Decoder.getBits(getBitMask(), 4, 8);
-        firstRegister = Decoder.getBits(getBitMask(), 9, 13);
-        secondRegister = Decoder.getBits(getBitMask(), 14, 18);
-        shiftAmount = Decoder.getBits(getBitMask(), 19, 31);
-    }
-
-    @Override
-    public void execute() throws InvalidRegisterNumberException {
-        // TODO Auto-generated method stub
-        Registers registers = Registers.getInstance();
-        int firstOperand = registers.getRegister(firstRegister);
-        int secondOperand = registers.getRegister(secondRegister);
-        result = operations.get(getOpcode()).execute(firstOperand, secondOperand, shiftAmount);
+        int opcode = Decoder.getIntValueOfBinarySegment(getBinaryInstruction(), 0, 3);
+        int destinationRegister = Decoder.getIntValueOfBinarySegment(getBinaryInstruction(), 4, 8);
+        int firstRegister = Decoder.getIntValueOfBinarySegment(getBinaryInstruction(), 9, 13);
+        int secondRegister = Decoder.getIntValueOfBinarySegment(getBinaryInstruction(), 14, 18);
+        int shiftAmount = Decoder.getIntValueOfBinarySegment(getBinaryInstruction(), 19, 31);
+        setOperation(opcode, destinationRegister, firstRegister, secondRegister, shiftAmount);
 
     }
 
-    @Override
-    public void memoryAccess() {
-        // TODO Auto-generated method stub
-
+    private void setOperation(int opcode, int destinationRegister, int firstRegister, int secondRegister, int shiftAmount) {
+        Class<? extends Operation> operationClass = getOperationsMap().get(opcode);
+        Constructor<? extends Operation> operationConstructor;
+        try {
+            operationConstructor = operationClass.getConstructor(int.class, int.class, int.class, int.class, int.class);
+            Operation operation = operationConstructor.newInstance(opcode, destinationRegister, firstRegister, secondRegister, shiftAmount);
+            setOperation(operation);
+        } catch (NoSuchMethodException | InstantiationException | IllegalAccessException | InvocationTargetException e) {
+            e.printStackTrace();
+        }
     }
-
-    @Override
-    public void writeBack() throws InvalidRegisterNumberException {
-        // TODO Auto-generated method stub
-        Registers registers = Registers.getInstance();
-        registers.setRegister(destinationRegister, result);
-
-    }
-
-    public int getDestinationRegister() {
-        return destinationRegister;
-    }
-    
-    public int getFirstRegister() {
-        return firstRegister;
-    }
-
-    public int getSecondRegister() {
-        return secondRegister;
-    }
-
-
-    public int getShiftAmount() {
-        return shiftAmount;
-    }
-
-    public int getResult() {
-        return result;
-    }
-    
 
 }
