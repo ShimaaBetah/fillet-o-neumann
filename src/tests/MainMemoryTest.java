@@ -28,7 +28,7 @@ public class MainMemoryTest {
         MainMemory memory = MainMemory.getInstance();
         memory.getMemory()[TEST_DATA_ADDRESS] = TEST_DATA;
         try {
-            memory.storeInstruction(TEST_DATA_ADDRESS, TEST_INSTRUCTION);
+            memory.storeInstruction(TEST_INSTRUCTION_ADDRESS, TEST_INSTRUCTION);
         } catch (Exception e) {
             e.printStackTrace();
         }
@@ -67,7 +67,7 @@ public class MainMemoryTest {
         MainMemory memory = MainMemory.getInstance();
         memory.getMemory()[TEST_INSTRUCTION_ADDRESS] = TEST_INSTRUCTION;
         try {
-            memory.storeData(TEST_INSTRUCTION_ADDRESS, TEST_DATA);
+            memory.storeData(TEST_DATA_ADDRESS, TEST_DATA);
         } catch (Exception e) {
             e.printStackTrace();
         }
