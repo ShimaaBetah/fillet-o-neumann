@@ -64,8 +64,22 @@ public class ParserTest {
     @Test
     public void testSpicyJ1() {
         assertEquals(
-                "011110010101010101010101010101000100",
+                "01111111111111111111111111111110",
                 parserJ.getBinaryInstructions().get(0));
+    }
+
+    @Test
+    public void testSpicyJ2() {
+        assertEquals(
+                "01111111111111111111111111111111",
+                parserJ.getBinaryInstructions().get(1));
+    }
+
+    @Test
+    public void testSpicyJ3() {
+        assertEquals(
+                "01110000000000000000000000010100",
+                parserJ.getBinaryInstructions().get(2));
     }
 
 }
