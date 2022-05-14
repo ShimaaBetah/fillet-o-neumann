@@ -1,6 +1,7 @@
 import exceptions.AddressOutOfRangeException;
 import exceptions.InvalidRegisterNumberException;
 import instructions.Instruction;
+import instructions.InstructionFactory;
 import memory.MainMemory;
 import memory.Registers;
 
@@ -8,6 +9,7 @@ public class App {
 
     private Instruction[] pipeline;
     private int currentCycle;
+    private InstructionFactory instructionFactory;
 
     private static final int PIPELINE_SIZE = 7;
     private static final int FETCH_POSITION = 0;
@@ -17,8 +19,9 @@ public class App {
     private static final int WRITE_BACK_POSITION = 6;
 
     public App() {
-        pipeline = new Instruction[PIPELINE_SIZE];
-        currentCycle = 0;
+        this.pipeline = new Instruction[PIPELINE_SIZE];
+        this.currentCycle = 0;
+        this.instructionFactory = new InstructionFactory();
     }
 
     public void fetch() throws AddressOutOfRangeException {
@@ -32,7 +35,7 @@ public class App {
         int binaryInstruction = memory.loadInstruction(pc);
 
         registers.incrementPC();
-        pipeline[FETCH_POSITION] = Instruction.createInstruction(binaryInstruction);
+        pipeline[FETCH_POSITION] = instructionFactory.create(binaryInstruction);
     }
 
     public void decode() {

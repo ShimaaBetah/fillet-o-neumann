@@ -34,11 +34,6 @@ public abstract class Instruction {
         this.binaryInstruction = binaryInstruction;
     }
 
-    public static Instruction createInstruction(int binaryInstruction) {
-        //TODO: implement
-        return null;
-    }
-
     public abstract void decode();
 
     public void execute() throws Exception {
