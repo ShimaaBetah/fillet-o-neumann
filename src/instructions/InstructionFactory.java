@@ -10,29 +10,29 @@ public class InstructionFactory {
     private static final HashMap<Integer, InstructionType> opcodeToInstruction = new HashMap<>();
 
     static {
-        opcodeToInstruction.put(0, InstructionType.RType);
-        opcodeToInstruction.put(1, InstructionType.RType);
-        opcodeToInstruction.put(2, InstructionType.RType);
-        opcodeToInstruction.put(3, InstructionType.IType);
-        opcodeToInstruction.put(4, InstructionType.IType);
-        opcodeToInstruction.put(5, InstructionType.RType);
-        opcodeToInstruction.put(6, InstructionType.IType);
-        opcodeToInstruction.put(7, InstructionType.JType);
-        opcodeToInstruction.put(8, InstructionType.RType);
-        opcodeToInstruction.put(9, InstructionType.RType);
-        opcodeToInstruction.put(10, InstructionType.IType);
-        opcodeToInstruction.put(11, InstructionType.IType);
+        opcodeToInstruction.put(0, InstructionType.R_TYPE);
+        opcodeToInstruction.put(1, InstructionType.R_TYPE);
+        opcodeToInstruction.put(2, InstructionType.R_TYPE);
+        opcodeToInstruction.put(3, InstructionType.I_TYPE);
+        opcodeToInstruction.put(4, InstructionType.I_TYPE);
+        opcodeToInstruction.put(5, InstructionType.R_TYPE);
+        opcodeToInstruction.put(6, InstructionType.I_TYPE);
+        opcodeToInstruction.put(7, InstructionType.J_TYPE);
+        opcodeToInstruction.put(8, InstructionType.R_TYPE);
+        opcodeToInstruction.put(9, InstructionType.R_TYPE);
+        opcodeToInstruction.put(10, InstructionType.I_TYPE);
+        opcodeToInstruction.put(11, InstructionType.I_TYPE);
     }
 
     public Instruction create(int binaryInstruction) {
         int opcode = getOpcode(binaryInstruction);
         InstructionType instructionType = opcodeToInstruction.get(opcode);
         Instruction instruction = null;
-        if (instructionType == InstructionType.RType) {
+        if (instructionType == InstructionType.R_TYPE) {
             instruction = new RegisterInstruction(binaryInstruction);
-        } else if (instructionType == InstructionType.IType) {
+        } else if (instructionType == InstructionType.I_TYPE) {
             instruction = new ImmediateInstruction(binaryInstruction);
-        } else if (instructionType == InstructionType.JType) {
+        } else if (instructionType == InstructionType.J_TYPE) {
             instruction = new JumpInstruction(binaryInstruction);
         }
         return instruction;
