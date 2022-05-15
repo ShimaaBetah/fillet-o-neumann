@@ -3,6 +3,7 @@ package instructions;
 import exceptions.AddressOutOfRangeException;
 import exceptions.InvalidRegisterNumberException;
 import operations.Operation;
+import operations.OperationFactory;
 import operations.registeroperations.*;
 import operations.immediateoperations.*;
 import operations.jumpoperations.Jump;
@@ -12,6 +13,7 @@ import java.util.Map;
 public abstract class Instruction {
     private final int binaryInstruction;
     private Operation operation;
+    private OperationFactory operationFactory;
 
     private static final HashMap<Integer, Class<? extends Operation>> operationsMap = new HashMap<>();
 
@@ -62,6 +64,14 @@ public abstract class Instruction {
 
     public Operation getOperation() {
         return operation;
+    }
+
+    public void setOperationFactory(OperationFactory operationFactory) {
+        this.operationFactory = operationFactory;
+    }
+
+    public OperationFactory getOperationFactory() {
+        return operationFactory;
     }
 
 }
