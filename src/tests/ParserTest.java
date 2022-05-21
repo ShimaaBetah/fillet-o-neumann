@@ -1,16 +1,47 @@
 package tests;
 
+import static org.junit.Assert.assertThrows;
 import static org.junit.jupiter.api.Assertions.assertEquals;
 
-import org.junit.Test;
+import java.util.Optional;
 
-import utlis.*;
+import org.junit.Test;
+import org.junit.function.ThrowingRunnable;
+
+import exceptions.InvalidInstructionException;
+import exceptions.InvalidRegisterException;
+import utlis.Parser;
+import utlis.Path;
 
 public class ParserTest {
-    String path = Path.PATH;
-    Parser parserR = new Parser(path + "fillet-o-neumann/src/programs/spicy-rprogram.txt");
-    Parser parserI = new Parser(path + "fillet-o-neumann/src/programs/spicy-iprogram.txt");
-    Parser parserJ = new Parser(path + "fillet-o-neumann/src/programs/spicy-jprogram.txt");
+    String path = Path.PATH + "fillet-o-neumann/src/programs/";
+
+    Parser parserR = Optional.ofNullable(path + "spicy-rprogram.txt").map(p -> {
+        try {
+            return new Parser(p);
+        } catch (InvalidInstructionException | InvalidRegisterException e) {
+            e.printStackTrace();
+        }
+        return null;
+    }).orElse(null);
+
+    Parser parserI = Optional.ofNullable(path + "spicy-iprogram.txt").map(p -> {
+        try {
+            return new Parser(p);
+        } catch (InvalidInstructionException | InvalidRegisterException e) {
+            e.printStackTrace();
+        }
+        return null;
+    }).orElse(null);
+
+    Parser parserJ = Optional.ofNullable(path + "spicy-jprogram.txt").map(p -> {
+        try {
+            return new Parser(p);
+        } catch (InvalidInstructionException | InvalidRegisterException e) {
+            e.printStackTrace();
+        }
+        return null;
+    }).orElse(null);
 
     @Test
     public void testSpicyR1() {
@@ -64,14 +95,14 @@ public class ParserTest {
     @Test
     public void testSpicyJ1() {
         assertEquals(
-                "01111111111111111111111111111110",
+                "01110000000000000000000000000010",
                 parserJ.getBinaryInstructions().get(0));
     }
 
     @Test
-    public void testSpicyJ2() {
+    public void testLabel() {
         assertEquals(
-                "01111111111111111111111111111111",
+                "01110000000000000000000000000001",
                 parserJ.getBinaryInstructions().get(1));
     }
 
@@ -82,4 +113,29 @@ public class ParserTest {
                 parserJ.getBinaryInstructions().get(2));
     }
 
+    @Test
+    public void testNegativeJump() {
+        assertThrows(InvalidInstructionException.class, new ThrowingRunnable() {
+            @Override
+            public void run() throws Throwable {
+                new Parser(path + "negative-jump.txt");
+            }
+        });
+        {
+        }
+    }
+
+    @Test
+    public void testEmptyFile() {
+        Parser emptyFile = Optional.ofNullable(path + "empty-file.txt").map(p -> {
+            try {
+                return new Parser(p);
+            } catch (InvalidInstructionException | InvalidRegisterException e) {
+                e.printStackTrace();
+            }
+            return null;
+        }).orElse(null);
+
+        assertEquals(0, emptyFile.getBinaryInstructions().size());
+    }
 }

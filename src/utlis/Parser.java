@@ -6,6 +6,7 @@ import java.io.FileReader;
 import java.io.IOException;
 import java.util.ArrayList;
 import java.util.Arrays;
+import java.util.HashMap;
 import java.util.List;
 
 import exceptions.InvalidInstructionException;
@@ -18,17 +19,19 @@ public class Parser {
      */
     private List<String[]> instructions = new ArrayList<>();
     private List<String> binaryInstructions = new ArrayList<>();
+    private HashMap<String, Integer> labels = new HashMap<>();
 
     private static final String INVALID_INSTRUCTION = "Invalid instruction: ";
     private static final int INSTRUCTION_SIZE = 32;
     private static final int OPCODE_SIZE = 4;
     private static final int REGISTER_SIZE = 5;
+    private static final int MAX_REGISTER_VALUE = 31;
 
-    public Parser(String programPath) {
+    public Parser(String programPath) throws InvalidInstructionException, InvalidRegisterException {
         parse(programPath);
     }
 
-    private void parse(String programPath) {
+    private void parse(String programPath) throws InvalidInstructionException, InvalidRegisterException {
         /*
          * Reads the file and parses the instructions.
          * comments (#) are ignored.
@@ -42,34 +45,41 @@ public class Parser {
                     if (line.isBlank() || line.startsWith("#")) {
                         continue;
                     }
-                    String[] splittedLine = splitTrimLines(line);
-                    this.instructions.add(splittedLine);
+                    line = trimLine(line);
+                    if (line.contains(":") && (!line.contains("#") || (line.indexOf("#") > line.lastIndexOf(":")))) {
+                        var label = line.split(":")[0].trim();
+                        var address = instructions.size();
+                        labels.put(label, address);
+                    } else {
+                        // instruction
+                        String[] splittedLine = splitLines(line);
+                        this.instructions.add(splittedLine);
+                    }
                 }
             }
         } catch (IOException e) {
             e.printStackTrace(); // Logger
         }
-        try {
-            convertStringToBinary();
-        } catch (InvalidInstructionException | InvalidRegisterException e) {
-            System.err.println(e.getMessage()); // use logger instead
-            System.exit(1);
-        }
+        convertStringToBinary();
     }
 
-    private String[] splitTrimLines(String line) {
+    private String[] splitLines(String line) {
         /*
-         * This method is used to split and trim the lines of the file.
+         * This method is used to split lines of the file.
          * It removes the spaces and tabs from the line.
          * It also removes the comments from the line.
          */
-        line = line.trim();
-        line = line.toUpperCase();
         String[] splittedLine = line.replaceAll("\\s(\\s)+", " ").split(" ");
         Arrays.asList(splittedLine).forEach(String::trim);
         // remove all strings after #
         int index = Arrays.asList(splittedLine).indexOf("#");
         return (index == -1) ? splittedLine : Arrays.copyOf(splittedLine, index);
+    }
+
+    private String trimLine(String line) {
+        line = line.trim();
+        line = line.toUpperCase();
+        return line;
     }
 
     private void convertStringToBinary() throws InvalidInstructionException, InvalidRegisterException {
@@ -89,44 +99,57 @@ public class Parser {
 
             InstructionType instructionType = getInstructionType(opcode);
             switch (instructionType) {
-                case R:
+                case R ->
                     this.binaryInstructions.add(getRType(instruction));
-                    break;
-                case I:
+                case I ->
                     this.binaryInstructions.add(getIType(instruction));
-                    break;
-                case J:
+                case J ->
                     this.binaryInstructions.add(getJType(instruction));
-                    break;
-                default:
+                default ->
                     throw new InvalidInstructionException(INVALID_INSTRUCTION + instruction[0]);
             }
         }
     }
 
-    private String getJType(String[] instruction) {
+    private String getJType(String[] instruction) throws InvalidInstructionException {
         /*
          * map the opcode to the type J
          * format:
          * opcode address(28)
-         * JMP -2
-         * convert the address to 2's complement binary
+         * JMP 9
+         * convert the address to unsigned binary
          */
         StringBuilder binary = new StringBuilder();
         binary.append(getOpcodeString(getOpcode(instruction[0])));
-        // 2's complement of instruction[1]
-        String address;
-        if (instruction[1].startsWith("-")) {
-            address = Integer.toBinaryString(Integer.parseInt(instruction[1])).substring(1);
-            // address is 28 bits, remove leading bits from the sign bit
-            address = address.substring(3);
-        } else {
-            address = Integer.toBinaryString(Integer.parseInt(instruction[1]));
-            // pad with 0's to make it 28 bits
-            address = String.format("%0" + (INSTRUCTION_SIZE - OPCODE_SIZE) + "d", Integer.parseInt(address));
+        // check if It's a label
+        if (labels.containsKey(instruction[1])) {
+            instruction[1] = "" + labels.get(instruction[1]);
         }
+        if (instruction[1].startsWith("-")) {
+            throw new InvalidInstructionException(INVALID_INSTRUCTION + instruction[0]);
+        }
+        String address = getImmediate(instruction[1], OPCODE_SIZE - 1, INSTRUCTION_SIZE - OPCODE_SIZE);
         binary.append(address);
         return binary.toString();
+    }
+
+    private String getImmediate(String instruction, int offset, int size) {
+        /*
+         * This method converts the immediate to binary.
+         * It also checks if the immediate is valid.
+         * The immediate is a signed integer.
+         */
+        String address;
+        if (instruction.startsWith("-")) {
+            address = Integer.toBinaryString(Integer.parseInt(instruction)).substring(1);
+            // address is {size} bits, remove leading bits from the sign bit
+            address = address.substring(offset);
+        } else {
+            address = Integer.toBinaryString(Integer.parseInt(instruction));
+            // pad with 0's to make it {size} bits
+            address = String.format("%0" + (size) + "d", Integer.parseInt(address));
+        }
+        return address;
     }
 
     private String getOpcodeString(int opcode) {
@@ -148,27 +171,31 @@ public class Parser {
          * map the instruction to binary of type I
          * format:
          * opcode rs rt immediate
+         * convert the immediate to signed binary
          */
         int opcode = getOpcode(instruction[0]);
         int rs = getRegister(instruction[1]);
         int rt;
         int immediate;
+        int immediateSize = INSTRUCTION_SIZE - OPCODE_SIZE - 2 * REGISTER_SIZE;
         if (opcode == 3) { // If opcode is 3, then the instruction is `MOVI` which has no rt, always 0
             rt = 0;
-            immediate = getImmediate(instruction[2]);
+            immediate = getImmediateInt(instruction[2], OPCODE_SIZE + 2 * REGISTER_SIZE - 1,
+                    immediateSize);
         } else {
             rt = getRegister(instruction[2]);
-            immediate = getImmediate(instruction[3]);
+            immediate = getImmediateInt(instruction[3], OPCODE_SIZE + 2 * REGISTER_SIZE - 1,
+                    immediateSize);
         }
         int binary = (opcode << INSTRUCTION_SIZE - OPCODE_SIZE);
         binary |= (rs << INSTRUCTION_SIZE - OPCODE_SIZE - REGISTER_SIZE);
-        binary |= (rt << INSTRUCTION_SIZE - OPCODE_SIZE - 2 * REGISTER_SIZE);
+        binary |= (rt << immediateSize);
         binary |= immediate;
-        return getBinary(binary);
+        return Binary.intToBinaryString(binary);
     }
 
-    private int getImmediate(String string) {
-        return Integer.parseInt(string);
+    private int getImmediateInt(String string, int i, int j) {
+        return Binary.binaryStringtoInt(getImmediate(string, i, j));
     }
 
     private String getRType(String[] instruction) throws InvalidRegisterException {
@@ -203,7 +230,7 @@ public class Parser {
         binary |= rt << INSTRUCTION_SIZE - OPCODE_SIZE - 2 * REGISTER_SIZE;
         binary |= rd << INSTRUCTION_SIZE - OPCODE_SIZE - 3 * REGISTER_SIZE;
         binary |= shamt;
-        return getBinary(binary);
+        return Binary.intToBinaryString(binary);
     }
 
     private int getRegister(String string) throws InvalidRegisterException {
@@ -216,7 +243,7 @@ public class Parser {
             throw new InvalidRegisterException("Invalid register: " + string);
         }
         int registerNumber = Integer.parseInt(string.substring(2));
-        if (registerNumber < 0 || registerNumber > 31) {
+        if (registerNumber < 0 || registerNumber > MAX_REGISTER_VALUE) {
             throw new InvalidRegisterException("Invalid register: " + string);
         }
         return registerNumber;
@@ -280,14 +307,6 @@ public class Parser {
 
     public List<String> getBinaryInstructions() {
         return this.binaryInstructions;
-    }
-
-    private String getBinary(int sID) {
-        /*
-         * java's toBinaryString() method doesn't return the whole binary
-         * so this a workaround to get the binary string
-         */
-        return Long.toBinaryString(sID & 0xffffffffL | 0x100000000L).substring(1);
     }
 
 }

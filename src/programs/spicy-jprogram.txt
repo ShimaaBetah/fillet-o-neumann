@@ -1,4 +1,5 @@
-JMP    -2 # jump to -2 : )
-JMP -1
+JMP    2 # jump to 2 :)
+Exit: # comment
+JMP Exit
 # HBD
 JMP 20
