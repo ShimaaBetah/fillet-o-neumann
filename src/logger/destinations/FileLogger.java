@@ -14,11 +14,15 @@ public class FileLogger implements LogObserver {
     @Override
     public void log(String message) {
         try {
-            bufferedWriter.write(message);
+            bufferedWriter.write(removeColor(message));
             bufferedWriter.newLine();
             bufferedWriter.flush();
         } catch (IOException e) {
             e.printStackTrace();
         }
+    }
+
+    private String removeColor(String message) {
+        return message.replaceAll("(\\033\\[[0-1];3[0-9]m)|(\033\\[0m)", "");
     }
 }
