@@ -17,7 +17,7 @@ public abstract class Instruction {
         this.binaryInstruction = binaryInstruction;
     }
 
-    public int getPc() {
+    public int getPC() {
         return pc;
     }
 

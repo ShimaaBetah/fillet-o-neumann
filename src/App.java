@@ -9,7 +9,6 @@ import memory.MainMemory;
 import memory.Registers;
 import utils.Program;
 import logger.Logger;
-import logger.services.SegmentType;
 
 public class App {
 
@@ -21,8 +20,8 @@ public class App {
 
     private static final int PIPELINE_SIZE = 7;
     private static final int FETCH_POSITION = 0;
-    private static final int DECODE_POSITION1 = 1;
-    private static final int DECODE_POSITION2 = 2;
+    private static final int DECODE_POSITION = 1;
+    private static final int READ_REGISTERS_POSITION = 2;
     private static final int EXECUTE_POSITION1 = 3;
     private static final int EXECUTE_POSITION2 = 4;
     private static final int MEMORY_POSITION = 5;
@@ -44,11 +43,10 @@ public class App {
         }
         // adding halt instruction
         MainMemory.getInstance().storeInstruction(program.length, -1);
-        Logger.log(MainMemory.getInstance(), 0, program.length - 1, SegmentType.INSTRUCTION);
     }
 
     public void fetch() throws AddressOutOfRangeException {
-        if(halt== true) 
+        if (halt == true)
             return;
         Registers registers = Registers.getInstance();
         MainMemory memory = MainMemory.getInstance();
@@ -57,45 +55,40 @@ public class App {
         int binaryInstruction = memory.loadInstruction(pc);
         registers.incrementPC();
         pipeline[FETCH_POSITION] = instructionFactory.create(binaryInstruction);
-        if(pipeline[FETCH_POSITION] == null) {
+        if (pipeline[FETCH_POSITION] == null) {
             halt = true;
             return;
         }
-        System.out.println("Fetching instruction: " + (pipeline[FETCH_POSITION].getPc() ));
+        System.out.println("Fetching instruction: " + (pipeline[FETCH_POSITION].getPC()));
 
     }
 
-    public void decode() {
-        if (pipeline[DECODE_POSITION1] == null && pipeline[DECODE_POSITION2] == null) {
-            return;
-        } else if (pipeline[DECODE_POSITION1] != null) {
-            System.out.println("Decoding instruction: " + (pipeline[DECODE_POSITION1].getPc() ));
-            pipeline[DECODE_POSITION1].decode();
-        } else {
-            System.out.println("Decoding instruction: " + (pipeline[DECODE_POSITION2].getPc() ));
-            pipeline[DECODE_POSITION2].decode();
+    public void decode() throws InvalidRegisterNumberException {
+        if (pipeline[DECODE_POSITION] != null) {
+            System.out.println("Decoding instruction: " + (pipeline[DECODE_POSITION].getPC()));
+            pipeline[DECODE_POSITION].decode();
+        } else if (pipeline[READ_REGISTERS_POSITION] != null) {
+            System.out.println("Decoding instruction: " + (pipeline[READ_REGISTERS_POSITION].getPC()));
+            pipeline[READ_REGISTERS_POSITION].readRegisters();
         }
     }
 
     public void execute() throws Exception {
-        if (pipeline[EXECUTE_POSITION1] == null && pipeline[EXECUTE_POSITION2] == null) {
-            return;
-        } else if (pipeline[EXECUTE_POSITION1] != null) {
-            System.out.println("Executing instruction: " + (pipeline[EXECUTE_POSITION1].getPc() ));
+        if (pipeline[EXECUTE_POSITION1] != null) {
+            System.out.println("Executing instruction: " + (pipeline[EXECUTE_POSITION1].getPC()));
             pipeline[EXECUTE_POSITION1].execute();
-        } else {
-            System.out.println("Executing instruction: " + (pipeline[EXECUTE_POSITION2].getPc() ));
+        } else if (pipeline[EXECUTE_POSITION2] != null) {
+            System.out.println("Executing instruction: " + (pipeline[EXECUTE_POSITION2].getPC()));
             pipeline[EXECUTE_POSITION2].execute();
         }
     }
-    
-    public void memoryAccess() throws InvalidRegisterNumberException, AddressOutOfRangeException {
 
+    public void memoryAccess() throws InvalidRegisterNumberException, AddressOutOfRangeException {
         if (pipeline[FETCH_POSITION] != null || pipeline[MEMORY_POSITION] == null) {
             return;
         }
         pipeline[MEMORY_POSITION].memoryAccess();
-        System.out.println("Memory accessing instruction: " + (pipeline[MEMORY_POSITION].getPc() ));
+        System.out.println("Memory accessing instruction: " + (pipeline[MEMORY_POSITION].getPC()));
     }
 
     public void writeBack() throws Exception {
@@ -103,7 +96,7 @@ public class App {
             return;
         }
         pipeline[WRITE_BACK_POSITION].writeBack();
-        System.out.println("Writing back instruction: " + (pipeline[WRITE_BACK_POSITION].getPc() ));
+        System.out.println("Writing back instruction: " + (pipeline[WRITE_BACK_POSITION].getPC()));
     }
 
     public void updatePipeline() {
@@ -144,13 +137,16 @@ public class App {
         String path = "src/programs/program1.txt";
         App app = new App(path);
 
-       do{
+        do {
             try {
                 app.nextCycle();
             } catch (Exception e) {
-                // TODO Auto-generated catch block
                 e.printStackTrace();
             }
-        }while(app.hasMoreCycles());
+        } while (app.hasMoreCycles());
+
+//        Logger.logMainMemory(MainMemory.getInstance());
+        Logger.log(MainMemory.getInstance(), 0, 5);
+        Logger.logRegisters(Registers.getInstance());
     }
 }
