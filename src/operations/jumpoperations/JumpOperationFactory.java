@@ -12,14 +12,14 @@ public class JumpOperationFactory extends OperationFactory {
     private static final int ADDRESS_RANGE_END = 31;
 
     @Override
-    public Operation create(int binaryInstruction) {
+    public Operation create(int binaryInstruction, int pc) {
         int opcode = Decoder.getIntValueOfBinarySegment(binaryInstruction, OPCODE_RANGE_START, OPCODE_RANGE_END);
         int address = Decoder.getIntValueOfBinarySegment(binaryInstruction, ADDRESS_RANGE_START, ADDRESS_RANGE_END);
 
         Operation operation = null;
 
         if (getOperationType(opcode) == OperationType.JUMP) {
-            operation = new Jump(opcode, address);
+            operation = new Jump(opcode, address, pc);
         }
 
         return operation;

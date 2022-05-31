@@ -1,2 +1,2 @@
 MOVI  $R1   1
-MOVR   $R1 $R2    120
+MOVR   $R1 $R2  -1

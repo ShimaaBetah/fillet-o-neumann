@@ -10,14 +10,23 @@ public abstract class Instruction {
     private final int binaryInstruction;
     private Operation operation;
     private OperationFactory operationFactory;
+    private int pc;
 
 
     protected Instruction(int binaryInstruction) {
         this.binaryInstruction = binaryInstruction;
     }
 
+    public int getPc() {
+        return pc;
+    }
+
+    public void setPc(int pc) {
+        this.pc = pc;
+    }
+
     public void decode() {
-        this.operation = this.operationFactory.create(this.binaryInstruction);
+        this.operation = this.operationFactory.create(this.binaryInstruction, this.pc);
     }
 
     public void execute() throws Exception {

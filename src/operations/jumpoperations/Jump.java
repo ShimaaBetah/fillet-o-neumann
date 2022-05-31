@@ -5,14 +5,16 @@ import exceptions.InvalidRegisterNumberException;
 import memory.Registers;
 
 public class Jump extends JumpOperation {
-    public Jump(int opcode, int address) {
+    private int pc;
+
+    public Jump(int opcode, int address,int pc) {
         super(opcode, address);
+        this.pc = pc;
     }
 
     @Override
     public void execute() throws Exception {
         Registers registers = Registers.getInstance();
-        int pc = registers.getPC();
         int address = getAddress();
         int newPC = (pc & 0xF0000000) | address;
         registers.setPC(newPC);

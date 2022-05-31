@@ -16,7 +16,7 @@ public class ImmediateOperationFactory extends OperationFactory {
     private static final int IMMEDIATE_VALUE_RANGE_END = 31;
 
     @Override
-    public Operation create(int binaryInstruction) {
+    public Operation create(int binaryInstruction,int pc) {
         int opcode = Decoder.getIntValueOfBinarySegment(binaryInstruction, OPCODE_RANGE_START, OPCODE_RANGE_END);
         int destinationRegister = Decoder.getIntValueOfBinarySegment(binaryInstruction, DESTINATION_REGISTER_RANGE_START, DESTINATION_REGISTER_RANGE_END);
         int sourceRegister = Decoder.getIntValueOfBinarySegment(binaryInstruction, FIRST_OPERAND_RANGE_START, FIRST_OPERAND_RANGE_END);
@@ -27,7 +27,7 @@ public class ImmediateOperationFactory extends OperationFactory {
         if (getOperationType(opcode) == OperationType.MOVE_IMMEDIATE) {
             operation = new MoveImmediate(opcode, destinationRegister, sourceRegister, immediateValue);
         } else if (getOperationType(opcode) == OperationType.JUMP_IF_EQUAL) {
-            operation = new JumpIfEqual(opcode, destinationRegister, sourceRegister, immediateValue);
+            operation = new JumpIfEqual(opcode, destinationRegister, sourceRegister, immediateValue,pc);
         } else if (getOperationType(opcode) == OperationType.XOR_IMMEDIATE) {
             operation = new XORImmediate(opcode, destinationRegister, sourceRegister, immediateValue);
         } else if (getOperationType(opcode) == OperationType.MOVE_TO_REGISTER) {

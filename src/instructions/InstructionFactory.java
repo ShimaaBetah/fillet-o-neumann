@@ -4,6 +4,8 @@ import utils.Decoder;
 
 import java.util.HashMap;
 
+import memory.Registers;
+
 public class InstructionFactory {
     private static final int OPCODE_RANGE_START = 0;
     private static final int OPCODE_RANGE_END = 3;
@@ -35,6 +37,8 @@ public class InstructionFactory {
         } else if (instructionType == InstructionType.J_TYPE) {
             instruction = new JumpInstruction(binaryInstruction);
         }
+        if (instruction != null)
+            instruction.setPc(Registers.getInstance().getPC());
         return instruction;
     }
 

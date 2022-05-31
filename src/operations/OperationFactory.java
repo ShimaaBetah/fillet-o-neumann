@@ -20,7 +20,7 @@ public abstract class OperationFactory {
         opcodeToOperation.put(11, OperationType.MOVE_TO_MEMORY);
     }
 
-    public abstract Operation create(int binaryInstruction);
+    public abstract Operation create(int binaryInstruction, int pc);
 
     public OperationType getOperationType(int opcode) {
         return opcodeToOperation.get(opcode);

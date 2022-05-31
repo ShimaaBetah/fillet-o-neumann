@@ -1,0 +1,6 @@
+MOVI $R1 5
+MOVI $R2 6
+MOVI $R3 7
+MOVI $R4 8
+ADD $R5 $R1 $R2
+

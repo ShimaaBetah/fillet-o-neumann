@@ -16,6 +16,7 @@ public abstract class ImmediateOperation implements Operation {
         this.immediateValue = immediateValue;
     }
 
+    
     public int getOpcode() {
         return opcode;
     }

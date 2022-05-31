@@ -88,7 +88,7 @@ public class ParserTest {
     @Test
     public void testSpicyI2() {
         assertEquals(
-                "10100000100010000000000001111000",
+                "10100000100010111111111111111111",
                 parserI.getBinaryInstructions().get(1));
     }
 
@@ -121,8 +121,7 @@ public class ParserTest {
                 new Parser(path + "negative-jump.txt");
             }
         });
-        {
-        }
+        
     }
 
     @Test

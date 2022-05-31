@@ -18,7 +18,7 @@ public class RegisterOperationFactory extends OperationFactory {
     private static final int SHIFT_AMOUNT_RANGE_END = 31;
 
     @Override
-    public Operation create(int binaryInstruction) {
+    public Operation create(int binaryInstruction,int pc) {
         int opcode = Decoder.getIntValueOfBinarySegment(binaryInstruction, OPCODE_RANGE_START, OPCODE_RANGE_END);
         int destinationRegister = Decoder.getIntValueOfBinarySegment(binaryInstruction, DESTINATION_REGISTER_RANGE_START, DESTINATION_REGISTER_RANGE_END);
         int firstRegister = Decoder.getIntValueOfBinarySegment(binaryInstruction, FIRST_REGISTER_RANGE_START, FIRST_REGISTER_RANGE_END);
