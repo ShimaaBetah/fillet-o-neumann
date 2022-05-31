@@ -1,5 +1,6 @@
 package operations.jumpoperations;
 
+import exceptions.InvalidRegisterNumberException;
 import operations.Operation;
 
 public abstract class JumpOperation implements Operation {
@@ -9,6 +10,12 @@ public abstract class JumpOperation implements Operation {
     protected JumpOperation(int opcode, int address) {
         this.opcode = opcode;
         this.address = address;
+    }
+
+
+    @Override
+    public void readRegisters() throws InvalidRegisterNumberException {
+        // No read registers
     }
 
     public int getOpcode() {

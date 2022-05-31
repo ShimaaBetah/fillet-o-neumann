@@ -8,7 +8,7 @@ import org.junit.Test;
 import static org.junit.Assert.assertEquals;
 import static utils.Decoder.binaryToInt;
 
-public class RInstructionTest {
+public class RegisterInstructionTest {
 
     private static final String TEST_ADD_INSTRUCTION = "00000000100010000110000000000000";
     private static final String TEST_SUBTRACT_INSTRUCTION = "00010000100010000110000000000001";
@@ -84,6 +84,7 @@ public class RInstructionTest {
         Registers registers = Registers.getInstance();
         registers.setRegister(operation.getFirstRegister(), 1);
         registers.setRegister(operation.getSecondRegister(), 2);
+        instruction.readRegisters();
         instruction.execute();
         instruction.writeBack();
         assertEquals(3, registers.getRegister(operation.getDestinationRegister()));
@@ -97,6 +98,7 @@ public class RInstructionTest {
         Registers registers = Registers.getInstance();
         registers.setRegister(operation.getFirstRegister(), 3);
         registers.setRegister(operation.getSecondRegister(), -8);
+        instruction.readRegisters();
         instruction.execute();
         instruction.writeBack();
         assertEquals(-5, registers.getRegister(operation.getDestinationRegister()));
@@ -118,6 +120,7 @@ public class RInstructionTest {
         Registers registers = Registers.getInstance();
         registers.setRegister(operation.getFirstRegister(), 2);
         registers.setRegister(operation.getSecondRegister(), 1);
+        instruction.readRegisters();
         instruction.execute();
         instruction.writeBack();
         assertEquals(1, registers.getRegister(operation.getDestinationRegister()));
@@ -131,6 +134,7 @@ public class RInstructionTest {
         Registers registers = Registers.getInstance();
         registers.setRegister(operation.getFirstRegister(), 1);
         registers.setRegister(operation.getSecondRegister(), 2);
+        instruction.readRegisters();
         instruction.execute();
         instruction.writeBack();
         assertEquals(-1, registers.getRegister(operation.getDestinationRegister()));
@@ -144,6 +148,7 @@ public class RInstructionTest {
         Registers registers = Registers.getInstance();
         registers.setRegister(operation.getFirstRegister(), -80);
         registers.setRegister(operation.getSecondRegister(), 80);
+        instruction.readRegisters();
         instruction.execute();
         instruction.writeBack();
         assertEquals(-160, registers.getRegister(operation.getDestinationRegister()));
@@ -178,6 +183,7 @@ public class RInstructionTest {
         Registers registers = Registers.getInstance();
         registers.setRegister(operation.getFirstRegister(), 89);
         registers.setRegister(operation.getSecondRegister(), 70);
+        instruction.readRegisters();
         instruction.execute();
         instruction.writeBack();
         assertEquals(6230, registers.getRegister(operation.getDestinationRegister()));
@@ -191,6 +197,7 @@ public class RInstructionTest {
         Registers registers = Registers.getInstance();
         registers.setRegister(operation.getFirstRegister(), -8);
         registers.setRegister(operation.getSecondRegister(), 1);
+        instruction.readRegisters();
         instruction.execute();
         instruction.writeBack();
         assertEquals(-8, registers.getRegister(operation.getDestinationRegister()));
@@ -225,6 +232,7 @@ public class RInstructionTest {
         Registers registers = Registers.getInstance();
         registers.setRegister(operation.getFirstRegister(), 7);
         registers.setRegister(operation.getSecondRegister(), 11);
+        instruction.readRegisters();
         instruction.execute();
         instruction.writeBack();
         assertEquals(3, registers.getRegister(operation.getDestinationRegister()));
@@ -251,6 +259,7 @@ public class RInstructionTest {
         Registers registers = Registers.getInstance();
         registers.setRegister(operation.getFirstRegister(), -11);
         registers.setRegister(operation.getSecondRegister(), -1);
+        instruction.readRegisters();
         instruction.execute();
         instruction.writeBack();
         assertEquals(-11, registers.getRegister(operation.getDestinationRegister()));
@@ -271,6 +280,7 @@ public class RInstructionTest {
         RegisterOperation operation = (RegisterOperation) instruction.getOperation();
         Registers registers = Registers.getInstance();
         registers.setRegister(operation.getFirstRegister(), 7);
+        instruction.readRegisters();
         instruction.execute();
         instruction.writeBack();
         assertEquals(28, registers.getRegister(operation.getDestinationRegister()));
@@ -291,6 +301,7 @@ public class RInstructionTest {
         RegisterOperation operation = (RegisterOperation) instruction.getOperation();
         Registers registers = Registers.getInstance();
         registers.setRegister(operation.getFirstRegister(), 7);
+        instruction.readRegisters();
         instruction.execute();
         instruction.writeBack();
         assertEquals(3, registers.getRegister(operation.getDestinationRegister()));
@@ -303,6 +314,7 @@ public class RInstructionTest {
         RegisterOperation operation = (RegisterOperation) instruction.getOperation();
         Registers registers = Registers.getInstance();
         registers.setRegister(operation.getFirstRegister(), -1);
+        instruction.readRegisters();
         instruction.execute();
         instruction.writeBack();
         assertEquals(Integer.MAX_VALUE, registers.getRegister(operation.getDestinationRegister()));

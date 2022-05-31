@@ -11,10 +11,8 @@ public class LogicalShiftRight extends RegisterOperation {
 
     @Override
     public void execute() throws InvalidRegisterNumberException {
-        Registers registers = Registers.getInstance();
-        int firstOperand = registers.getRegister(getFirstRegister());
         int shiftAmount = getShiftAmount();
-        setResult(firstOperand >>> shiftAmount);
+        setResult(getFirstOperand() >>> shiftAmount);
     }
 }
     

@@ -11,10 +11,7 @@ public class And extends RegisterOperation {
 
     @Override
     public void execute() throws InvalidRegisterNumberException {
-        Registers registers = Registers.getInstance();
-        int firstOperand = registers.getRegister(getFirstRegister());
-        int secondOperand = registers.getRegister(getSecondRegister());
-        setResult(firstOperand & secondOperand);
+        setResult(getFirstOperand() & getSecondOperand());
     }
 }
     

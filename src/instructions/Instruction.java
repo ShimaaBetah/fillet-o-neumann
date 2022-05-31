@@ -29,6 +29,10 @@ public abstract class Instruction {
         this.operation = this.operationFactory.create(this.binaryInstruction, this.pc);
     }
 
+    public void readRegisters() throws InvalidRegisterNumberException {
+        this.operation.readRegisters();
+    }
+
     public void execute() throws Exception {
         operation.execute();
     }

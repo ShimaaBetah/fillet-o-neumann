@@ -11,9 +11,7 @@ public class XORImmediate extends ImmediateOperation {
 
     @Override
     public void execute() throws Exception {
-        Registers registers = Registers.getInstance();
-        int sourceRegisterValue = registers.getRegister(getSourceRegister());
-        result = sourceRegisterValue ^ getImmediateValue();
+        result = getSourceOperand() ^ getImmediateValue();
     }
 
     @Override

@@ -131,6 +131,7 @@ public class ImmediateInstructionTest {
 
         ImmediateInstruction instruction = new ImmediateInstruction(binaryToInt(TEST_JUMP_IF_EQUAL_INSTRUCTION_CASE_NOT_EQUAL));
         instruction.decode();
+        instruction.readRegisters();
         instruction.execute();
         instruction.memoryAccess();
         instruction.writeBack();
@@ -162,7 +163,7 @@ public class ImmediateInstructionTest {
         registers.setRegister(destinationRegister, 0);
 
         int xorResult = 1 ^ immediateValue;
-
+        instruction.readRegisters();
         instruction.execute();
         instruction.memoryAccess(); // No memory access
         instruction.writeBack();
@@ -230,6 +231,7 @@ public class ImmediateInstructionTest {
         memory.storeWord(address, 0);
         registers.setRegister(destinationRegister, 5);
 
+        instruction.readRegisters();
         instruction.execute();
         instruction.memoryAccess();
         instruction.writeBack();

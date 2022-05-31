@@ -6,26 +6,21 @@ import memory.MainMemory;
 import memory.Registers;
 
 public class MoveToMemory extends ImmediateOperation {
+    private int address;
+
     public MoveToMemory(int opcode, int destinationRegister, int sourceRegister, int immediateValue) {
         super(opcode, destinationRegister, sourceRegister, immediateValue);
     }
 
     @Override
     public void execute() throws Exception {
-        // No execution
+        address = getSourceOperand() + getImmediateValue();
     }
 
     @Override
     public void memoryAccess() throws InvalidRegisterNumberException, AddressOutOfRangeException {
-        Registers registers = Registers.getInstance();
         MainMemory memory = MainMemory.getInstance();
-
-        int destinationRegisterValue = registers.getRegister(getDestinationRegister());
-        int sourceRegisterValue = registers.getRegister(getSourceRegister());
-        int immediateValue = getImmediateValue();
-        int address = sourceRegisterValue + immediateValue;
-
-        memory.storeWord(address, destinationRegisterValue);
+        memory.storeWord(address, getDestinationOperand());
     }
 
     @Override

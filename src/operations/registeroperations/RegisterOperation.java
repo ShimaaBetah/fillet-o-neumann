@@ -10,6 +10,10 @@ public abstract class RegisterOperation implements Operation {
     private final int firstRegister;
     private final int secondRegister;
     private final int shiftAmount;
+
+    private int firstOperand;
+
+    private int secondOperand;
     private int result;
 
     protected RegisterOperation(int opcode, int destinationRegister, int firstRegister, int secondRegister, int shiftAmount) {
@@ -18,6 +22,13 @@ public abstract class RegisterOperation implements Operation {
         this.firstRegister = firstRegister;
         this.secondRegister = secondRegister;
         this.shiftAmount = shiftAmount;
+    }
+
+    @Override
+    public void readRegisters() throws InvalidRegisterNumberException {
+        Registers registers = Registers.getInstance();
+        firstOperand = registers.getRegister(firstRegister);
+        secondOperand = registers.getRegister(secondRegister);
     }
 
     @Override
@@ -59,4 +70,11 @@ public abstract class RegisterOperation implements Operation {
         return result;
     }
 
+    public int getFirstOperand() {
+        return firstOperand;
+    }
+
+    public int getSecondOperand() {
+        return secondOperand;
+    }
 }
