@@ -3,9 +3,8 @@ package operations.immediateoperations;
 import exceptions.AddressOutOfRangeException;
 import exceptions.InvalidRegisterNumberException;
 import memory.Registers;
-import operations.OperationWithPc;
 
-public class JumpIfEqual extends ImmediateOperation implements OperationWithPc {
+public class JumpIfEqual extends ImmediateOperation {
     private int pc;
     public JumpIfEqual(int opcode, int destinationRegister, int sourceRegister, int immediateValue,int pc) {
         super(opcode, destinationRegister, sourceRegister, immediateValue);
@@ -40,9 +39,4 @@ public class JumpIfEqual extends ImmediateOperation implements OperationWithPc {
         // No write back
     }
 
-    @Override
-    public void execute(int pc) throws Exception {
-        // TODO Auto-generated method stub
-       
-    }
 }
