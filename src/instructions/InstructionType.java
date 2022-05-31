@@ -1,5 +1,9 @@
 package instructions;
 
 public enum InstructionType {
-    R, I, J
+
+    R_TYPE,
+    I_TYPE,
+    J_TYPE
+
 }
