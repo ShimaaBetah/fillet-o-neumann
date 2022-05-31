@@ -1,4 +1,4 @@
-package utlis;
+package utils;
 
 import java.io.BufferedReader;
 import java.io.File;
@@ -99,11 +99,11 @@ public class Parser {
 
             InstructionType instructionType = getInstructionType(opcode);
             switch (instructionType) {
-                case R ->
+                case R_TYPE->
                     this.binaryInstructions.add(getRType(instruction));
-                case I ->
+                case I_TYPE ->
                     this.binaryInstructions.add(getIType(instruction));
-                case J ->
+                case J_TYPE ->
                     this.binaryInstructions.add(getJType(instruction));
                 default ->
                     throw new InvalidInstructionException(INVALID_INSTRUCTION + instruction[0]);
@@ -255,19 +255,19 @@ public class Parser {
          */
         switch (opcode) {
             case 3:
-                return InstructionType.I;
+                return InstructionType.I_TYPE;
             case 4:
-                return InstructionType.I;
+                return InstructionType.I_TYPE;
             case 6:
-                return InstructionType.I;
+                return InstructionType.I_TYPE;
             case 7:
-                return InstructionType.J;
+                return InstructionType.J_TYPE;
             case 9:
-                return InstructionType.I;
+                return InstructionType.I_TYPE;
             case 10:
-                return InstructionType.I;
+                return InstructionType.I_TYPE;
             default:
-                return InstructionType.R;
+                return InstructionType.R_TYPE;
         }
     }
 

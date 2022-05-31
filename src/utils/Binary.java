@@ -1,4 +1,4 @@
-package utlis;
+package utils;
 
 public class Binary {
     private Binary() {

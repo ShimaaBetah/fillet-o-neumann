@@ -10,8 +10,8 @@ import org.junit.function.ThrowingRunnable;
 
 import exceptions.InvalidInstructionException;
 import exceptions.InvalidRegisterException;
-import utlis.Parser;
-import utlis.Path;
+import utils.Parser;
+import utils.Path;
 
 public class ParserTest {
     String path = Path.PATH + "fillet-o-neumann/src/programs/";
