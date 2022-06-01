@@ -133,21 +133,23 @@ public class Parser {
         return binary.toString();
     }
 
-    private String getImmediate(String instruction, int offset, int size) {
+    private String getImmediate(String stringImmediate, int offset, int size) {
         /*
          * This method converts the immediate to binary.
          * It also checks if the immediate is valid.
          * The immediate is a signed integer.
          */
         String address;
-        if (instruction.startsWith("-")) {
-            address = Integer.toBinaryString(Integer.parseInt(instruction)).substring(1);
+        if (stringImmediate.startsWith("-")) {
+            address = Integer.toBinaryString(Integer.parseInt(stringImmediate)).substring(1);
             // address is {size} bits, remove leading bits from the sign bit
             address = address.substring(offset);
         } else {
-            address = Integer.toBinaryString(Integer.parseInt(instruction));
+            address = Integer.toBinaryString(Integer.parseInt(stringImmediate));
             // pad with 0's to make it {size} bits
-            address = String.format("%0" + (size) + "d", Integer.parseInt(address));
+            for (int i = address.length(); i < size; i++) {
+                address = "0" + address;
+            }
         }
         return address;
     }
@@ -265,6 +267,8 @@ public class Parser {
             case 9:
                 return InstructionType.I_TYPE;
             case 10:
+                return InstructionType.I_TYPE;
+            case 11:
                 return InstructionType.I_TYPE;
             default:
                 return InstructionType.R_TYPE;
