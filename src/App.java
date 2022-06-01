@@ -5,8 +5,11 @@ import exceptions.InvalidRegisterException;
 import exceptions.InvalidRegisterNumberException;
 import instructions.Instruction;
 import instructions.InstructionFactory;
+import logger.services.SegmentType;
 import memory.MainMemory;
-import memory.Registers;
+import memory.RegisterFile;
+import operations.immediateoperations.JumpIfEqual;
+import operations.jumpoperations.Jump;
 import utils.Program;
 import logger.Logger;
 
@@ -46,39 +49,44 @@ public class App {
     }
 
     public void fetch() throws AddressOutOfRangeException {
-        if (halt == true)
-            return;
-        Registers registers = Registers.getInstance();
+        if (halt) return;
+        RegisterFile registerFile = RegisterFile.getInstance();
         MainMemory memory = MainMemory.getInstance();
 
-        int pc = registers.getPC();
+        int pc = registerFile.getPC();
         int binaryInstruction = memory.loadInstruction(pc);
-        registers.incrementPC();
+        registerFile.incrementPC();
         pipeline[FETCH_POSITION] = instructionFactory.create(binaryInstruction);
         if (pipeline[FETCH_POSITION] == null) {
             halt = true;
             return;
         }
-        System.out.println("Fetching instruction: " + (pipeline[FETCH_POSITION].getPC()));
-
     }
 
     public void decode() throws InvalidRegisterNumberException {
         if (pipeline[DECODE_POSITION] != null) {
-            System.out.println("Decoding instruction: " + (pipeline[DECODE_POSITION].getPC()));
             pipeline[DECODE_POSITION].decode();
         } else if (pipeline[READ_REGISTERS_POSITION] != null) {
-            System.out.println("Decoding instruction: " + (pipeline[READ_REGISTERS_POSITION].getPC()));
             pipeline[READ_REGISTERS_POSITION].readRegisters();
         }
     }
 
     public void execute() throws Exception {
-        if (pipeline[EXECUTE_POSITION1] != null) {
-            System.out.println("Executing instruction: " + (pipeline[EXECUTE_POSITION1].getPC()));
-            pipeline[EXECUTE_POSITION1].execute();
-        } else if (pipeline[EXECUTE_POSITION2] != null) {
-            System.out.println("Executing instruction: " + (pipeline[EXECUTE_POSITION2].getPC()));
+       if (pipeline[EXECUTE_POSITION2] != null) {
+
+            //TODO: needs some refactor
+            if (pipeline[EXECUTE_POSITION2].getOperation() instanceof Jump) {
+                for (int stage = FETCH_POSITION; stage < EXECUTE_POSITION2; stage++) {
+                    pipeline[stage] = null;
+                }
+            } else if (pipeline[EXECUTE_POSITION2].getOperation() instanceof JumpIfEqual) {
+                if (((JumpIfEqual) pipeline[EXECUTE_POSITION2].getOperation()).haveJumped()) {
+                    for (int stage = FETCH_POSITION; stage < EXECUTE_POSITION2; stage++) {
+                        pipeline[stage] = null;
+                    }
+                }
+            }
+
             pipeline[EXECUTE_POSITION2].execute();
         }
     }
@@ -88,7 +96,6 @@ public class App {
             return;
         }
         pipeline[MEMORY_POSITION].memoryAccess();
-        System.out.println("Memory accessing instruction: " + (pipeline[MEMORY_POSITION].getPC()));
     }
 
     public void writeBack() throws Exception {
@@ -96,7 +103,6 @@ public class App {
             return;
         }
         pipeline[WRITE_BACK_POSITION].writeBack();
-        System.out.println("Writing back instruction: " + (pipeline[WRITE_BACK_POSITION].getPC()));
     }
 
     public void updatePipeline() {
@@ -107,16 +113,17 @@ public class App {
     }
 
     public void nextCycle() throws Exception {
-        System.out.println("Cycle number: " + currentCycle);
         if (currentCycle % 2 == 1) {
             fetch();
         }
+        Logger.log(currentCycle, pipeline);
         decode();
         execute();
         memoryAccess();
         writeBack();
         updatePipeline();
         currentCycle++;
+        Logger.logln("");
     }
 
     public boolean hasMoreCycles() {
@@ -142,11 +149,11 @@ public class App {
                 app.nextCycle();
             } catch (Exception e) {
                 e.printStackTrace();
+                break;
             }
         } while (app.hasMoreCycles());
 
-//        Logger.logMainMemory(MainMemory.getInstance());
-        Logger.log(MainMemory.getInstance(), 0, 5);
-        Logger.logRegisters(Registers.getInstance());
+        Logger.log(MainMemory.getInstance());
+        Logger.log(RegisterFile.getInstance());
     }
 }
