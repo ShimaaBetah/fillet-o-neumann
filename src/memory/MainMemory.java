@@ -1,6 +1,8 @@
 package memory;
 
 import exceptions.AddressOutOfRangeException;
+import logger.Logger;
+import logger.services.ColorStringService;
 
 public class MainMemory {
     private int[] memory;
@@ -29,34 +31,6 @@ public class MainMemory {
         return instance;
     }
 
-    public void storeInstruction(int address, int instruction) throws AddressOutOfRangeException {
-        if (!inInstructionRange(address)) {
-            throw new AddressOutOfRangeException();
-        }
-        memory[address] = instruction;
-    }
-
-    public int loadInstruction(int address) throws AddressOutOfRangeException {
-        if (!inInstructionRange(address)) {
-            throw new AddressOutOfRangeException();
-        }
-        return memory[address];
-    }
-
-    public void storeData(int address, int data) throws AddressOutOfRangeException {
-        if (!inDataRange(address)) {
-            throw new AddressOutOfRangeException();
-        }
-        memory[address] = data;
-    }
-
-    public int loadData(int address) throws AddressOutOfRangeException {
-        if (!inDataRange(address)) {
-            throw new AddressOutOfRangeException();
-        }
-        return memory[address];
-    }
-
     public void storeWord(int address, int word) throws AddressOutOfRangeException {
         if (!inMemoryRange(address)) {
             throw new AddressOutOfRangeException();
@@ -69,6 +43,35 @@ public class MainMemory {
             throw new AddressOutOfRangeException();
         }
         return memory[address];
+    }
+
+    public void storeInstruction(int address, int instruction) throws AddressOutOfRangeException {
+        if (!inInstructionRange(address)) {
+            throw new AddressOutOfRangeException();
+        }
+        storeWord(address, instruction);
+    }
+
+    public int loadInstruction(int address) throws AddressOutOfRangeException {
+        if (!inInstructionRange(address)) {
+            throw new AddressOutOfRangeException();
+        }
+        return loadWord(address);
+    }
+
+    public void storeData(int address, int data) throws AddressOutOfRangeException {
+        if (!inDataRange(address)) {
+            throw new AddressOutOfRangeException();
+        }
+        storeWord(address, data);
+        Logger.logln(ColorStringService.color("Data stored at address " + address + " updated to " + data, ColorStringService.BLUE));
+    }
+
+    public int loadData(int address) throws AddressOutOfRangeException {
+        if (!inDataRange(address)) {
+            throw new AddressOutOfRangeException();
+        }
+        return loadWord(address);
     }
 
     public boolean inInstructionRange(int address) {
