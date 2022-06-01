@@ -21,7 +21,7 @@ public abstract class Instruction {
         return pc;
     }
 
-    public void setPc(int pc) {
+    public void setPC(int pc) {
         this.pc = pc;
     }
 

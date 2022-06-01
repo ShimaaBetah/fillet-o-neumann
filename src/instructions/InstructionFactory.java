@@ -4,7 +4,7 @@ import utils.Decoder;
 
 import java.util.HashMap;
 
-import memory.Registers;
+import memory.RegisterFile;
 
 public class InstructionFactory {
     private static final int OPCODE_RANGE_START = 0;
@@ -38,7 +38,7 @@ public class InstructionFactory {
             instruction = new JumpInstruction(binaryInstruction);
         }
         if (instruction != null)
-            instruction.setPc(Registers.getInstance().getPC());
+            instruction.setPC(RegisterFile.getInstance().getPC());
         return instruction;
     }
 
