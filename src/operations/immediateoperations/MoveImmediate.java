@@ -1,7 +1,7 @@
 package operations.immediateoperations;
 
 import exceptions.InvalidRegisterNumberException;
-import memory.Registers;
+import memory.RegisterFile;
 
 public class MoveImmediate extends ImmediateOperation {
 
@@ -22,7 +22,7 @@ public class MoveImmediate extends ImmediateOperation {
 
     @Override
     public void writeBack() throws InvalidRegisterNumberException {
-        Registers registers = Registers.getInstance();
-        registers.setRegister(getDestinationRegister(), getImmediateValue());
+        RegisterFile registerFile = RegisterFile.getInstance();
+        registerFile.setRegister(getDestinationRegister(), getImmediateValue());
     }
 }

@@ -3,7 +3,6 @@ package operations.immediateoperations;
 import exceptions.AddressOutOfRangeException;
 import exceptions.InvalidRegisterNumberException;
 import memory.MainMemory;
-import memory.Registers;
 
 public class MoveToMemory extends ImmediateOperation {
     private int address;
@@ -20,7 +19,7 @@ public class MoveToMemory extends ImmediateOperation {
     @Override
     public void memoryAccess() throws InvalidRegisterNumberException, AddressOutOfRangeException {
         MainMemory memory = MainMemory.getInstance();
-        memory.storeWord(address, getDestinationOperand());
+        memory.storeData(address, getDestinationOperand());
     }
 
     @Override

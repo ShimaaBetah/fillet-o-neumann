@@ -2,10 +2,11 @@ package operations.immediateoperations;
 
 import exceptions.AddressOutOfRangeException;
 import exceptions.InvalidRegisterNumberException;
-import memory.Registers;
+import memory.RegisterFile;
 
 public class JumpIfEqual extends ImmediateOperation {
     private int currentPC;
+    private boolean jumped;
     public JumpIfEqual(int opcode, int destinationRegister, int sourceRegister, int immediateValue, int pc) {
         super(opcode, destinationRegister, sourceRegister, immediateValue);
         this.currentPC = pc;
@@ -13,9 +14,10 @@ public class JumpIfEqual extends ImmediateOperation {
 
     @Override
     public void execute() throws InvalidRegisterNumberException, AddressOutOfRangeException {
-        Registers registers = Registers.getInstance();
+        RegisterFile registerFile = RegisterFile.getInstance();
         if (getSourceOperand() == getDestinationOperand()) {
-            registers.setPC(this.currentPC + getImmediateValue());
+            registerFile.setPC(this.currentPC + getImmediateValue());
+            jumped = true;
         }
     }
 
@@ -27,6 +29,10 @@ public class JumpIfEqual extends ImmediateOperation {
     @Override
     public void writeBack() throws InvalidRegisterNumberException {
         // No write back
+    }
+
+    public boolean haveJumped() {
+        return jumped;
     }
 
 }

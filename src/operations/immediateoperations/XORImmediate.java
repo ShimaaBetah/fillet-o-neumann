@@ -1,6 +1,6 @@
 package operations.immediateoperations;
 
-import memory.Registers;
+import memory.RegisterFile;
 
 public class XORImmediate extends ImmediateOperation {
     private int result;
@@ -21,7 +21,7 @@ public class XORImmediate extends ImmediateOperation {
 
     @Override
     public void writeBack() throws Exception {
-        Registers registers = Registers.getInstance();
-        registers.setRegister(getDestinationRegister(), result);
+        RegisterFile registerFile = RegisterFile.getInstance();
+        registerFile.setRegister(getDestinationRegister(), result);
     }
 }

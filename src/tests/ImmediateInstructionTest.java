@@ -2,7 +2,7 @@ package tests;
 
 import instructions.ImmediateInstruction;
 import memory.MainMemory;
-import memory.Registers;
+import memory.RegisterFile;
 import operations.immediateoperations.*;
 import org.junit.Assert;
 import org.junit.Test;
@@ -66,14 +66,14 @@ public class ImmediateInstructionTest {
         ImmediateOperation operation = (ImmediateOperation) instruction.getOperation();
         int destinationRegister = operation.getDestinationRegister();
 
-        Registers registers = Registers.getInstance();
-        registers.setRegister(destinationRegister, 0);
+        RegisterFile registerFile = RegisterFile.getInstance();
+        registerFile.setRegister(destinationRegister, 0);
 
         instruction.execute(); // No execution
         instruction.memoryAccess(); // No memory access
         instruction.writeBack();
 
-        Assert.assertEquals(5, registers.getRegister(destinationRegister));
+        Assert.assertEquals(5, registerFile.getRegister(destinationRegister));
     }
 
     @Test 
@@ -92,14 +92,14 @@ public class ImmediateInstructionTest {
         ImmediateOperation operation = (ImmediateOperation) instruction.getOperation();
         int destinationRegister = operation.getDestinationRegister();
 
-        Registers registers = Registers.getInstance();
-        registers.setRegister(destinationRegister, 0);
+        RegisterFile registerFile = RegisterFile.getInstance();
+        registerFile.setRegister(destinationRegister, 0);
 
         instruction.execute(); // No execution
         instruction.memoryAccess(); // No memory access
         instruction.writeBack();
 
-        Assert.assertEquals(-131072, registers.getRegister(destinationRegister));
+        Assert.assertEquals(-131072, registerFile.getRegister(destinationRegister));
     }
 
     @Test
@@ -112,8 +112,8 @@ public class ImmediateInstructionTest {
 
     @Test
     public void testJumpIfEqualInstructionCaseEqual() throws Exception {
-        Registers registers = Registers.getInstance();
-        registers.setPC(0);
+        RegisterFile registerFile = RegisterFile.getInstance();
+        registerFile.setPC(0);
 
         ImmediateInstruction instruction = new ImmediateInstruction(binaryToInt(TEST_JUMP_IF_EQUAL_INSTRUCTION_CASE_EQUAL));
         instruction.decode();
@@ -121,13 +121,13 @@ public class ImmediateInstructionTest {
         instruction.memoryAccess();
         instruction.writeBack();
 
-        Assert.assertEquals(5, registers.getPC());
+        Assert.assertEquals(5, registerFile.getPC());
     }
 
     @Test
     public void testJumpIfEqualInstructionCaseNotEqual() throws Exception {
-        Registers registers = Registers.getInstance();
-        registers.setPC(0);
+        RegisterFile registerFile = RegisterFile.getInstance();
+        registerFile.setPC(0);
 
         ImmediateInstruction instruction = new ImmediateInstruction(binaryToInt(TEST_JUMP_IF_EQUAL_INSTRUCTION_CASE_NOT_EQUAL));
         instruction.decode();
@@ -136,7 +136,7 @@ public class ImmediateInstructionTest {
         instruction.memoryAccess();
         instruction.writeBack();
 
-        Assert.assertEquals(0, registers.getPC());
+        Assert.assertEquals(0, registerFile.getPC());
     }
 
     @Test
@@ -153,14 +153,14 @@ public class ImmediateInstructionTest {
         instruction.decode();
         ImmediateOperation operation = (ImmediateOperation) instruction.getOperation();
 
-        Registers registers = Registers.getInstance();
+        RegisterFile registerFile = RegisterFile.getInstance();
 
         int destinationRegister = operation.getDestinationRegister();
         int sourceRegister = operation.getSourceRegister();
         int immediateValue = operation.getImmediateValue();
 
-        registers.setRegister(sourceRegister, 1);
-        registers.setRegister(destinationRegister, 0);
+        registerFile.setRegister(sourceRegister, 1);
+        registerFile.setRegister(destinationRegister, 0);
 
         int xorResult = 1 ^ immediateValue;
         instruction.readRegisters();
@@ -168,7 +168,7 @@ public class ImmediateInstructionTest {
         instruction.memoryAccess(); // No memory access
         instruction.writeBack();
 
-        Assert.assertEquals(xorResult, registers.getRegister(destinationRegister));
+        Assert.assertEquals(xorResult, registerFile.getRegister(destinationRegister));
     }
 
     @Test
@@ -185,13 +185,13 @@ public class ImmediateInstructionTest {
         instruction.decode();
         ImmediateOperation operation = (ImmediateOperation) instruction.getOperation();
 
-        Registers registers = Registers.getInstance();
+        RegisterFile registerFile = RegisterFile.getInstance();
         MainMemory memory = MainMemory.getInstance();
 
-        registers.setRegister(operation.getSourceRegister(), 0);
+        registerFile.setRegister(operation.getSourceRegister(), 0);
 
         int destinationRegister = operation.getDestinationRegister();
-        int sourceRegisterValue = registers.getRegister(operation.getSourceRegister());
+        int sourceRegisterValue = registerFile.getRegister(operation.getSourceRegister());
         int immediateValue = operation.getImmediateValue();
         int address = sourceRegisterValue + immediateValue;
 
@@ -200,7 +200,7 @@ public class ImmediateInstructionTest {
         instruction.memoryAccess();
         instruction.writeBack();
 
-        Assert.assertEquals(5, registers.getRegister(destinationRegister));
+        Assert.assertEquals(5, registerFile.getRegister(destinationRegister));
     }
 
     @Test
@@ -217,19 +217,20 @@ public class ImmediateInstructionTest {
         instruction.decode();
         ImmediateOperation operation = (ImmediateOperation) instruction.getOperation();
 
-        Registers registers = Registers.getInstance();
+        RegisterFile registerFile = RegisterFile.getInstance();
         MainMemory memory = MainMemory.getInstance();
 
+        registerFile.setRegister(operation.getSourceRegister(), 1500);
 
         int destinationRegister = operation.getDestinationRegister();
-        int sourceRegisterValue = registers.getRegister(operation.getSourceRegister());
+        int sourceRegisterValue = registerFile.getRegister(operation.getSourceRegister());
         int immediateValue = operation.getImmediateValue();
         int address = sourceRegisterValue + immediateValue;
 
-
+        System.out.println(address);
 
         memory.storeWord(address, 0);
-        registers.setRegister(destinationRegister, 5);
+        registerFile.setRegister(destinationRegister, 5);
 
         instruction.readRegisters();
         instruction.execute();

@@ -1,7 +1,7 @@
 package operations.immediateoperations;
 
 import exceptions.InvalidRegisterNumberException;
-import memory.Registers;
+import memory.RegisterFile;
 import operations.Operation;
 
 public abstract class ImmediateOperation implements Operation {
@@ -24,9 +24,9 @@ public abstract class ImmediateOperation implements Operation {
 
     @Override
     public void readRegisters() throws InvalidRegisterNumberException {
-        Registers registers = Registers.getInstance();
-        destinationOperand = registers.getRegister(destinationRegister);
-        sourceOperand = registers.getRegister(sourceRegister);
+        RegisterFile registerFile = RegisterFile.getInstance();
+        destinationOperand = registerFile.getRegister(destinationRegister);
+        sourceOperand = registerFile.getRegister(sourceRegister);
     }
     
     public int getOpcode() {

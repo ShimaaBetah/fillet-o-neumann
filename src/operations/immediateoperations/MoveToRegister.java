@@ -3,7 +3,7 @@ package operations.immediateoperations;
 import exceptions.AddressOutOfRangeException;
 import exceptions.InvalidRegisterNumberException;
 import memory.MainMemory;
-import memory.Registers;
+import memory.RegisterFile;
 
 public class MoveToRegister extends ImmediateOperation {
     private int result;
@@ -27,7 +27,7 @@ public class MoveToRegister extends ImmediateOperation {
 
     @Override
     public void writeBack() throws Exception {
-        Registers registers = Registers.getInstance();
-        registers.setRegister(getDestinationRegister(), memoryData);
+        RegisterFile registerFile = RegisterFile.getInstance();
+        registerFile.setRegister(getDestinationRegister(), memoryData);
     }
 }
