@@ -1,7 +1,7 @@
 package tests;
 
 import instructions.RegisterInstruction;
-import memory.Registers;
+import memory.RegisterFile;
 import operations.registeroperations.*;
 import org.junit.Test;
 
@@ -81,13 +81,13 @@ public class RegisterInstructionTest {
         RegisterInstruction instruction = new RegisterInstruction(binaryToInt(TEST_ADD_INSTRUCTION));
         instruction.decode();
         RegisterOperation operation = (RegisterOperation) instruction.getOperation();
-        Registers registers = Registers.getInstance();
-        registers.setRegister(operation.getFirstRegister(), 1);
-        registers.setRegister(operation.getSecondRegister(), 2);
+        RegisterFile registerFile = RegisterFile.getInstance();
+        registerFile.setRegister(operation.getFirstRegister(), 1);
+        registerFile.setRegister(operation.getSecondRegister(), 2);
         instruction.readRegisters();
         instruction.execute();
         instruction.writeBack();
-        assertEquals(3, registers.getRegister(operation.getDestinationRegister()));
+        assertEquals(3, registerFile.getRegister(operation.getDestinationRegister()));
     }
 
     @Test
@@ -95,13 +95,13 @@ public class RegisterInstructionTest {
         RegisterInstruction instruction = new RegisterInstruction(binaryToInt(TEST_ADD_INSTRUCTION));
         instruction.decode();
         RegisterOperation operation = (RegisterOperation) instruction.getOperation();
-        Registers registers = Registers.getInstance();
-        registers.setRegister(operation.getFirstRegister(), 3);
-        registers.setRegister(operation.getSecondRegister(), -8);
+        RegisterFile registerFile = RegisterFile.getInstance();
+        registerFile.setRegister(operation.getFirstRegister(), 3);
+        registerFile.setRegister(operation.getSecondRegister(), -8);
         instruction.readRegisters();
         instruction.execute();
         instruction.writeBack();
-        assertEquals(-5, registers.getRegister(operation.getDestinationRegister()));
+        assertEquals(-5, registerFile.getRegister(operation.getDestinationRegister()));
     }
 
     @Test
@@ -117,13 +117,13 @@ public class RegisterInstructionTest {
         RegisterInstruction instruction = new RegisterInstruction(binaryToInt(TEST_SUBTRACT_INSTRUCTION));
         instruction.decode();
         RegisterOperation operation = (RegisterOperation) instruction.getOperation();
-        Registers registers = Registers.getInstance();
-        registers.setRegister(operation.getFirstRegister(), 2);
-        registers.setRegister(operation.getSecondRegister(), 1);
+        RegisterFile registerFile = RegisterFile.getInstance();
+        registerFile.setRegister(operation.getFirstRegister(), 2);
+        registerFile.setRegister(operation.getSecondRegister(), 1);
         instruction.readRegisters();
         instruction.execute();
         instruction.writeBack();
-        assertEquals(1, registers.getRegister(operation.getDestinationRegister()));
+        assertEquals(1, registerFile.getRegister(operation.getDestinationRegister()));
     }
 
     @Test
@@ -131,13 +131,13 @@ public class RegisterInstructionTest {
         RegisterInstruction instruction = new RegisterInstruction(binaryToInt(TEST_SUBTRACT_INSTRUCTION));
         instruction.decode();
         RegisterOperation operation = (RegisterOperation) instruction.getOperation();
-        Registers registers = Registers.getInstance();
-        registers.setRegister(operation.getFirstRegister(), 1);
-        registers.setRegister(operation.getSecondRegister(), 2);
+        RegisterFile registerFile = RegisterFile.getInstance();
+        registerFile.setRegister(operation.getFirstRegister(), 1);
+        registerFile.setRegister(operation.getSecondRegister(), 2);
         instruction.readRegisters();
         instruction.execute();
         instruction.writeBack();
-        assertEquals(-1, registers.getRegister(operation.getDestinationRegister()));
+        assertEquals(-1, registerFile.getRegister(operation.getDestinationRegister()));
     }
 
     @Test
@@ -145,13 +145,13 @@ public class RegisterInstructionTest {
         RegisterInstruction instruction = new RegisterInstruction(binaryToInt(TEST_SUBTRACT_INSTRUCTION));
         instruction.decode();
         RegisterOperation operation = (RegisterOperation) instruction.getOperation();
-        Registers registers = Registers.getInstance();
-        registers.setRegister(operation.getFirstRegister(), -80);
-        registers.setRegister(operation.getSecondRegister(), 80);
+        RegisterFile registerFile = RegisterFile.getInstance();
+        registerFile.setRegister(operation.getFirstRegister(), -80);
+        registerFile.setRegister(operation.getSecondRegister(), 80);
         instruction.readRegisters();
         instruction.execute();
         instruction.writeBack();
-        assertEquals(-160, registers.getRegister(operation.getDestinationRegister()));
+        assertEquals(-160, registerFile.getRegister(operation.getDestinationRegister()));
     }
 
     @Test
@@ -159,12 +159,12 @@ public class RegisterInstructionTest {
         RegisterInstruction instruction = new RegisterInstruction(binaryToInt(TEST_SUBTRACT_INSTRUCTION));
         instruction.decode();
         RegisterOperation operation = (RegisterOperation) instruction.getOperation();
-        Registers registers = Registers.getInstance();
-        registers.setRegister(operation.getFirstRegister(), -80);
-        registers.setRegister(operation.getSecondRegister(), -80);
+        RegisterFile registerFile = RegisterFile.getInstance();
+        registerFile.setRegister(operation.getFirstRegister(), -80);
+        registerFile.setRegister(operation.getSecondRegister(), -80);
         instruction.execute();
         instruction.writeBack();
-        assertEquals(0, registers.getRegister(operation.getDestinationRegister()));
+        assertEquals(0, registerFile.getRegister(operation.getDestinationRegister()));
     }
 
     @Test
@@ -180,13 +180,13 @@ public class RegisterInstructionTest {
         RegisterInstruction instruction = new RegisterInstruction(binaryToInt(TEST_MULTIPLY_INSTRUCTION));
         instruction.decode();
         RegisterOperation operation = (RegisterOperation) instruction.getOperation();
-        Registers registers = Registers.getInstance();
-        registers.setRegister(operation.getFirstRegister(), 89);
-        registers.setRegister(operation.getSecondRegister(), 70);
+        RegisterFile registerFile = RegisterFile.getInstance();
+        registerFile.setRegister(operation.getFirstRegister(), 89);
+        registerFile.setRegister(operation.getSecondRegister(), 70);
         instruction.readRegisters();
         instruction.execute();
         instruction.writeBack();
-        assertEquals(6230, registers.getRegister(operation.getDestinationRegister()));
+        assertEquals(6230, registerFile.getRegister(operation.getDestinationRegister()));
     }
 
     @Test
@@ -194,13 +194,13 @@ public class RegisterInstructionTest {
         RegisterInstruction instruction = new RegisterInstruction(binaryToInt(TEST_MULTIPLY_INSTRUCTION));
         instruction.decode();
         RegisterOperation operation = (RegisterOperation) instruction.getOperation();
-        Registers registers = Registers.getInstance();
-        registers.setRegister(operation.getFirstRegister(), -8);
-        registers.setRegister(operation.getSecondRegister(), 1);
+        RegisterFile registerFile = RegisterFile.getInstance();
+        registerFile.setRegister(operation.getFirstRegister(), -8);
+        registerFile.setRegister(operation.getSecondRegister(), 1);
         instruction.readRegisters();
         instruction.execute();
         instruction.writeBack();
-        assertEquals(-8, registers.getRegister(operation.getDestinationRegister()));
+        assertEquals(-8, registerFile.getRegister(operation.getDestinationRegister()));
     }
 
     @Test
@@ -208,12 +208,12 @@ public class RegisterInstructionTest {
         RegisterInstruction instruction = new RegisterInstruction(binaryToInt(TEST_MULTIPLY_INSTRUCTION));
         instruction.decode();
         RegisterOperation operation = (RegisterOperation) instruction.getOperation();
-        Registers registers = Registers.getInstance();
-        registers.setRegister(operation.getFirstRegister(), -2);
-        registers.setRegister(operation.getSecondRegister(), 0);
+        RegisterFile registerFile = RegisterFile.getInstance();
+        registerFile.setRegister(operation.getFirstRegister(), -2);
+        registerFile.setRegister(operation.getSecondRegister(), 0);
         instruction.execute();
         instruction.writeBack();
-        assertEquals(0, registers.getRegister(operation.getDestinationRegister()));
+        assertEquals(0, registerFile.getRegister(operation.getDestinationRegister()));
     }
 
     @Test
@@ -229,13 +229,13 @@ public class RegisterInstructionTest {
         RegisterInstruction instruction = new RegisterInstruction(binaryToInt(TEST_AND_INSTRUCTION));
         instruction.decode();
         RegisterOperation operation = (RegisterOperation) instruction.getOperation();
-        Registers registers = Registers.getInstance();
-        registers.setRegister(operation.getFirstRegister(), 7);
-        registers.setRegister(operation.getSecondRegister(), 11);
+        RegisterFile registerFile = RegisterFile.getInstance();
+        registerFile.setRegister(operation.getFirstRegister(), 7);
+        registerFile.setRegister(operation.getSecondRegister(), 11);
         instruction.readRegisters();
         instruction.execute();
         instruction.writeBack();
-        assertEquals(3, registers.getRegister(operation.getDestinationRegister()));
+        assertEquals(3, registerFile.getRegister(operation.getDestinationRegister()));
     }
 
     @Test
@@ -243,12 +243,12 @@ public class RegisterInstructionTest {
         RegisterInstruction instruction = new RegisterInstruction(binaryToInt(TEST_AND_INSTRUCTION));
         instruction.decode();
         RegisterOperation operation = (RegisterOperation) instruction.getOperation();
-        Registers registers = Registers.getInstance();
-        registers.setRegister(operation.getFirstRegister(), 11);
-        registers.setRegister(operation.getSecondRegister(), 0);
+        RegisterFile registerFile = RegisterFile.getInstance();
+        registerFile.setRegister(operation.getFirstRegister(), 11);
+        registerFile.setRegister(operation.getSecondRegister(), 0);
         instruction.execute();
         instruction.writeBack();
-        assertEquals(0, registers.getRegister(operation.getDestinationRegister()));
+        assertEquals(0, registerFile.getRegister(operation.getDestinationRegister()));
     }
 
     @Test
@@ -256,13 +256,13 @@ public class RegisterInstructionTest {
         RegisterInstruction instruction = new RegisterInstruction(binaryToInt(TEST_AND_INSTRUCTION));
         instruction.decode();
         RegisterOperation operation = (RegisterOperation) instruction.getOperation();
-        Registers registers = Registers.getInstance();
-        registers.setRegister(operation.getFirstRegister(), -11);
-        registers.setRegister(operation.getSecondRegister(), -1);
+        RegisterFile registerFile = RegisterFile.getInstance();
+        registerFile.setRegister(operation.getFirstRegister(), -11);
+        registerFile.setRegister(operation.getSecondRegister(), -1);
         instruction.readRegisters();
         instruction.execute();
         instruction.writeBack();
-        assertEquals(-11, registers.getRegister(operation.getDestinationRegister()));
+        assertEquals(-11, registerFile.getRegister(operation.getDestinationRegister()));
     }
 
     @Test
@@ -278,12 +278,12 @@ public class RegisterInstructionTest {
         RegisterInstruction instruction = new RegisterInstruction(binaryToInt(TEST_LOGICAL_SHIFT_LEFT_INSTRUCTION));
         instruction.decode();
         RegisterOperation operation = (RegisterOperation) instruction.getOperation();
-        Registers registers = Registers.getInstance();
-        registers.setRegister(operation.getFirstRegister(), 7);
+        RegisterFile registerFile = RegisterFile.getInstance();
+        registerFile.setRegister(operation.getFirstRegister(), 7);
         instruction.readRegisters();
         instruction.execute();
         instruction.writeBack();
-        assertEquals(28, registers.getRegister(operation.getDestinationRegister()));
+        assertEquals(28, registerFile.getRegister(operation.getDestinationRegister()));
     }
 
     @Test
@@ -299,12 +299,12 @@ public class RegisterInstructionTest {
         RegisterInstruction instruction = new RegisterInstruction(binaryToInt(TEST_LOGICAL_SHIFT_RIGHT_INSTRUCTION));
         instruction.decode();
         RegisterOperation operation = (RegisterOperation) instruction.getOperation();
-        Registers registers = Registers.getInstance();
-        registers.setRegister(operation.getFirstRegister(), 7);
+        RegisterFile registerFile = RegisterFile.getInstance();
+        registerFile.setRegister(operation.getFirstRegister(), 7);
         instruction.readRegisters();
         instruction.execute();
         instruction.writeBack();
-        assertEquals(3, registers.getRegister(operation.getDestinationRegister()));
+        assertEquals(3, registerFile.getRegister(operation.getDestinationRegister()));
     }
 
     @Test
@@ -312,11 +312,11 @@ public class RegisterInstructionTest {
         RegisterInstruction instruction = new RegisterInstruction(binaryToInt(TEST_LOGICAL_SHIFT_RIGHT_INSTRUCTION));
         instruction.decode();
         RegisterOperation operation = (RegisterOperation) instruction.getOperation();
-        Registers registers = Registers.getInstance();
-        registers.setRegister(operation.getFirstRegister(), -1);
+        RegisterFile registerFile = RegisterFile.getInstance();
+        registerFile.setRegister(operation.getFirstRegister(), -1);
         instruction.readRegisters();
         instruction.execute();
         instruction.writeBack();
-        assertEquals(Integer.MAX_VALUE, registers.getRegister(operation.getDestinationRegister()));
+        assertEquals(Integer.MAX_VALUE, registerFile.getRegister(operation.getDestinationRegister()));
     }
 }

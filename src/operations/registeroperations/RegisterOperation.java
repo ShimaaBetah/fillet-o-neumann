@@ -1,7 +1,7 @@
 package operations.registeroperations;
 
 import exceptions.InvalidRegisterNumberException;
-import memory.Registers;
+import memory.RegisterFile;
 import operations.Operation;
 
 public abstract class RegisterOperation implements Operation {
@@ -26,9 +26,9 @@ public abstract class RegisterOperation implements Operation {
 
     @Override
     public void readRegisters() throws InvalidRegisterNumberException {
-        Registers registers = Registers.getInstance();
-        firstOperand = registers.getRegister(firstRegister);
-        secondOperand = registers.getRegister(secondRegister);
+        RegisterFile registerFile = RegisterFile.getInstance();
+        firstOperand = registerFile.getRegister(firstRegister);
+        secondOperand = registerFile.getRegister(secondRegister);
     }
 
     @Override
@@ -38,8 +38,8 @@ public abstract class RegisterOperation implements Operation {
 
     @Override
     public void writeBack() throws InvalidRegisterNumberException {
-        Registers registers = Registers.getInstance();
-        registers.setRegister(destinationRegister, result);
+        RegisterFile registerFile = RegisterFile.getInstance();
+        registerFile.setRegister(destinationRegister, result);
     }
 
     public int getOpcode() {

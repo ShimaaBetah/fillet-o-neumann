@@ -1,7 +1,6 @@
 package operations.registeroperations;
 
 import exceptions.InvalidRegisterNumberException;
-import memory.Registers;
 
 public class And extends RegisterOperation {
 
