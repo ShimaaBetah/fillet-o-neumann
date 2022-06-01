@@ -1,7 +1,7 @@
 package tests;
 
 import instructions.JumpInstruction;
-import memory.Registers;
+import memory.RegisterFile;
 import operations.jumpoperations.Jump;
 import operations.jumpoperations.JumpOperation;
 import org.junit.Assert;
@@ -42,11 +42,11 @@ public class JumpInstructionTest {
     public void testJumpInstruction() throws Exception {
         JumpInstruction instruction = new JumpInstruction(binaryToInt(TEST_JUMP_INSTRUCTION));
         instruction.decode();
-        Registers registers = Registers.getInstance();
-        registers.setPC(binaryToInt(OLD_PC_VALUE));
+        RegisterFile registerFile = RegisterFile.getInstance();
+        registerFile.setPC(binaryToInt(OLD_PC_VALUE));
         instruction.execute();
         instruction.memoryAccess();
         instruction.writeBack();
-        Assert.assertEquals(binaryToInt(NEW_PC_VALUE), registers.getPC());
+        Assert.assertEquals(binaryToInt(NEW_PC_VALUE), registerFile.getPC());
     }
 }

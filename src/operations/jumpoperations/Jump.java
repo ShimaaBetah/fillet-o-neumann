@@ -2,7 +2,7 @@ package operations.jumpoperations;
 
 import exceptions.AddressOutOfRangeException;
 import exceptions.InvalidRegisterNumberException;
-import memory.Registers;
+import memory.RegisterFile;
 
 public class Jump extends JumpOperation {
     private int currentPC;
@@ -14,10 +14,10 @@ public class Jump extends JumpOperation {
 
     @Override
     public void execute() throws Exception {
-        Registers registers = Registers.getInstance();
+        RegisterFile registerFile = RegisterFile.getInstance();
         int address = getAddress();
         int newPC = (currentPC & 0xF0000000) | address;
-        registers.setPC(newPC);
+        registerFile.setPC(newPC);
     }
 
     @Override
