@@ -2,23 +2,25 @@ package memory;
 
 import exceptions.AddressOutOfRangeException;
 import exceptions.InvalidRegisterNumberException;
+import logger.Logger;
+import logger.services.ColorStringService;
 
-public class Registers {
+public class RegisterFile {
     private int[] registersArray;
     private int numOfRegisters;
     private int pc;
 
-    private static final int NUM_OF_REGISTERS = 32;
+    public static final int NUM_OF_REGISTERS = 32;
 
-    private static Registers instance = new Registers(NUM_OF_REGISTERS);
+    private static RegisterFile instance = new RegisterFile(NUM_OF_REGISTERS);
 
-    private Registers(int numOfRegisters) {
+    private RegisterFile(int numOfRegisters) {
         this.numOfRegisters = numOfRegisters;
         registersArray = new int[numOfRegisters];
         this.pc = 0;
     }
 
-    public static Registers getInstance() {
+    public static RegisterFile getInstance() {
         return instance;
     }
 
@@ -30,6 +32,7 @@ public class Registers {
             return;
         }
         registersArray[registerNum] = value;
+        Logger.logln(ColorStringService.color("Register " + registerNum + " set to " + value, ColorStringService.GREEN));
     }
 
     public int getRegister(int registerNum) throws InvalidRegisterNumberException {
