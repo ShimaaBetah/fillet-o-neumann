@@ -5,7 +5,7 @@ import java.util.List;
 import java.util.Map;
 
 public class GenerateTableService {
-    private static final StringBuilder tableStringBuilder = new StringBuilder();
+    private static StringBuilder tableStringBuilder;
     private static final char SYMBOL_JOIN = '+';
     private static final char SYMBOL_VER_SPLIT = '|';
     private static final char SYMBOL_HOR_SPLIT = '-';
@@ -19,6 +19,7 @@ public class GenerateTableService {
      * @return string representation of table
      */
     public static String execute(List<String> headers, List<List<String>> rows) {
+        tableStringBuilder = new StringBuilder();
         colMaxWidthMap = getColMaxWidthMap(headers, rows);
 
         addRowSeparator(headers.size());
