@@ -1,9 +1,0 @@
-- repo: https://github.com/gherynos/pre-commit-java
-  rev: v0.1.0 # Use the ref you want to point at
-  hooks:
-    - id: pmd
-      exclude: /test/
-    - id: cpd
-      exclude: /test/
-    - id: checkstyle
-      exclude: /test/

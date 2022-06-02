@@ -5,5 +5,5 @@ WORKDIR /fillet
 COPY pom.xml /fillet/pom.xml
 COPY src/ /fillet/src
 
-RUN mvn clean install 
+RUN mvn clean install
 CMD mvn test

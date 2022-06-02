@@ -141,7 +141,7 @@ public class App {
 
     public static void main(String[] args)
             throws InvalidInstructionException, InvalidRegisterException, AddressOutOfRangeException {
-        String path = "src/main/java/programs/caProgram.txt";
+        String path = "src/main/java/fillet/programs/caProgram.txt";
         App app = new App(path);
 
         do {
