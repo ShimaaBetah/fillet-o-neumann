@@ -3,7 +3,6 @@ package logger;
 import instructions.Instruction;
 import logger.services.InitLoggerService;
 import logger.services.LogEntityService;
-import logger.services.SegmentType;
 import memory.MainMemory;
 import memory.RegisterFile;
 

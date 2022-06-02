@@ -1,6 +1,5 @@
 package operations;
 
-
 public enum OperationType {
     ADD,
     SUBTRACT,

@@ -29,7 +29,7 @@ public class Decoder {
     public static int binaryToInt(String binaryString) {
         char sign = binaryString.charAt(0);
         if (sign == '1') {
-              return (int) Long.parseLong(binaryString, 2);
+            return (int) Long.parseLong(binaryString, 2);
         }
 
         return Integer.parseInt(binaryString, 2);
@@ -37,8 +37,8 @@ public class Decoder {
 
     public static String intToBinary(int integerValue) {
         String binaryString = Integer.toBinaryString(integerValue);
-        StringBuilder sb = new StringBuilder(32);
-        for (int i = binaryString.length(); i < 32; i++) {
+        StringBuilder sb = new StringBuilder(Parser.INSTRUCTION_SIZE);
+        for (int i = binaryString.length(); i < Parser.INSTRUCTION_SIZE; i++) {
             sb.append("0");
         }
         sb.append(binaryString);

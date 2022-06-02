@@ -12,6 +12,7 @@ import java.util.List;
 import exceptions.InvalidInstructionException;
 import exceptions.InvalidRegisterException;
 import instructions.InstructionType;
+import memory.RegisterFile;
 
 public class Parser {
     /*
@@ -22,10 +23,10 @@ public class Parser {
     private HashMap<String, Integer> labels = new HashMap<>();
 
     private static final String INVALID_INSTRUCTION = "Invalid instruction: ";
-    private static final int INSTRUCTION_SIZE = 32;
+    public static final int INSTRUCTION_SIZE = 32;
     private static final int OPCODE_SIZE = 4;
     private static final int REGISTER_SIZE = 5;
-    private static final int MAX_REGISTER_VALUE = 31;
+    private static final int MAX_REGISTER_VALUE = RegisterFile.NUM_OF_REGISTERS - 1;
 
     public Parser(String programPath) throws InvalidInstructionException, InvalidRegisterException {
         parse(programPath);
@@ -99,7 +100,7 @@ public class Parser {
 
             InstructionType instructionType = getInstructionType(opcode);
             switch (instructionType) {
-                case R_TYPE->
+                case R_TYPE ->
                     this.binaryInstructions.add(getRType(instruction));
                 case I_TYPE ->
                     this.binaryInstructions.add(getIType(instruction));
