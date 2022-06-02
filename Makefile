@@ -20,4 +20,5 @@ docker-test: docker-build
 docker-build:
 	docker build -t ${DOCKER_IMAGE} .
 
-
+run: 
+	mvn compile exec:java -Dexec.mainClass=fillet.App
