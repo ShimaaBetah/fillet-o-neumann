@@ -7,5 +7,5 @@ A simulation for a Von Nuemann based Computer Architecture using Java
 
 
 ```
-compile exec:java -Dexec.mainClass=fillet.App
+mvn compile exec:java -Dexec.mainClass=fillet.App
 ```
