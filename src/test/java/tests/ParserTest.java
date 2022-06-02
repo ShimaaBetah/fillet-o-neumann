@@ -11,14 +11,12 @@ import org.junit.function.ThrowingRunnable;
 import fillet.exceptions.InvalidInstructionException;
 import fillet.exceptions.InvalidRegisterException;
 import fillet.utils.Parser;
-import fillet.utils.Path;
-import org.w3c.dom.ls.LSOutput;
 
 public class ParserTest {
 //    String path = Path.PATH + "fillet-o-neumann/src/programs/";
     String path = "src/main/java/fillet/programs/";
 
-    Parser parserR = Optional.ofNullable(path + "spicy-rprogram.txt").map(p -> {
+    t Parser parserR = Optional.ofNullable(path + "spicy-rprogram.txt").map(p -> {
         try {
             return new Parser(p);
         } catch (InvalidInstructionException | InvalidRegisterException e) {
