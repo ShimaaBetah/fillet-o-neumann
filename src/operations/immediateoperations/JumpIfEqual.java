@@ -15,6 +15,7 @@ public class JumpIfEqual extends ImmediateOperation {
     @Override
     public void execute() throws InvalidRegisterNumberException, AddressOutOfRangeException {
         RegisterFile registerFile = RegisterFile.getInstance();
+
         if (getSourceOperand() == getDestinationOperand()) {
             registerFile.setPC(this.currentPC + getImmediateValue());
             jumped = true;

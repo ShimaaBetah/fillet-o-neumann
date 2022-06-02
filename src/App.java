@@ -49,7 +49,8 @@ public class App {
     }
 
     public void fetch() throws AddressOutOfRangeException {
-        if (halt) return;
+        if (halt)
+            return;
         RegisterFile registerFile = RegisterFile.getInstance();
         MainMemory memory = MainMemory.getInstance();
 
@@ -72,9 +73,10 @@ public class App {
     }
 
     public void execute() throws Exception {
-       if (pipeline[EXECUTE_POSITION2] != null) {
+        if (pipeline[EXECUTE_POSITION2] != null) {
+            pipeline[EXECUTE_POSITION2].execute();
 
-            //TODO: needs some refactor
+            // TODO: needs some refactor
             if (pipeline[EXECUTE_POSITION2].getOperation() instanceof Jump) {
                 for (int stage = FETCH_POSITION; stage < EXECUTE_POSITION2; stage++) {
                     pipeline[stage] = null;
@@ -87,7 +89,6 @@ public class App {
                 }
             }
 
-            pipeline[EXECUTE_POSITION2].execute();
         }
     }
 
@@ -141,7 +142,7 @@ public class App {
 
     public static void main(String[] args)
             throws InvalidInstructionException, InvalidRegisterException, AddressOutOfRangeException {
-        String path = "src/programs/program1.txt";
+        String path = "src/programs/caProgram.txt";
         App app = new App(path);
 
         do {
@@ -153,7 +154,7 @@ public class App {
             }
         } while (app.hasMoreCycles());
 
-        Logger.log(MainMemory.getInstance());
+        // Logger.log(MainMemory.getInstance());
         Logger.log(RegisterFile.getInstance());
     }
 }
