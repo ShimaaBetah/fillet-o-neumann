@@ -23,7 +23,6 @@ public class LogEntityService {
             try {
                 row.add(String.valueOf(registerFile.getRegister(regIdx)));
             } catch (InvalidRegisterNumberException e) {
-                // TODO Auto-generated catch block
                 e.printStackTrace();
             }
             rows.add(row);

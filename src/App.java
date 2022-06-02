@@ -5,13 +5,12 @@ import exceptions.InvalidRegisterException;
 import exceptions.InvalidRegisterNumberException;
 import instructions.Instruction;
 import instructions.InstructionFactory;
-import logger.services.SegmentType;
+import logger.Logger;
 import memory.MainMemory;
 import memory.RegisterFile;
 import operations.immediateoperations.JumpIfEqual;
 import operations.jumpoperations.Jump;
 import utils.Program;
-import logger.Logger;
 
 public class App {
 
@@ -25,7 +24,6 @@ public class App {
     private static final int FETCH_POSITION = 0;
     private static final int DECODE_POSITION = 1;
     private static final int READ_REGISTERS_POSITION = 2;
-    private static final int EXECUTE_POSITION1 = 3;
     private static final int EXECUTE_POSITION2 = 4;
     private static final int MEMORY_POSITION = 5;
     private static final int WRITE_BACK_POSITION = 6;
