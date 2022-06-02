@@ -239,12 +239,12 @@ public class Parser {
         /*
          * slice the string to get the register number
          * format:
-         * $R[0-31]
+         * R[0-31]
          */
-        if (!string.startsWith("$R")) {
+        if (!string.startsWith("R")) {
             throw new InvalidRegisterException("Invalid register: " + string);
         }
-        int registerNumber = Integer.parseInt(string.substring(2));
+        int registerNumber = Integer.parseInt(string.substring(1));
         if (registerNumber < 0 || registerNumber > MAX_REGISTER_VALUE) {
             throw new InvalidRegisterException("Invalid register: " + string);
         }
