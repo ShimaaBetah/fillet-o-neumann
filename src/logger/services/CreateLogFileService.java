@@ -11,7 +11,7 @@ public class CreateLogFileService {
     private static final String LOG_FILE_PATH = "./src/logger/outputs/";
     static LocalDateTime current = LocalDateTime.now();
     static DateTimeFormatter format = DateTimeFormatter.ofPattern("dd-MM-yyyy-HH-mm-ss");
-    private static final String LOG_FILE_NAME = "log-" + format.format(current) + ".txt";
+    private static final String LOG_FILE_NAME = "run-" + format.format(current) + ".log";
 
     private CreateLogFileService() {
         throw new IllegalStateException("Utility class");
