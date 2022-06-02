@@ -16,7 +16,7 @@ public class ParserTest {
 //    String path = Path.PATH + "fillet-o-neumann/src/programs/";
     String path = "src/main/java/fillet/programs/";
 
-    t Parser parserR = Optional.ofNullable(path + "spicy-rprogram.txt").map(p -> {
+     Parser parserR = Optional.ofNullable(path + "spicy-rprogram.txt").map(p -> {
         try {
             return new Parser(p);
         } catch (InvalidInstructionException | InvalidRegisterException e) {
