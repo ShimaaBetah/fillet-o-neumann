@@ -51,6 +51,11 @@ public class Parser {
                         var label = line.split(":")[0].trim();
                         var address = instructions.size();
                         labels.put(label, address);
+                        if (line.split(":").length > 1) {
+                            line = line.split(":")[1].trim();
+                            String[] splittedLine = splitLines(line);
+                            this.instructions.add(splittedLine);
+                        }
                     } else {
                         // instruction
                         String[] splittedLine = splitLines(line);
@@ -88,7 +93,9 @@ public class Parser {
          * This method converts the string instructions to binary instructions.
          * It also checks if the instruction is valid.
          */
+        int address = -1;
         for (String[] instruction : this.instructions) {
+            address++;
             if (instruction.length < 2) {
                 throw new InvalidInstructionException(INVALID_INSTRUCTION + instruction[0]);
             }
@@ -103,7 +110,7 @@ public class Parser {
                 case R_TYPE ->
                     this.binaryInstructions.add(getRType(instruction));
                 case I_TYPE ->
-                    this.binaryInstructions.add(getIType(instruction));
+                    this.binaryInstructions.add(getIType(instruction, address));
                 case J_TYPE ->
                     this.binaryInstructions.add(getJType(instruction));
                 default ->
@@ -169,7 +176,7 @@ public class Parser {
         return binary.toString();
     }
 
-    private String getIType(String[] instruction) throws InvalidRegisterException {
+    private String getIType(String[] instruction, int currentAdress) throws InvalidRegisterException {
         /*
          * map the instruction to binary of type I
          * format:
@@ -181,6 +188,11 @@ public class Parser {
         int rt;
         int immediate;
         int immediateSize = INSTRUCTION_SIZE - OPCODE_SIZE - 2 * REGISTER_SIZE;
+        if (opcode == 4){
+            if (labels.containsKey(instruction[3])) {
+                instruction[3] = "" + (labels.get(instruction[3]) - currentAdress - 1);
+            }
+        }
         if (opcode == 3) { // If opcode is 3, then the instruction is `MOVI` which has no rt, always 0
             rt = 0;
             immediate = getImmediateInt(instruction[2], OPCODE_SIZE + 2 * REGISTER_SIZE - 1,

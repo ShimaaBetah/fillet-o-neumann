@@ -135,7 +135,7 @@ public class App {
 
     public static void main(String[] args)
             throws AddressOutOfRangeException {
-        String path = "src/main/java/fillet/programs/caProgram.txt";
+        String path = "src/main/java/fillet/programs/test-sum.txt";
         App app = new App(path);
 
         do {
@@ -147,7 +147,7 @@ public class App {
             }
         } while (!Signals.getInstance().getHaltSignal());
 
-        // Logger.log(MainMemory.getInstance());
+        Logger.log(MainMemory.getInstance());
         Logger.log(RegisterFile.getInstance());
     }
 }
