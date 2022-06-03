@@ -24,6 +24,7 @@ public class InstructionFactory {
         opcodeToInstruction.put(9, InstructionType.R_TYPE);
         opcodeToInstruction.put(10, InstructionType.I_TYPE);
         opcodeToInstruction.put(11, InstructionType.I_TYPE);
+        opcodeToInstruction.put(15, InstructionType.HALT_TYPE);
     }
 
     public Instruction create(int binaryInstruction) {
@@ -36,6 +37,8 @@ public class InstructionFactory {
             instruction = new ImmediateInstruction(binaryInstruction);
         } else if (instructionType == InstructionType.J_TYPE) {
             instruction = new JumpInstruction(binaryInstruction);
+        } else if (instructionType == InstructionType.HALT_TYPE) {
+            instruction = new HaltInstruction(binaryInstruction);
         }
         if (instruction != null)
             instruction.setPC(RegisterFile.getInstance().getPC());

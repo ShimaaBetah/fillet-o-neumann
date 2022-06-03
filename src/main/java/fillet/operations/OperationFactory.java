@@ -18,6 +18,7 @@ public abstract class OperationFactory {
         opcodeToOperation.put(9, OperationType.LOGICAL_SHIFT_RIGHT);
         opcodeToOperation.put(10, OperationType.MOVE_TO_REGISTER);
         opcodeToOperation.put(11, OperationType.MOVE_TO_MEMORY);
+        opcodeToOperation.put(15, OperationType.HALT);
     }
 
     public abstract Operation create(int binaryInstruction, int pc);

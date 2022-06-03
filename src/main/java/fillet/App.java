@@ -11,6 +11,7 @@ import fillet.memory.MainMemory;
 import fillet.memory.RegisterFile;
 import fillet.operations.immediateoperations.JumpIfEqual;
 import fillet.operations.jumpoperations.Jump;
+import fillet.signals.Signals;
 import fillet.utils.Program;
 
 public class App {
@@ -19,7 +20,6 @@ public class App {
     private int currentCycle;
     private InstructionFactory instructionFactory;
     private Program parser;
-    private boolean halt = false;
 
     private static final int PIPELINE_SIZE = 7;
     private static final int FETCH_POSITION = 0;
@@ -29,7 +29,7 @@ public class App {
     private static final int MEMORY_POSITION = 5;
     private static final int WRITE_BACK_POSITION = 6;
 
-    public App(String path) throws InvalidInstructionException, InvalidRegisterException, AddressOutOfRangeException {
+    public App(String path) throws AddressOutOfRangeException {
         this.pipeline = new Instruction[PIPELINE_SIZE];
         this.currentCycle = 1;
         this.instructionFactory = new InstructionFactory();
@@ -48,8 +48,6 @@ public class App {
     }
 
     public void fetch() throws AddressOutOfRangeException {
-        if (halt)
-            return;
         RegisterFile registerFile = RegisterFile.getInstance();
         MainMemory memory = MainMemory.getInstance();
 
@@ -57,10 +55,6 @@ public class App {
         int binaryInstruction = memory.loadInstruction(pc);
         registerFile.incrementPC();
         pipeline[FETCH_POSITION] = instructionFactory.create(binaryInstruction);
-        if (pipeline[FETCH_POSITION] == null) {
-            halt = true;
-            return;
-        }
     }
 
     public void decode() throws InvalidRegisterNumberException {
@@ -140,7 +134,7 @@ public class App {
     }
 
     public static void main(String[] args)
-            throws InvalidInstructionException, InvalidRegisterException, AddressOutOfRangeException {
+            throws AddressOutOfRangeException {
         String path = "src/main/java/fillet/programs/caProgram.txt";
         App app = new App(path);
 
@@ -151,7 +145,7 @@ public class App {
                 e.printStackTrace();
                 break;
             }
-        } while (app.hasMoreCycles());
+        } while (!Signals.getInstance().getHaltSignal());
 
         // Logger.log(MainMemory.getInstance());
         Logger.log(RegisterFile.getInstance());
