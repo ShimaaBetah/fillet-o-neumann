@@ -84,4 +84,4 @@ nb-configuration.xml
 ##############################
 .DS_Store
 
-src/logger/outputs/
+src/main/java/fillet/logger/outputs
