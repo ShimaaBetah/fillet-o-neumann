@@ -53,8 +53,10 @@ public class Parser {
                         labels.put(label, address);
                         if (line.split(":").length > 1) {
                             line = line.split(":")[1].trim();
-                            String[] splittedLine = splitLines(line);
-                            this.instructions.add(splittedLine);
+                            if(!line.isBlank() && !line.startsWith("#")) {
+                                String[] splittedLine = splitLines(line);
+                                this.instructions.add(splittedLine);
+                            }
                         }
                     } else {
                         // instruction
@@ -97,7 +99,7 @@ public class Parser {
         for (String[] instruction : this.instructions) {
             address++;
             if (instruction.length < 2) {
-                throw new InvalidInstructionException(INVALID_INSTRUCTION + instruction[0]);
+                throw new InvalidInstructionException(INVALID_INSTRUCTION + Arrays.toString(instruction));
             }
 
             int opcode = getOpcode(instruction[0].toUpperCase());
