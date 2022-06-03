@@ -1,9 +1,9 @@
 # fillet-o-neumann
 ![example workflow](https://github.com/ShimaaBetah/fillet-o-neumann/actions/workflows/maven.yml/badge.svg)
 
-A simulation for a Von Nuemann based Computer Architecture using Java
 
 ## Description
+A simulation for a Von Nuemann based Computer Architecture using Java
 
 ## Project Structure
 <details>
@@ -103,13 +103,13 @@ A simulation for a Von Nuemann based Computer Architecture using Java
 </details>
 
 ## Features
-- Parser handles labels.
-- Parser handles comments
+- Parser handles labels. :boom:
+- Parser handles comments.  ######
 - A high-quality logger (GUI alternative), not only outputs to the console but also outputs a log file named after the current time stamp.
 - The code is thoroughly tested by JUnit 5.
-- Used CI in the whole process. 
-- We used a containerized environment using Docker. 
-- We used Maven as a build system and dependency manager.
+- Used CI in the whole process. ![example workflow](https://github.com/ShimaaBetah/fillet-o-neumann/actions/workflows/maven.yml/badge.svg)
+- We used a containerized environment using Docker :whale:. 
+- We used Maven as a build system and dependency manager.  [![Maven Central](https://maven-badges.herokuapp.com/maven-central/cz.jirutka.rsql/rsql-parser/badge.svg?style=plastic)](https://maven-badges.herokuapp.com/maven-central/cz.jirutka.rsql/rsql-parser)
 - We applied some spectacular  design patterns such as: 
 	- Singleton 
 	- Observer
@@ -120,10 +120,10 @@ A simulation for a Von Nuemann based Computer Architecture using Java
 
 | Technology | Description |
 | ---------  | ---------   |
-| Java       | A hated programming langauge |
+| Java       | A hated programming langauge :thumbsdown:|
 | Maven      | A build tool and dependancy manager|
 | Junit 5    | Java testing framework|
-| Docker     | Container | 
+| Docker :whale:    | Container | 
 
 
 ## How to test?
@@ -136,15 +136,32 @@ A simulation for a Von Nuemann based Computer Architecture using Java
 
 
 ## Test Using Docker 
+
+Docker will gurantee more consistency and make sure you are in a isolated enviroment and not affected by your local machine
+
  ```bash
  > docker build -t fillet . 
  > docker run fillet                                                                                                                                       
  ```
 
+or even
+
+```bash
+> make docker-test
+```
 
 
 ## How to run the project 
 
 ```
-mvn compile exec:java -Dexec.mainClass=fillet.App
+> mvn compile exec:java -Dexec.mainClass=fillet.App
 ```
+
+## Team behind this piece of art
+
+- [Ibrahim Abou Elenein](www.github.com/aboueleyes)
+- [Mohammad Omar](https://github.com/MohammadOTaha)
+- [Ahmed Nasser](https://github.com/AhmedNasserG)
+- [Abdulaziz Hassan](https://github.com/Abdulaziz-Hassan)
+- [Elshimaa Betah](https://github.com/ShimaaBetah)
+
