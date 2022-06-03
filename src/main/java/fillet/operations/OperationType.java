@@ -12,5 +12,6 @@ public enum OperationType {
     LOGICAL_SHIFT_LEFT,
     LOGICAL_SHIFT_RIGHT,
     MOVE_TO_REGISTER,
-    MOVE_TO_MEMORY
+    MOVE_TO_MEMORY,
+    HALT
 }
