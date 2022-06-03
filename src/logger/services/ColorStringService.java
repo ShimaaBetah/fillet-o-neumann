@@ -14,6 +14,10 @@ public class ColorStringService {
 	public static final String YELLOW_BOLD = "\033[1;33m";
 	public static final String BLUE_BOLD   = "\033[1;34m";
 
+	private ColorStringService() {
+		throw new IllegalStateException("Utility class");
+	}
+
 	public static String color(String str, String color) {
 		return color + str + RESET;
 	}

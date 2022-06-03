@@ -13,6 +13,10 @@ public class GenerateTableService {
     private static final int PADDING_SIZE = 2;
     private static Map<Integer, Integer> colMaxWidthMap;
 
+    private GenerateTableService() {
+        throw new IllegalStateException("Utility class");
+    }
+
     /**
      * @param headers list of table headers
      * @param rows    list of table rows

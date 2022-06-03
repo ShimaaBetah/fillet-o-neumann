@@ -8,6 +8,10 @@ import java.util.Arrays;
 import java.util.List;
 
 public class LogEntityService {
+    private LogEntityService() {
+        throw new IllegalStateException("Utility class");
+    }
+
     public static String logRegisters(Registers registers, int[] registersToLog) {
         List<String> headers = Arrays.asList("Register", "Value");
 
