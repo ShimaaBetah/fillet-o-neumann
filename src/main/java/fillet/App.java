@@ -1,8 +1,6 @@
 package fillet;
 
 import fillet.exceptions.AddressOutOfRangeException;
-import fillet.exceptions.InvalidInstructionException;
-import fillet.exceptions.InvalidRegisterException;
 import fillet.exceptions.InvalidRegisterNumberException;
 import fillet.instructions.Instruction;
 import fillet.instructions.InstructionFactory;
@@ -66,36 +64,30 @@ public class App {
     }
 
     public void execute() throws Exception {
-        if (pipeline[EXECUTE_POSITION2] != null) {
-            pipeline[EXECUTE_POSITION2].execute();
+        if (pipeline[EXECUTE_POSITION2] == null) return;
+        pipeline[EXECUTE_POSITION2].execute();
+        if (isJumpingActionExecuting()) {
+            handlePipelineInCaseOfJumpAction();
+        }
+    }
 
-            // TODO: needs some refactor
-            if (pipeline[EXECUTE_POSITION2].getOperation() instanceof Jump) {
-                for (int stage = FETCH_POSITION; stage < EXECUTE_POSITION2; stage++) {
-                    pipeline[stage] = null;
-                }
-            } else if (pipeline[EXECUTE_POSITION2].getOperation() instanceof JumpIfEqual) {
-                if (((JumpIfEqual) pipeline[EXECUTE_POSITION2].getOperation()).haveJumped()) {
-                    for (int stage = FETCH_POSITION; stage < EXECUTE_POSITION2; stage++) {
-                        pipeline[stage] = null;
-                    }
-                }
-            }
+    private boolean isJumpingActionExecuting() {
+        return pipeline[EXECUTE_POSITION2].getOperation() instanceof Jump || pipeline[EXECUTE_POSITION2].getOperation() instanceof JumpIfEqual jumpIfEqual && jumpIfEqual.haveJumped();
+    }
 
+    private void handlePipelineInCaseOfJumpAction() {
+        for (int stage = FETCH_POSITION; stage < EXECUTE_POSITION2; stage++) {
+            pipeline[stage] = null;
         }
     }
 
     public void memoryAccess() throws InvalidRegisterNumberException, AddressOutOfRangeException {
-        if (pipeline[FETCH_POSITION] != null || pipeline[MEMORY_POSITION] == null) {
-            return;
-        }
+        if (pipeline[FETCH_POSITION] != null || pipeline[MEMORY_POSITION] == null) return;
         pipeline[MEMORY_POSITION].memoryAccess();
     }
 
     public void writeBack() throws Exception {
-        if (pipeline[WRITE_BACK_POSITION] == null) {
-            return;
-        }
+        if (pipeline[WRITE_BACK_POSITION] == null) return;
         pipeline[WRITE_BACK_POSITION].writeBack();
     }
 
@@ -118,24 +110,10 @@ public class App {
         Logger.logln("");
     }
 
-    public boolean hasMoreCycles() {
-        for (Instruction instruction : pipeline) {
-            if (instruction != null) {
-                return true;
-            }
-        }
-        return false;
-    }
-
-    public int getCurrentCycle() {
-        return currentCycle;
-    }
-
     public static void main(String[] args)
             throws AddressOutOfRangeException {
         String path = "src/main/java/fillet/programs/test-sum.txt";
         App app = new App(path);
-
         do {
             try {
                 app.nextCycle();
