@@ -1,5 +1,7 @@
 package fillet.logger.services;
 
+import org.jetbrains.annotations.Nullable;
+
 import java.io.BufferedWriter;
 import java.io.File;
 import java.io.FileWriter;
@@ -17,7 +19,7 @@ public class CreateLogFileService {
         throw new IllegalStateException("Utility class");
     }
 
-    public static BufferedWriter execute() {
+    public static @Nullable BufferedWriter execute() {
         try {
             File dir = new File(LOG_FILE_PATH);
             if (!dir.exists()) {

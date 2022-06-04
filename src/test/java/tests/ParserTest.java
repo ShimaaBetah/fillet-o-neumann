@@ -13,10 +13,9 @@ import fillet.exceptions.InvalidRegisterException;
 import fillet.utils.Parser;
 
 public class ParserTest {
-//    String path = Path.PATH + "fillet-o-neumann/src/programs/";
     String path = "src/main/java/fillet/programs/";
 
-     Parser parserR = Optional.ofNullable(path + "spicy-rprogram.txt").map(p -> {
+     Parser parserR = Optional.of(path + "spicy-rprogram.txt").map(p -> {
         try {
             return new Parser(p);
         } catch (InvalidInstructionException | InvalidRegisterException e) {
@@ -25,7 +24,7 @@ public class ParserTest {
         return null;
     }).orElse(null);
 
-    Parser parserI = Optional.ofNullable(path + "spicy-iprogram.txt").map(p -> {
+    Parser parserI = Optional.of(path + "spicy-iprogram.txt").map(p -> {
         try {
             return new Parser(p);
         } catch (InvalidInstructionException | InvalidRegisterException e) {
@@ -34,7 +33,7 @@ public class ParserTest {
         return null;
     }).orElse(null);
 
-    Parser parserJ = Optional.ofNullable(path + "spicy-jprogram.txt").map(p -> {
+    Parser parserJ = Optional.of(path + "spicy-jprogram.txt").map(p -> {
         try {
             return new Parser(p);
         } catch (InvalidInstructionException | InvalidRegisterException e) {
@@ -126,7 +125,7 @@ public class ParserTest {
 
     @Test
     public void testEmptyFile() {
-        Parser emptyFile = Optional.ofNullable(path + "empty-file.txt").map(p -> {
+        Parser emptyFile = Optional.of(path + "empty-file.txt").map(p -> {
             try {
                 return new Parser(p);
             } catch (InvalidInstructionException | InvalidRegisterException e) {
@@ -135,6 +134,7 @@ public class ParserTest {
             return null;
         }).orElse(null);
 
+        assert emptyFile != null;
         assertEquals(0, emptyFile.getBinaryInstructions().size());
     }
 }

@@ -13,6 +13,7 @@ import fillet.exceptions.InvalidInstructionException;
 import fillet.exceptions.InvalidRegisterException;
 import fillet.instructions.InstructionType;
 import fillet.memory.RegisterFile;
+import org.jetbrains.annotations.NotNull;
 
 public class Parser {
     /*
@@ -48,6 +49,9 @@ public class Parser {
                     }
                     line = trimLine(line);
                     if (line.contains(":") && (!line.contains("#") || (line.indexOf("#") > line.lastIndexOf(":")))) {
+                        /*
+                        *  if It's a label and there's no comment or label with comments after it.
+                        */
                         var label = line.split(":")[0].trim();
                         var address = instructions.size();
                         labels.put(label, address);
@@ -71,7 +75,7 @@ public class Parser {
         convertStringToBinary();
     }
 
-    private String[] splitLines(String line) {
+    private String[] splitLines(@NotNull String line) {
         /*
          * This method is used to split lines of the file.
          * It removes the spaces and tabs from the line.
@@ -84,7 +88,7 @@ public class Parser {
         return (index == -1) ? splittedLine : Arrays.copyOf(splittedLine, index);
     }
 
-    private String trimLine(String line) {
+    private @NotNull String trimLine(String line) {
         line = line.trim();
         line = line.toUpperCase();
         return line;
@@ -121,7 +125,7 @@ public class Parser {
         }
     }
 
-    private String getJType(String[] instruction) throws InvalidInstructionException {
+    private @NotNull String getJType(String @NotNull [] instruction) throws InvalidInstructionException {
         /*
          * map the opcode to the type J
          * format:
@@ -143,7 +147,7 @@ public class Parser {
         return binary.toString();
     }
 
-    private String getImmediate(String stringImmediate, int offset, int size) {
+    private String getImmediate(@NotNull String stringImmediate, int offset, int size) {
         /*
          * This method converts the immediate to binary.
          * It also checks if the immediate is valid.
@@ -164,7 +168,7 @@ public class Parser {
         return address;
     }
 
-    private String getOpcodeString(int opcode) {
+    private @NotNull String getOpcodeString(int opcode) {
         /*
          * map the opcode to the binary string
          * format:
@@ -186,7 +190,7 @@ public class Parser {
          * convert the immediate to signed binary
          */
         int opcode = getOpcode(instruction[0]);
-        int rs = getRegister(instruction[1]);
+        int rs = getRegisterNumber(instruction[1]);
         int rt;
         int immediate;
         int immediateSize = INSTRUCTION_SIZE - OPCODE_SIZE - 2 * REGISTER_SIZE;
@@ -200,7 +204,7 @@ public class Parser {
             immediate = getImmediateInt(instruction[2], OPCODE_SIZE + 2 * REGISTER_SIZE - 1,
                     immediateSize);
         } else {
-            rt = getRegister(instruction[2]);
+            rt = getRegisterNumber(instruction[2]);
             immediate = getImmediateInt(instruction[3], OPCODE_SIZE + 2 * REGISTER_SIZE - 1,
                     immediateSize);
         }
@@ -222,8 +226,8 @@ public class Parser {
          * opcode rs rt rd shamt
          */
         var opcode = getOpcode(instruction[0]);
-        int rs = getRegister(instruction[1]);
-        int rt = getRegister(instruction[2]);
+        int rs = getRegisterNumber(instruction[1]);
+        int rt = getRegisterNumber(instruction[2]);
         int rd;
         int shamt;
         if (opcode == 7 || opcode == 8) { // If opcode is 7, 8, then the instruction is `shifting` which has no rd,
@@ -234,7 +238,7 @@ public class Parser {
                 shamt = 0;
             }
         } else {
-            rd = getRegister(instruction[3]);
+            rd = getRegisterNumber(instruction[3]);
             try {
                 shamt = Integer.parseInt(instruction[4]);
             } catch (ArrayIndexOutOfBoundsException e) {
@@ -250,7 +254,7 @@ public class Parser {
         return Binary.intToBinaryString(binary);
     }
 
-    private int getRegister(String string) throws InvalidRegisterException {
+    private int getRegisterNumber(String string) throws InvalidRegisterException {
         /*
          * slice the string to get the register number
          * format:
@@ -272,19 +276,14 @@ public class Parser {
          */
         switch (opcode) {
             case 3:
-                return InstructionType.I_TYPE;
+            case 11:
             case 4:
-                return InstructionType.I_TYPE;
             case 6:
+            case 9:
+            case 10:
                 return InstructionType.I_TYPE;
             case 7:
                 return InstructionType.J_TYPE;
-            case 9:
-                return InstructionType.I_TYPE;
-            case 10:
-                return InstructionType.I_TYPE;
-            case 11:
-                return InstructionType.I_TYPE;
             default:
                 return InstructionType.R_TYPE;
         }

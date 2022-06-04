@@ -8,8 +8,8 @@ import fillet.exceptions.InvalidInstructionException;
 import fillet.exceptions.InvalidRegisterException;
 
 public class Program {
-    private List<String> binaryInstructions;
-    private String path;
+    private final List<String> binaryInstructions;
+    private final String path;
 
     public Program(String path) {
         this.path = path;
@@ -21,6 +21,7 @@ public class Program {
             }
             return null;
         }).orElse(null);
+        assert parser != null;
         binaryInstructions = parser.getBinaryInstructions();
     }
 
@@ -29,7 +30,7 @@ public class Program {
     }
 
     public List<Integer> getIntegerInstructions() {
-        return binaryInstructions.stream().map(s -> Binary.binaryStringtoInt(s)).collect(ArrayList::new, ArrayList::add,
+        return binaryInstructions.stream().map(Binary::binaryStringtoInt).collect(ArrayList::new, ArrayList::add,
                 ArrayList::addAll);
     }
 

@@ -10,6 +10,7 @@ public class Logger {
     private static final LogSubject logSubject = InitLoggerService.execute();
 
     private Logger() {
+        throw new IllegalStateException("Utility class");
     }
 
     public static void log(String message) {

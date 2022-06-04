@@ -1,6 +1,12 @@
 package fillet.logger.services;
 
+import org.jetbrains.annotations.Contract;
+import org.jetbrains.annotations.NotNull;
+
 public class ColorStringService {
+	private  ColorStringService() {
+		throw new IllegalStateException("Utility class");
+	}
 	public static final String RESET       = "\033[0m";
 
 	public static final String RED         = "\033[0;31m";
@@ -14,7 +20,8 @@ public class ColorStringService {
 	public static final String YELLOW_BOLD = "\033[1;33m";
 	public static final String BLUE_BOLD   = "\033[1;34m";
 
-	public static String color(String str, String color) {
+	@Contract(pure = true)
+	public static @NotNull String color(String str, String color) {
 		return color + str + RESET;
 	}
 }
