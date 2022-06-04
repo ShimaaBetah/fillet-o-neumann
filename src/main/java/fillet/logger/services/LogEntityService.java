@@ -13,6 +13,11 @@ import fillet.exceptions.AddressOutOfRangeException;
 import fillet.exceptions.InvalidRegisterNumberException;
 
 public class LogEntityService {
+
+    private LogEntityService() {
+        throw new IllegalStateException("Utility class");
+    }
+
     public static String logRegisters(RegisterFile registerFile, int[] registersToLog) {
         List<String> headers = Arrays.asList("Register", "Value");
 

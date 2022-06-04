@@ -100,9 +100,7 @@ public class App {
     }
 
     public void updatePipeline() {
-        for (int i = PIPELINE_SIZE - 1; i > 0; i--) {
-            pipeline[i] = pipeline[i - 1];
-        }
+        System.arraycopy(pipeline, 0, pipeline, 1, PIPELINE_SIZE - 1);
         pipeline[0] = null;
     }
 

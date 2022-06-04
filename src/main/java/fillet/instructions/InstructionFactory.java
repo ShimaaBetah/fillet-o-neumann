@@ -5,6 +5,7 @@ import fillet.utils.Decoder;
 import java.util.HashMap;
 
 import fillet.memory.RegisterFile;
+import org.jetbrains.annotations.Nullable;
 
 public class InstructionFactory {
     private static final int OPCODE_RANGE_START = 0;
@@ -30,19 +31,27 @@ public class InstructionFactory {
     public Instruction create(int binaryInstruction) {
         int opcode = getOpcode(binaryInstruction);
         InstructionType instructionType = opcodeToInstruction.get(opcode);
-        Instruction instruction = null;
-        if (instructionType == InstructionType.R_TYPE) {
-            instruction = new RegisterInstruction(binaryInstruction);
-        } else if (instructionType == InstructionType.I_TYPE) {
-            instruction = new ImmediateInstruction(binaryInstruction);
-        } else if (instructionType == InstructionType.J_TYPE) {
-            instruction = new JumpInstruction(binaryInstruction);
-        } else if (instructionType == InstructionType.HALT_TYPE) {
-            instruction = new HaltInstruction(binaryInstruction);
-        }
+        Instruction instruction = getInstruction(binaryInstruction, instructionType);
         if (instruction != null)
             instruction.setPC(RegisterFile.getInstance().getPC());
         return instruction;
+    }
+
+    @Nullable
+    private Instruction getInstruction(int binaryInstruction, InstructionType instructionType) {
+        if (instructionType == InstructionType.R_TYPE) {
+            return new RegisterInstruction(binaryInstruction);
+        }
+        if (instructionType == InstructionType.I_TYPE) {
+            return new ImmediateInstruction(binaryInstruction);
+        }
+        if (instructionType == InstructionType.J_TYPE) {
+            return  new JumpInstruction(binaryInstruction);
+        }
+        if (instructionType == InstructionType.HALT_TYPE) {
+            return new HaltInstruction(binaryInstruction);
+        }
+        return  null;
     }
 
     private int getOpcode(int binaryInstruction) {
