@@ -11,7 +11,6 @@ A simulation for a Von Nuemann based Computer Architecture using Java
  <summary> project structure </summary>
  
  ```
-<<<<<<< HEAD
  .
  ├── main
  │  └── java
@@ -228,8 +227,6 @@ A simulation for a Von Nuemann based Computer Architecture using Java
  │           ├── RegisterFileTest.java
  │           └── RegisterInstructionTest.java
  └── target
->>>>>>> d25c7ffe761eb222be9fd971fd0ee86370c0ca42
-
 ```
   
 </details>
