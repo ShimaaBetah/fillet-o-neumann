@@ -11,93 +11,6 @@ A simulation for a Von Nuemann based Computer Architecture using Java
  <summary> project structure </summary>
  
  ```
- .
- ├── main
- │  └── java
- │     └── fillet
- │        ├── App.java
- │        ├── exceptions
- │        │  ├── AddressOutOfRangeException.java
- │        │  ├── InvalidInstructionException.java
- │        │  ├── InvalidRegisterException.java
- │        │  └── InvalidRegisterNumberException.java
- │        ├── instructions
- │        │  ├── HaltInstruction.java
- │        │  ├── ImmediateInstruction.java
- │        │  ├── Instruction.java
- │        │  ├── InstructionFactory.java
- │        │  ├── InstructionType.java
- │        │  ├── JumpInstruction.java
- │        │  └── RegisterInstruction.java
- │        ├── logger
- │        │  ├── destinations
- │        │  │  ├── ConsoleLogger.java
- │        │  │  ├── FileLogger.java
- │        │  │  └── LogObserver.java
- │        │  ├── Logger.java
- │        │  ├── LogSubject.java
- │        │  ├── outputs
- │        │  │  ├── run-02-06-2022-15-04-37.log
- │        │  │  ├── run-03-06-2022-22-35-00.log
- │        │  │  ├── run-03-06-2022-22-58-43.log
- │        │  │  ├── run-04-06-2022-00-05-09.log
- │        │  │  └── run-04-06-2022-00-06-07.log
- │        │  └── services
- │        │     ├── ColorStringService.java
- │        │     ├── CreateLogFileService.java
- │        │     ├── GenerateTableService.java
- │        │     ├── InitLoggerService.java
- │        │     ├── LogEntityService.java
- │        │     └── SegmentType.java
- │        ├── memory
- │        │  ├── MainMemory.java
- │        │  └── RegisterFile.java
- │        ├── operations
- │        │  ├── haltoperations
- │        │  │  ├── Halt.java
- │        │  │  ├── HaltOperation.java
- │        │  │  └── HaltOperationFactory.java
- │        │  ├── immediateoperations
- │        │  │  ├── MoveToMemory.java
- │        │  │  ├── MoveToRegister.java
- │        │  │  └── XORImmediate.java
- │        │  ├── jumpoperations
- │        │  │  ├── Jump.java
- │        │  │  ├── JumpOperation.java
- │        │  │  └── JumpOperationFactory.java
- │        │  ├── Operation.java
- │        │  ├── OperationFactory.java
- │        │  ├── OperationType.java
- │        │  └── registeroperations
- │        │     ├── And.java
- │        │     ├── LogicalShiftRight.java
- │        │     ├── Multiply.java
- │        │     ├── RegisterOperationFactory.java
- │        │     └── Sub.java
- │        ├── programs
- │        │  ├── caProgram.txt
- │        │  ├── empty-file.txt
- │        │  ├── final-isA.txt
- │        │  ├── spicy-jprogram.txt
- │        ├── signals
- │        │  └── Signals.java
- │        └── utils
- │           ├── Binary.java
- │           ├── Decoder.java
- │           ├── Parser.java
- │           └── Program.java
- └── test
-    └── java
-       └── tests
-          ├── DecoderTest.java
-          ├── ImmediateInstructionTest.java
-          ├── InstructionFactoryTest.java
-          ├── JumpInstructionTest.java
-          ├── MainMemoryTest.java
-          ├── ParserTest.java
-          ├── RegisterFileTest.java
-          └── RegisterInstructionTest.java
-=======
   .
  ├── Dockerfile
  ├── Makefile
@@ -134,28 +47,6 @@ A simulation for a Von Nuemann based Computer Architecture using Java
  │  │  │     │  │  ├── run-02-06-2022-23-11-07.log
  │  │  │     │  │  ├── run-02-06-2022-23-11-36.log
  │  │  │     │  │  ├── run-02-06-2022-23-53-15.log
- │  │  │     │  │  ├── run-03-06-2022-00-13-46.log
- │  │  │     │  │  ├── run-03-06-2022-00-14-21.log
- │  │  │     │  │  ├── run-03-06-2022-00-29-18.log
- │  │  │     │  │  ├── run-03-06-2022-00-30-49.log
- │  │  │     │  │  ├── run-03-06-2022-00-54-02.log
- │  │  │     │  │  ├── run-03-06-2022-00-54-25.log
- │  │  │     │  │  ├── run-03-06-2022-00-58-52.log
- │  │  │     │  │  ├── run-03-06-2022-00-59-23.log
- │  │  │     │  │  ├── run-03-06-2022-13-52-00.log
- │  │  │     │  │  ├── run-03-06-2022-13-52-06.log
- │  │  │     │  │  ├── run-03-06-2022-13-52-40.log
- │  │  │     │  │  ├── run-03-06-2022-14-24-44.log
- │  │  │     │  │  ├── run-03-06-2022-14-27-28.log
- │  │  │     │  │  ├── run-04-06-2022-00-10-30.log
- │  │  │     │  │  ├── run-04-06-2022-00-11-11.log
- │  │  │     │  │  ├── run-04-06-2022-00-14-15.log
- │  │  │     │  │  ├── run-04-06-2022-00-16-58.log
- │  │  │     │  │  ├── run-04-06-2022-00-20-20.log
- │  │  │     │  │  ├── run-04-06-2022-00-21-14.log
- │  │  │     │  │  ├── run-04-06-2022-00-21-34.log
- │  │  │     │  │  ├── run-04-06-2022-00-21-42.log
- │  │  │     │  │  ├── run-04-06-2022-11-43-43.log
  │  │  │     │  │  └── run-04-06-2022-11-47-52.log
  │  │  │     │  └── services
  │  │  │     │     ├── ColorStringService.java
