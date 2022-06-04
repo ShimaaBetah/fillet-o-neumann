@@ -3,9 +3,9 @@
 
 
 ## Description
-A simulation for a Von Nuemann based Computer Architecture using Java.
+A simulation for a Von Neumann based Computer Architecture using Java.
 ### Main Memory Architecture 
-A von nuemann Archeticture in which program data and instruction data are stored in the same memory<br>
+A von neumann Architecture in which program data and instruction data are stored in the same memory<br>
 <b>Main Memory Size</b> 2048 * 32 `from 0 to 1023 for instructions and from 1024 to 2047 for data` 
 ### Registers 
 - 31 General purpose Registers from R1 to R31
@@ -170,7 +170,7 @@ A von nuemann Archeticture in which program data and instruction data are stored
 - Used CI in the whole process. ![example workflow](https://github.com/ShimaaBetah/fillet-o-neumann/actions/workflows/maven.yml/badge.svg)
 - We used a containerized environment using Docker :whale:. 
 - We used Maven as a build system and dependency manager.  [![Maven Central](https://maven-badges.herokuapp.com/maven-central/cz.jirutka.rsql/rsql-parser/badge.svg?style=plastic)](https://maven-badges.herokuapp.com/maven-central/cz.jirutka.rsql/rsql-parser)
-- We applied some spectacular  design patterns such as: 
+- We applied some spectacular design patterns such as: 
 	- Singleton 
 	- Observer
 	- Command 
@@ -197,7 +197,7 @@ A von nuemann Archeticture in which program data and instruction data are stored
 
 ## Test Using Docker 
 
-Docker will gurantee more consistency and make sure you are in a isolated enviroment and not affected by your local machine
+Docker will guarantee more consistency and make sure you are in a isolated enviroment and not affected by your local machine
 
  ```bash
  > docker build -t fillet . 
