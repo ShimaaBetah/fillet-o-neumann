@@ -3,7 +3,47 @@
 
 
 ## Description
-A simulation for a Von Nuemann based Computer Architecture using Java
+A simulation for a Von Neumann based Computer Architecture using Java.
+### Main Memory Architecture 
+A von neumann Architecture in which program data and instruction data are stored in the same memory<br>
+<b>Main Memory Size</b> 2048 * 32 `from 0 to 1023 for instructions and from 1024 to 2047 for data` 
+### Registers 
+- 31 General purpose Registers from R1 to R31
+- 1 Zero Registers named R0
+- 1 program counter PC
+<b> Registers Size </b> 32 bits
+
+### Instruction Architecture
+<details>
+	<summary> Instruction Set supported </summary>
+
+|Name | Format| Operation|
+|-----|-----|-----|
+|ADD| ADD R1 R2 R3|R1 = R2 + R3|
+|SUB|SUB R1 R2 R3| R1 = R2 - R3|
+|MUL|MUL R1 R2 R3|R1 = R2 * R3|
+|MOVI| MOVI R1 IMM|R1 = IMM|
+|JEQ|JEQ R1 R2 IMM\label|IF(R1 == R2) {PC = PC+1+IMM\ PC = label }|
+|AND|AND R1 R2 R3|R1 = R2 & R3|
+|XORI|XORI R1 R2 IMM|R1 = R2 ⊕ IMM|
+|JMP|JMP ADDRESS|PC = PC[31:28] || ADDRESS|
+|LSL|LSL R1 R2 SHAMT|R1 = R2 << SHAMT|
+|LSR|LSR R1 R2 SHAMT|R1 = R2 >>> SHAMT|
+|MOVR|MOVR R1 R2 IMM|R1 = MEM[R2 + IMM]|
+|MOVM|MOVM R1 R2 IMM|MEM[R2 + IMM] = R1|
+	
+</details>
+
+### Datapath
+
+<b> Stages: </b> 5
+ - Instruction Fetch (IF)
+ - Instruction Decode (ID)
+ - Execute (EX)
+ - Memory (MEM)
+ - Write Back (WB)
+<br>
+<b> Pipeline: </b> maximum 4 instructions running in parallel (IF) and (MEM) cannot be done in parallel.
 
 ## Project Structure
 <details>
@@ -130,7 +170,7 @@ A simulation for a Von Nuemann based Computer Architecture using Java
 - Used CI in the whole process. ![example workflow](https://github.com/ShimaaBetah/fillet-o-neumann/actions/workflows/maven.yml/badge.svg)
 - We used a containerized environment using Docker :whale:. 
 - We used Maven as a build system and dependency manager.  [![Maven Central](https://maven-badges.herokuapp.com/maven-central/cz.jirutka.rsql/rsql-parser/badge.svg?style=plastic)](https://maven-badges.herokuapp.com/maven-central/cz.jirutka.rsql/rsql-parser)
-- We applied some spectacular  design patterns such as: 
+- We applied some spectacular design patterns such as: 
 	- Singleton 
 	- Observer
 	- Command 
@@ -157,7 +197,7 @@ A simulation for a Von Nuemann based Computer Architecture using Java
 
 ## Test Using Docker 
 
-Docker will gurantee more consistency and make sure you are in a isolated enviroment and not affected by your local machine
+Docker will guarantee more consistency and make sure you are in a isolated enviroment and not affected by your local machine
 
  ```bash
  > docker build -t fillet . 
@@ -179,7 +219,7 @@ or even
 
 ## Team behind this piece of art
 
-- [Ibrahim Abou Elenein](www.github.com/aboueleyes)
+- [Ibrahim Abou Elenein](https://github.com/aboueleyes)
 - [Mohammad Omar](https://github.com/MohammadOTaha)
 - [Ahmed Nasser](https://github.com/AhmedNasserG)
 - [Abdulaziz Hassan](https://github.com/Abdulaziz-Hassan)
