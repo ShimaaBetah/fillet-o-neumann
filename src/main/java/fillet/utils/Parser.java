@@ -165,6 +165,7 @@ public class Parser {
                 address = "0" + address;
             }
         }
+        address = address.substring(address.length() - size); // remove trailing bits from the sign bit.
         return address;
     }
 
@@ -182,7 +183,7 @@ public class Parser {
         return binary.toString();
     }
 
-    private String getIType(String[] instruction, int currentAdress) throws InvalidRegisterException {
+    private String getIType(String[] instruction, int currentAddress) throws InvalidRegisterException {
         /*
          * map the instruction to binary of type I
          * format:
@@ -196,7 +197,7 @@ public class Parser {
         int immediateSize = INSTRUCTION_SIZE - OPCODE_SIZE - 2 * REGISTER_SIZE;
         if (opcode == 4){
             if (labels.containsKey(instruction[3])) {
-                instruction[3] = "" + (labels.get(instruction[3]) - currentAdress - 1);
+                instruction[3] = "" + (labels.get(instruction[3]) - currentAddress - 1);
             }
         }
         if (opcode == 3) { // If opcode is 3, then the instruction is `MOVI` which has no rt, always 0
@@ -215,8 +216,8 @@ public class Parser {
         return Binary.intToBinaryString(binary);
     }
 
-    private int getImmediateInt(String string, int i, int j) {
-        return Binary.binaryStringtoInt(getImmediate(string, i, j));
+    private int getImmediateInt(String string, int offset, int size) {
+        return Binary.binaryStringtoInt(getImmediate(string, offset, size));
     }
 
     private String getRType(String[] instruction) throws InvalidRegisterException {
