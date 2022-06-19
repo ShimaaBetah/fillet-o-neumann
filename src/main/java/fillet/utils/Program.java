@@ -6,27 +6,14 @@ import java.util.Optional;
 
 import fillet.exceptions.InvalidInstructionException;
 import fillet.exceptions.InvalidRegisterException;
+import org.jetbrains.annotations.NotNull;
 
 public class Program {
     private final List<String> binaryInstructions;
-    private final String path;
+    private Parser parser;
 
-    public Program(String path) {
-        this.path = path;
-        Parser parser = Optional.ofNullable(path).map(p -> {
-            try {
-                return new Parser(p);
-            } catch (InvalidInstructionException | InvalidRegisterException e) {
-                e.printStackTrace();
-            }
-            return null;
-        }).orElse(null);
-        assert parser != null;
+    public Program(@NotNull Parser parser) {
         binaryInstructions = parser.getBinaryInstructions();
-    }
-
-    public String getPath() {
-        return path;
     }
 
     public List<Integer> getIntegerInstructions() {

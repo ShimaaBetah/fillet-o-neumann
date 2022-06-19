@@ -1,6 +1,8 @@
 package fillet;
 
 import fillet.exceptions.AddressOutOfRangeException;
+import fillet.exceptions.InvalidInstructionException;
+import fillet.exceptions.InvalidRegisterException;
 import fillet.exceptions.InvalidRegisterNumberException;
 import fillet.instructions.Instruction;
 import fillet.instructions.InstructionFactory;
@@ -10,6 +12,7 @@ import fillet.memory.RegisterFile;
 import fillet.operations.immediateoperations.JumpIfEqual;
 import fillet.operations.jumpoperations.Jump;
 import fillet.signals.Signals;
+import fillet.utils.Parser;
 import fillet.utils.Program;
 
 public class App {
@@ -31,7 +34,13 @@ public class App {
         this.pipeline = new Instruction[PIPELINE_SIZE];
         this.currentCycle = 1;
         this.instructionFactory = new InstructionFactory();
-        parser = new Program(path);
+        try {
+            parser = new Program(new Parser(path));
+        } catch (InvalidInstructionException e) {
+            throw new RuntimeException(e);
+        } catch (InvalidRegisterException e) {
+            throw new RuntimeException(e);
+        }
         loadProgramToMemory();
     }
 
