@@ -175,6 +175,7 @@ A von neumann Architecture in which program data and instruction data are stored
 	- Observer
 	- Command 
 	- Factory
+	- Decorator
 
 ## Technologies
 
